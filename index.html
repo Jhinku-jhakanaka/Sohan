@@ -2,8 +2,8 @@
 <html lang="en" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>MD SOHAN MAHMUD. — Cybersecurity Student & Analyst Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>MD SOHAN MAHMUD. — Cybersecurity Analyst & Security Researcher</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,7 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Three.js for 3D VFX Wireframe & Particle Depth Scene -->
+  <!-- Three.js for 3D VFX Wireframe & Depth Particle Scene -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
@@ -29,7 +29,7 @@
               DEFAULT: '#060608',
               card: '#0d0d11',
               elevated: '#131319',
-              glass: 'rgba(15, 15, 20, 0.82)'
+              glass: 'rgba(15, 15, 20, 0.85)'
             },
             crimson: {
               DEFAULT: '#dc2626',
@@ -62,11 +62,18 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      position: relative;
+    }
+
     body {
       background-color: #060608;
       color: #f4f4f5;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom, 24px);
     }
 
     ::selection {
@@ -74,27 +81,28 @@
       color: #ffffff;
     }
 
-    /* Subtle film grain + technical grid background */
+    /* Technical grid pattern */
     .bg-grid-pattern {
-      background-size: 48px 48px;
+      background-size: 40px 40px;
       background-image: 
         linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
     }
 
-    /* Giant PORTFOLIO hero background typography */
+    /* Giant PORTFOLIO hero background typography (mobile constrained) */
     .hero-giant-text {
       font-family: 'Anton', sans-serif;
-      font-size: clamp(4.8rem, 20.5vw, 22rem);
-      line-height: 0.82;
+      font-size: clamp(3.8rem, 18.5vw, 21rem);
+      line-height: 0.84;
       letter-spacing: -0.015em;
       color: #c81e1e;
       text-transform: uppercase;
       user-select: none;
-      text-shadow: 0 20px 60px rgba(220, 38, 38, 0.25);
+      text-shadow: 0 16px 50px rgba(220, 38, 38, 0.28);
+      word-break: break-all;
     }
 
-    /* Figma / Canvas Inspect Outline Effect (seen throughout the video) */
+    /* Inspect Outline Effect */
     .inspect-active [data-inspectable]:hover,
     .inspect-active [data-inspectable].inspect-locked,
     .wireframe-mode [data-inspectable] {
@@ -103,7 +111,7 @@
       position: relative;
     }
 
-    /* Blueprint Mode (seen at 00:01 of video) */
+    /* Blueprint / Wireframe Flash Mode */
     .wireframe-mode * {
       border-color: rgba(59, 130, 246, 0.35) !important;
     }
@@ -113,8 +121,8 @@
 
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
     }
     ::-webkit-scrollbar-track {
       background: #060608;
@@ -141,11 +149,6 @@
       transform: scaleY(0.35);
     }
 
-    /* Red Ambient Glows */
-    .crimson-glow {
-      box-shadow: 0 0 80px -15px rgba(220, 38, 38, 0.35);
-    }
-
     /* Before/After Slider Clip */
     #before-layer {
       clip-path: inset(0 50% 0 0);
@@ -156,9 +159,11 @@
       transform-origin: top center;
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       perspective: 1200px;
+      width: 100%;
+      overflow-x: hidden;
     }
 
-    /* 3D Interactive Tilt Cards & Layers (Cursor on Laptop, Auto-Scroll & Touch on Mobile) */
+    /* 3D Interactive Tilt Cards & Layers */
     [data-3d-tilt] {
       transform-style: preserve-3d;
       will-change: transform;
@@ -176,8 +181,8 @@
       transition: opacity 0.3s ease;
       background: radial-gradient(
         420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
-        rgba(220, 38, 38, 0.18),
-        rgba(59, 130, 246, 0.08) 40%,
+        rgba(220, 38, 38, 0.2),
+        rgba(59, 130, 246, 0.09) 40%,
         transparent 75%
       );
       mix-blend-mode: screen;
@@ -188,41 +193,57 @@
       opacity: 1;
     }
 
-    /* 3D Pop-out child elements inside 3D cards */
-    .depth-layer-1 {
-      transform: translateZ(22px);
-    }
-    .depth-layer-2 {
-      transform: translateZ(42px);
-    }
-    .depth-layer-3 {
-      transform: translateZ(64px);
-    }
+    /* 3D Depth Layers inside Cards */
+    .depth-layer-1 { transform: translateZ(18px); }
+    .depth-layer-2 { transform: translateZ(34px); }
+    .depth-layer-3 { transform: translateZ(52px); }
 
-    /* Fail-safe CSS animation so Intro Splash never gets stuck on mobile */
+    /* Failsafe Intro Splash */
     @keyframes splashFailSafe {
       0%, 80% { opacity: 1; pointer-events: auto; }
       100% { opacity: 0; pointer-events: none; visibility: hidden; }
     }
     .splash-auto-hide {
-      animation: splashFailSafe 2.1s forwards;
+      animation: splashFailSafe 2.2s forwards;
+    }
+
+    /* Mobile Interaction Safeguards */
+    canvas#drawing-canvas,
+    canvas#three-canvas,
+    canvas#swarm-canvas {
+      pointer-events: none !important;
+      touch-action: pan-y !important;
+    }
+
+    body.pen-mode-active canvas#drawing-canvas {
+      pointer-events: auto !important;
+      touch-action: none !important;
+    }
+
+    /* Clickable interactive elements guarantee */
+    .clickable-node {
+      position: relative;
+      z-index: 35;
+      cursor: pointer;
+    }
+
+    /* Safe padding for fixed dock on iPhones with Home Indicator */
+    .safe-dock-pb {
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
     }
   </style>
 </head>
 <body class="inspect-active bg-grid-pattern antialiased selection:bg-crimson selection:text-white">
 
   <!-- =====================================================================
-       1. INTRO SPLASH OVERLAY (00:00 - 00:02 IN VIDEO: "S" + CURSOR SWARM)
+       1. INTRO SPLASH OVERLAY WITH CONVERGING COLLABORATOR CURSORS
        ===================================================================== -->
   <div id="intro-splash" class="splash-auto-hide fixed inset-0 z-[100] bg-[#050507] flex flex-col items-center justify-center transition-opacity duration-700">
-    <!-- Flying Collaborator Cursors Container -->
     <div id="intro-cursors" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
-    <!-- Center S Emblem -->
     <div class="relative flex flex-col items-center">
       <div id="intro-r-box" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center relative shadow-2xl">
-        <span class="font-display text-4xl sm:text-5xl tracking-wider text-zinc-200 select-none">S</span>
-        <!-- Corner handles -->
+        <span class="font-display text-4xl sm:text-5xl tracking-wider text-zinc-100 select-none">S</span>
         <span class="w-2 h-2 bg-blueprint absolute -top-1 -left-1"></span>
         <span class="w-2 h-2 bg-blueprint absolute -top-1 -right-1"></span>
         <span class="w-2 h-2 bg-blueprint absolute -bottom-1 -left-1"></span>
@@ -236,93 +257,64 @@
   </div>
 
   <!-- =====================================================================
-       2. LIVE FIGMA SELECTION BOX OVERLAY & FREEHAND DRAWING CANVAS
+       2. LIVE FIGMA SELECTION HUD & FREEHAND DRAWING CANVAS
        ===================================================================== -->
-  <!-- Dynamic Blue Bounding Box with 4 corner handles + dimension badge -->
   <div id="selection-hud" class="fixed pointer-events-none z-[60] hidden border-[1.5px] border-[#3b82f6] bg-[#3b82f6]/[0.03] transition-all duration-75">
-    <!-- 4 Corner Handles -->
     <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -top-1 -left-1"></span>
     <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -top-1 -right-1"></span>
     <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -bottom-1 -left-1"></span>
     <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -bottom-1 -right-1"></span>
-    <!-- Element Label Top-Left -->
-    <div id="selection-tag" class="absolute -top-5 left-0 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.5 rounded-t whitespace-nowrap">
-      Frame
-    </div>
-    <!-- Dimension Pill Bottom-Center -->
-    <div id="selection-dims" class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.2 rounded whitespace-nowrap shadow">
-      420 × 128
-    </div>
+    <div id="selection-tag" class="absolute -top-5 left-0 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.5 rounded-t whitespace-nowrap">Frame</div>
+    <div id="selection-dims" class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.2 rounded whitespace-nowrap shadow">420 × 128</div>
   </div>
 
-  <!-- Interactive Annotation Drawing Canvas (Activated via Pen tool in bottom dock) -->
-  <canvas id="drawing-canvas" class="fixed inset-0 z-[55] pointer-events-none"></canvas>
-
-  <!-- 3D WebGL Three.js VFX Wireframe & Depth Particle Canvas -->
-  <canvas id="three-canvas" class="fixed inset-0 z-[1] pointer-events-none opacity-75"></canvas>
-
-  <!-- Floating Collaborator / Particle Cursors Layer (Seen at 00:00, 00:08, 00:54) -->
-  <canvas id="swarm-canvas" class="fixed inset-0 z-[45] pointer-events-none"></canvas>
-
-  <!-- SVG HD Sharpness Filter for Permanent Studio Portrait -->
-  <svg class="hidden" width="0" height="0" aria-hidden="true">
-    <defs>
-      <filter id="hd-portrait-sharpen">
-        <feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="0 -0.35 0 -0.35 2.4 -0.35 0 -0.35 0" />
-      </filter>
-    </defs>
-  </svg>
+  <canvas id="drawing-canvas" class="fixed inset-0 z-[55]"></canvas>
+  <canvas id="three-canvas" class="fixed inset-0 z-[1] opacity-75"></canvas>
+  <canvas id="swarm-canvas" class="fixed inset-0 z-[45]"></canvas>
 
   <!-- =====================================================================
-       3. TOP FIXED NAVBAR
+       3. TOP NAVIGATION BAR
        ===================================================================== -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-[#060608]/85 backdrop-blur-md border-b border-white/[0.06]">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#060608]/90 backdrop-blur-md border-b border-white/[0.06]">
     <div class="max-w-[1380px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
-      <!-- Brand Logo -->
       <a href="#hero" data-inspectable="Logo • SOHAN" class="font-display text-2xl sm:text-3xl tracking-tight text-white flex items-center">
         SOHAN<span class="text-crimson">.</span>
       </a>
 
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center gap-7 text-xs font-medium text-zinc-400">
-        <a href="#karya" class="hover:text-white transition-colors">Projects</a>
-        <a href="#penghargaan" class="hover:text-white transition-colors">Achievements</a>
-        <a href="#vfx-breakdown" class="hover:text-white transition-colors">Lab Breakdown</a>
-        <a href="#tentang" class="hover:text-white transition-colors">About</a>
-        <a href="#perjalanan" class="hover:text-white transition-colors">Journey</a>
-        <a href="#kontak" class="hover:text-white transition-colors">Contact</a>
+      <nav class="hidden md:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-zinc-400">
+        <a href="#projects" class="hover:text-white transition-colors">01 / Projects</a>
+        <a href="#experience" class="hover:text-white transition-colors">02 / Honors</a>
+        <a href="#threat-breakdown" class="hover:text-white transition-colors">03 / Threat Lab</a>
+        <a href="#about" class="hover:text-white transition-colors">04 / Profile</a>
+        <a href="#journey" class="hover:text-white transition-colors">05 / Journey</a>
+        <a href="#contact" class="hover:text-white transition-colors">06 / Contact</a>
       </nav>
 
-      <!-- Right Actions -->
-      <div class="flex items-center gap-2.5">
-        <!-- Blueprint / Wireframe Flash Button (Replays the 00:01 effect) -->
-        <button id="btn-blueprint-top" onclick="toggleWireframeMode()" title="Toggle Blueprint Inspect (00:01 Mode)" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 hover:border-blueprint text-[11px] font-mono text-zinc-300 transition">
+      <div class="flex items-center gap-2">
+        <button id="btn-blueprint-top" onclick="toggleWireframeMode()" title="Toggle Blueprint Inspect (00:01 Mode)" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 hover:border-blueprint text-[11px] font-mono text-zinc-300 transition">
           <i data-lucide="scan" class="w-3.5 h-3.5 text-blueprint"></i>
           <span class="hidden sm:inline">Inspect</span>
         </button>
 
-        <!-- Available CTA Pill -->
-        <a href="#kontak" data-inspectable="Button • CTA Header" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-700/70 text-xs font-medium text-white transition">
+        <a href="#contact" data-inspectable="Button • Academic Status" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-700/70 text-xs font-medium text-white transition">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span class="hidden sm:inline">La Trobe • Australia</span>
-          <span class="sm:hidden">Contact</span>
+          <span class="sm:hidden text-[11px]">La Trobe AU</span>
         </a>
 
-        <!-- Mobile Menu Button -->
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300" aria-label="Menu">
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 active:scale-95 transition" aria-label="Menu">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Dropdown Navigation -->
-    <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0f] border-b border-zinc-800 px-6 py-4 space-y-3 text-sm">
-      <a href="#karya" onclick="toggleMobileMenu()" class="block py-1.5 text-zinc-300 hover:text-white">01 / Security Projects</a>
-      <a href="#penghargaan" onclick="toggleMobileMenu()" class="block py-1.5 text-zinc-300 hover:text-white">02 / Certifications & CTF</a>
-      <a href="#vfx-breakdown" onclick="toggleMobileMenu()" class="block py-1.5 text-zinc-300 hover:text-white">03 / Threat Defense Breakdown</a>
-      <a href="#tentang" onclick="toggleMobileMenu()" class="block py-1.5 text-zinc-300 hover:text-white">04 / Education & Skills</a>
-      <a href="#perjalanan" onclick="toggleMobileMenu()" class="block py-1.5 text-zinc-300 hover:text-white">05 / Academic & Tech Journey</a>
-      <a href="#kontak" onclick="toggleMobileMenu()" class="block py-1.5 text-crimson font-semibold">06 / Connect With Me</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0f] border-b border-zinc-800 px-6 py-4 space-y-3 text-xs font-mono shadow-2xl">
+      <a href="#projects" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">01 / Security Projects</a>
+      <a href="#experience" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">02 / Certifications & CTF</a>
+      <a href="#threat-breakdown" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">03 / Threat Defense Breakdown</a>
+      <a href="#about" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">04 / Education & Arsenal</a>
+      <a href="#journey" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">05 / Milestones</a>
+      <a href="#contact" onclick="toggleMobileMenu()" class="block py-1 text-crimson font-semibold">06 / Connect Directly</a>
     </div>
   </header>
 
@@ -332,54 +324,49 @@
   <div id="canvas-viewport" class="pt-16 relative z-10">
 
     <!-- ===================================================================
-         SECTION 1: HERO SECTION (00:02 - 00:06 IN VIDEO)
+         SECTION 1: HERO SECTION
          =================================================================== -->
-    <section id="hero" class="relative min-h-[92vh] flex flex-col justify-between overflow-hidden pt-6 pb-16 sm:py-12 border-b border-white/[0.06]" style="perspective: 1400px;">
-      <!-- Top Ambient Red Spotlight -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] sm:w-[780px] h-[380px] bg-crimson/20 blur-[130px] rounded-full pointer-events-none"></div>
+    <section id="hero" class="relative min-h-[90vh] flex flex-col justify-between overflow-hidden pt-4 pb-12 sm:py-12 border-b border-white/[0.06]" style="perspective: 1400px;">
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[780px] h-[300px] sm:h-[380px] bg-crimson/20 blur-[110px] rounded-full pointer-events-none"></div>
 
-      <!-- GIANT BACKGROUND "PORTFOLIO" TEXT -->
-      <div id="hero-giant-wrapper" class="w-full text-center mt-2 sm:mt-4 pointer-events-none select-none overflow-hidden px-2 will-change-transform">
+      <!-- Giant Background Title -->
+      <div id="hero-giant-wrapper" class="w-full text-center mt-1 sm:mt-4 pointer-events-none select-none overflow-hidden px-2 will-change-transform">
         <h1 data-inspectable="Display • PORTFOLIO" class="hero-giant-text tracking-tight">
           PORTFOLIO
         </h1>
       </div>
 
-      <!-- FOREGROUND 3-COLUMN OVERLAPPING GRID -->
-      <div class="max-w-[1380px] w-full mx-auto px-4 sm:px-8 relative z-10 -mt-12 sm:-mt-28 lg:-mt-44">
+      <!-- Foreground Grid -->
+      <div class="max-w-[1380px] w-full mx-auto px-4 sm:px-8 relative z-10 -mt-10 sm:-mt-28 lg:-mt-44">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
 
-          <!-- LEFT COLUMN: Intro, Name, Role, Paragraph, Button, Audio Showreel Bar -->
+          <!-- Left Column -->
           <div class="lg:col-span-4 space-y-4 order-2 lg:order-1" data-inspectable="Hero • Bio Column" data-3d-tilt data-max-tilt="8">
-            <div class="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-zinc-400 depth-layer-1">
+            <div class="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-400 depth-layer-1">
               <span class="w-2 h-2 rounded-full bg-crimson"></span>
               <span>FROM BANGLADESH 🇧🇩 • IN AUSTRALIA 🇦🇺</span>
             </div>
 
-            <!-- Script "Hello, I'm" + Bold "MD SOHAN MAHMUD." -->
             <div class="space-y-0 depth-layer-2">
-              <p class="font-script text-3xl sm:text-4xl text-zinc-200 -mb-1 ml-1">Hello, I'm</p>
+              <p class="font-script text-2xl sm:text-4xl text-zinc-200 -mb-1 ml-1">Hello, I'm</p>
               <h2 class="font-display text-4xl sm:text-5xl xl:text-6xl tracking-tight text-white uppercase leading-[0.95]">
                 MD SOHAN<br/>MAHMUD<span class="text-crimson">.</span>
               </h2>
             </div>
 
-            <!-- Role Subtitle -->
             <div class="pt-1 depth-layer-1">
-              <span class="text-[10px] font-mono uppercase tracking-widest text-crimson block">LA TROBE UNIVERSITY, AUSTRALIA</span>
-              <h3 class="font-display text-2xl sm:text-3xl text-white tracking-wide uppercase leading-tight">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-crimson block font-bold">LA TROBE UNIVERSITY, AUSTRALIA</span>
+              <h3 class="font-display text-xl sm:text-3xl text-white tracking-wide uppercase leading-tight">
                 CYBERSECURITY<br/>STUDENT & ANALYST
               </h3>
             </div>
 
-            <!-- Description Paragraph -->
             <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm depth-layer-1">
               Cybersecurity student at La Trobe University, Australia, originally from Bangladesh. Passionate about network defense, ethical hacking, digital forensics, and building resilient security architectures.
             </p>
 
-            <!-- Red CTA Button -->
             <div class="pt-2 flex flex-wrap items-center gap-3 depth-layer-2">
-              <a href="#karya" data-inspectable="Button • Explore Work" class="inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs uppercase tracking-wider px-5 py-3 rounded-lg shadow-lg shadow-crimson/25 transition group">
+              <a href="#projects" data-inspectable="Button • Explore Work" class="clickable-node inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs font-mono uppercase tracking-wider px-5 py-3 rounded-lg shadow-lg shadow-crimson/25 transition group">
                 <span>EXPLORE MY PROJECTS</span>
                 <span class="w-5 h-5 rounded-full bg-black/30 flex items-center justify-center group-hover:translate-x-0.5 transition">
                   <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i>
@@ -387,9 +374,9 @@
               </a>
             </div>
 
-            <!-- Interactive Audio / Security Telemetry Bar -->
+            <!-- Audio Telemetry Reel -->
             <div id="showreel-audio-bar" data-inspectable="Component • Security Audio Pulse" class="pt-3 flex items-center gap-3 max-w-xs depth-layer-1">
-              <button onclick="toggleShowreelAudio()" id="btn-audio-play" class="w-9 h-9 rounded-full bg-zinc-900 hover:bg-crimson border border-zinc-700 text-white flex items-center justify-center transition shrink-0" aria-label="Play Security Intro Audio">
+              <button onclick="toggleShowreelAudio()" id="btn-audio-play" class="clickable-node w-9 h-9 rounded-full bg-zinc-900 hover:bg-crimson border border-zinc-700 text-white flex items-center justify-center transition shrink-0" aria-label="Play Security Reel">
                 <i data-lucide="play" id="audio-icon" class="w-4 h-4 fill-current ml-0.5"></i>
               </button>
               <div class="flex-1">
@@ -397,7 +384,6 @@
                   <span class="text-white font-medium">PLAY CYBER REEL</span>
                   <span id="audio-timer" class="text-zinc-500">00:45</span>
                 </div>
-                <!-- Animated Waveform Bars -->
                 <div id="waveform-container" class="wave-paused flex items-end gap-[3px] h-3 mt-1">
                   <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.0s"></span>
                   <span class="wave-bar w-1 h-2/3 bg-zinc-500 rounded-full" style="animation-delay:0.2s"></span>
@@ -409,102 +395,92 @@
                   <span class="wave-bar w-1 h-1/2 bg-zinc-600 rounded-full" style="animation-delay:0.4s"></span>
                   <span class="wave-bar w-1 h-3/4 bg-zinc-500 rounded-full" style="animation-delay:0.1s"></span>
                   <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.3s"></span>
-                  <span class="wave-bar w-1 h-2/3 bg-zinc-600 rounded-full" style="animation-delay:0.2s"></span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- CENTER COLUMN: Cutout Portrait Overlapping "PORTFOLIO" -->
+          <!-- Center Column: Portrait -->
           <div class="lg:col-span-4 flex justify-center relative order-1 lg:order-2" data-inspectable="Hero • Md Sohan Mahmud Portrait">
-            <div id="hero-portrait-3d" data-3d-tilt data-max-tilt="14" class="relative w-[290px] sm:w-[360px] lg:w-[410px] aspect-[4/5] flex items-end justify-center select-none group/portrait">
-              <!-- Subtle Crimson Rim Backlight -->
+            <div id="hero-portrait-3d" data-3d-tilt data-max-tilt="14" class="relative w-[270px] sm:w-[360px] lg:w-[410px] aspect-[4/5] flex items-end justify-center select-none group/portrait">
               <div class="absolute inset-x-6 bottom-6 top-12 bg-gradient-to-t from-crimson/35 via-crimson/10 to-transparent rounded-full blur-2xl pointer-events-none"></div>
 
-              <!-- Permanent HD Studio Portrait with Instant Fallback & Studio Cutout Blending -->
-              <div class="relative z-10 w-full h-full rounded-t-[2.2rem] overflow-hidden depth-layer-1 flex items-end justify-center"
-                   style="mask-image: linear-gradient(to bottom, black 82%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);">
+              <div class="relative z-10 w-full h-full rounded-t-[2rem] overflow-hidden depth-layer-1 flex items-end justify-center border-t border-x border-zinc-800 bg-[#0c0c11]">
                 <img 
                   id="hero-portrait-img"
                   src="./Sohan.jpg"
-                  onerror="handlePortraitFallback(this)"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80';"
                   alt="Md Sohan Mahmud — Cybersecurity Student Portrait"
-                  loading="eager"
-                  decoding="sync"
-                  fetchpriority="high"
                   class="w-full h-full object-cover object-center brightness-105 contrast-110 saturate-105 transition duration-500"
-                  style="filter: url(#hd-portrait-sharpen) contrast(1.06) brightness(1.02); image-rendering: -webkit-optimize-contrast; mask-image: radial-gradient(ellipse 90% 90% at 50% 46%, black 68%, rgba(0,0,0,0.75) 86%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 46%, black 68%, rgba(0,0,0,0.75) 86%, transparent 100%);"
                 />
-                <!-- Subtle Studio Crimson Edge Rim Light Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-crimson/10 mix-blend-multiply pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-transparent pointer-events-none"></div>
               </div>
 
-              <!-- Red Floating Technical Node Accents on Subject -->
-              <div class="absolute top-10 -left-2 z-20 bg-black/80 backdrop-blur-md border border-zinc-800 px-2.5 py-1 rounded text-[10px] font-mono text-zinc-300 flex items-center gap-1.5 shadow-lg depth-layer-2">
+              <!-- Red Floating Technical Node Accents -->
+              <div class="absolute top-8 -left-2 z-20 bg-black/85 backdrop-blur-md border border-zinc-800 px-2.5 py-1 rounded text-[10px] font-mono text-zinc-300 flex items-center gap-1.5 shadow-lg depth-layer-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 <span>SEC • LA TROBE AU</span>
               </div>
 
-              <!-- Floating Cyber Lab Mini Thumbnail Card (Bottom Right of Portrait in Video) -->
-              <button onclick="openProjectModal(0)" data-inspectable="Card • Mini Security Lab Preview" class="absolute -bottom-2 -right-2 sm:right-0 z-30 w-44 sm:w-52 bg-[#111116]/95 backdrop-blur-md border border-zinc-700/80 hover:border-crimson rounded-xl p-2 text-left shadow-2xl transition group depth-layer-3">
-                <div class="relative h-24 rounded-lg overflow-hidden bg-zinc-900">
+              <!-- Cyber Lab Mini Preview Card -->
+              <button onclick="openProjectModal(0)" data-inspectable="Card • Mini Security Lab Preview" class="clickable-node absolute -bottom-2 -right-1 sm:right-0 z-30 w-40 sm:w-52 bg-[#111116]/95 backdrop-blur-md border border-zinc-700/80 hover:border-crimson rounded-xl p-2 text-left shadow-2xl transition group depth-layer-3">
+                <div class="relative h-20 sm:h-24 rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
                   <img 
                     src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" 
                     alt="Cybersecurity Lab Preview" 
                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <span class="w-8 h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
                       <i data-lucide="shield" class="w-3.5 h-3.5 fill-current"></i>
                     </span>
                   </div>
-                  <span class="absolute top-1.5 left-1.5 bg-crimson text-white text-[9px] font-mono px-1.5 py-0.5 rounded">SOC LAB</span>
+                  <span class="absolute top-1.5 left-1.5 bg-crimson text-white text-[9px] font-mono px-1.5 py-0.5 rounded font-bold">SOC LAB</span>
                 </div>
-                <div class="mt-1.5 flex items-center justify-between text-[10px] font-mono text-zinc-300 px-0.5">
+                <div class="mt-1.5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-300 px-0.5">
                   <span class="truncate">Cyber Defense Lab</span>
-                  <span class="text-crimson">ACTIVE</span>
+                  <span class="text-crimson font-bold">ACTIVE</span>
                 </div>
               </button>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Key Numbers & Cybersecurity Stack -->
+          <!-- Right Column: Stats & Security Stack -->
           <div class="lg:col-span-4 flex flex-col lg:items-end justify-end space-y-5 order-3" data-inspectable="Hero • Stats & Security Stack" data-3d-tilt data-max-tilt="8">
-            <div class="grid grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-5 w-full lg:w-60 text-left lg:text-right depth-layer-1">
-              <!-- Stat 1 -->
-              <div class="border-b border-zinc-800/80 pb-3 flex lg:flex-row-reverse items-baseline justify-between gap-3">
-                <span class="font-display text-3xl sm:text-4xl text-crimson">25+</span>
+            <div class="grid grid-cols-3 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-5 w-full lg:w-60 text-left lg:text-right depth-layer-1">
+              <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                <span class="font-display text-2xl sm:text-4xl text-crimson">25+</span>
                 <div>
-                  <p class="text-[11px] font-bold uppercase text-white tracking-wider">Security Labs & Audits</p>
-                  <p class="text-[10px] text-zinc-500 hidden sm:block">Pentesting & Network Defense</p>
+                  <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">Security Labs</p>
+                  <p class="text-[9px] text-zinc-500 hidden sm:block">Pentest & Defenses</p>
                 </div>
               </div>
-              <!-- Stat 2 -->
-              <div class="border-b border-zinc-800/80 pb-3 flex lg:flex-row-reverse items-baseline justify-between gap-3">
-                <span class="font-display text-3xl sm:text-4xl text-crimson">50+</span>
+
+              <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                <span class="font-display text-2xl sm:text-4xl text-crimson">50+</span>
                 <div>
-                  <p class="text-[11px] font-bold uppercase text-white tracking-wider">CTF Challenges Solved</p>
-                  <p class="text-[10px] text-zinc-500 hidden sm:block">TryHackMe, HTB & Uni Labs</p>
+                  <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">CTF Solved</p>
+                  <p class="text-[9px] text-zinc-500 hidden sm:block">TryHackMe, HTB</p>
                 </div>
               </div>
-              <!-- Stat 3 -->
-              <div class="border-b border-zinc-800/80 pb-3 flex lg:flex-row-reverse items-baseline justify-between gap-3">
-                <span class="font-display text-3xl sm:text-4xl text-crimson">10+</span>
+
+              <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                <span class="font-display text-2xl sm:text-4xl text-crimson">10+</span>
                 <div>
-                  <p class="text-[11px] font-bold uppercase text-white tracking-wider">Certifications & Badges</p>
-                  <p class="text-[10px] text-zinc-500 hidden sm:block">Cybersecurity & Cloud Sec</p>
+                  <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">Certifications</p>
+                  <p class="text-[9px] text-zinc-500 hidden sm:block">Cloud & Defense</p>
                 </div>
               </div>
             </div>
 
-            <!-- Security Stack Badges Row -->
+            <!-- Security Badges Row -->
             <div class="flex flex-wrap items-center lg:justify-end gap-1.5 pt-1 depth-layer-2">
               <span class="text-[10px] font-mono text-zinc-500 uppercase mr-1">TOOLS:</span>
-              <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono font-bold text-sky-400">Kali</span>
-              <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono font-bold text-emerald-400">Wireshark</span>
-              <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono font-bold text-orange-400">Burp</span>
-              <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono font-bold text-amber-400">Python</span>
-              <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono font-bold text-[#9999FF]">SIEM</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-sky-400">Kali</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-emerald-400">Wireshark</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-orange-400">Burp</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-amber-400">Python</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-[#9999FF]">SIEM</span>
             </div>
           </div>
 
@@ -513,82 +489,67 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 2: 01 / SELECTED WORK — "DEFENSE THAT SPEAKS." (00:07 - 00:14)
+         SECTION 2: 01 / PROJECTS — "DEFENSE THAT SPEAKS."
          =================================================================== -->
-    <section id="karya" class="py-20 sm:py-28 border-b border-white/[0.06] relative">
+    <section id="projects" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
       <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
-
-        <!-- Section Title Row -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div data-inspectable="Heading • Selected Security Projects">
-            <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1">01 / CYBERSECURITY PROJECTS & LABS</p>
-            <h2 class="font-display text-4xl sm:text-6xl uppercase tracking-tight leading-none">
+            <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1">01 / CYBERSECURITY PROJECTS & LABS</p>
+            <h2 class="font-display text-3xl sm:text-6xl uppercase tracking-tight leading-none">
               DEFENSE THAT <span class="text-crimson">SPEAKS.</span>
             </h2>
           </div>
-          <button onclick="filterProjects('ShowAll6')" class="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition self-start sm:self-end">
+          <button onclick="filterProjects('ShowAll6')" class="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition">
             <span>Explore All Labs</span>
             <i data-lucide="arrow-up-right" class="w-4 h-4 text-crimson"></i>
           </button>
         </div>
 
-        <!-- Category Filter Pills (Exact Filter Pills from Video) -->
+        <!-- Category Filters -->
         <div id="work-filters" class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar" data-inspectable="Filter Bar • Domains">
-          <button onclick="filterProjects('All')" data-cat="All" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-crimson text-white transition whitespace-nowrap">Semua</button>
-          <button onclick="filterProjects('VFX')" data-cat="VFX" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">VFX</button>
-          <button onclick="filterProjects('Film')" data-cat="Film" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Film</button>
-          <button onclick="filterProjects('3D')" data-cat="3D" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">3D</button>
-          <button onclick="filterProjects('Commercial')" data-cat="Commercial" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Commercial</button>
-          <button onclick="filterProjects('Photography')" data-cat="Photography" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Photography</button>
-          <button onclick="filterProjects('Visual')" data-cat="Visual" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Visual</button>
-          <button onclick="filterProjects('Motion Graphic')" data-cat="Motion Graphic" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Motion Graphic</button>
+          <button onclick="filterProjects('All')" data-cat="All" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-crimson text-white transition whitespace-nowrap">All Labs</button>
+          <button onclick="filterProjects('Offensive')" data-cat="Offensive" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Offensive & Pentest</button>
+          <button onclick="filterProjects('Defensive')" data-cat="Defensive" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">SOC & Telemetry</button>
+          <button onclick="filterProjects('Hardware')" data-cat="Hardware" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">IoT & Embedded</button>
+          <button onclick="filterProjects('Automation')" data-cat="Automation" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Automation Tools</button>
         </div>
 
-        <!-- 3-Column Showcase Cards Grid -->
-        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Populated dynamically via JS -->
-        </div>
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
 
-        <!-- PLATFORMS & ACADEMIC AFFILIATIONS BAR -->
-        <div class="mt-20 pt-10 border-t border-zinc-900" data-inspectable="Section • Affiliations & Platforms">
+        <!-- Ecosystem Strip -->
+        <div class="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-zinc-900" data-inspectable="Section • Affiliations & Platforms">
           <div class="flex items-center justify-between mb-6">
-            <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-500">ACADEMIC & SECURITY ECOSYSTEM</span>
-            <span class="text-[10px] font-mono text-zinc-500">AUSTRALIA • BANGLADESH • GLOBAL</span>
+            <span class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-500">ACADEMIC & SECURITY ECOSYSTEM</span>
+            <span class="text-[9px] sm:text-[10px] font-mono text-zinc-500">AUSTRALIA • BANGLADESH • GLOBAL</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-            <!-- 1. LA TROBE UNIVERSITY -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition group">
-              <span class="font-display text-lg text-[#E50914] tracking-wider group-hover:scale-105 transition leading-none depth-layer-1">LA TROBE</span>
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition group">
+              <span class="font-display text-base sm:text-lg text-[#E50914] tracking-wider group-hover:scale-105 transition leading-none depth-layer-1">LA TROBE</span>
               <span class="text-[8px] font-mono tracking-widest text-zinc-400 mt-0.5 depth-layer-1">UNIVERSITY • AU</span>
             </div>
-            <!-- 2. KALI LINUX -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
-              <span class="font-display text-lg tracking-wider text-sky-400 leading-none depth-layer-1">KALI LINUX</span>
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
+              <span class="font-display text-base sm:text-lg tracking-wider text-sky-400 leading-none depth-layer-1">KALI LINUX</span>
               <span class="text-[8px] font-mono tracking-widest text-zinc-400 mt-0.5 depth-layer-1">OFFENSIVE SEC</span>
             </div>
-            <!-- 3. HACK THE BOX -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
-              <span class="font-display text-xl tracking-widest text-white leading-none depth-layer-1">HTB</span>
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
+              <span class="font-display text-lg sm:text-xl tracking-widest text-white leading-none depth-layer-1">HTB</span>
               <span class="text-[8px] font-mono tracking-widest text-emerald-400 mt-0.5 depth-layer-1">HACK THE BOX</span>
             </div>
-            <!-- 4. TRYHACKME -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
               <span class="w-5 h-5 rounded-full bg-crimson/20 border border-crimson text-crimson flex items-center justify-center text-[10px] font-bold depth-layer-1">T</span>
               <span class="font-bold text-xs tracking-wider text-zinc-300 depth-layer-1">TRYHACKME</span>
             </div>
-            <!-- 5. OWASP -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
               <span class="w-5 h-5 rounded bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px] font-bold depth-layer-1">O</span>
               <span class="font-mono text-xs text-zinc-300 depth-layer-1">OWASP</span>
             </div>
-            <!-- 6. CISCO NETACAD -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition">
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition">
               <span class="font-bold text-xs tracking-wide text-crimson depth-layer-1">CISCO SEC</span>
             </div>
-            <!-- 7. BANGLADESH & AUSTRALIA -->
-            <div data-3d-tilt data-max-tilt="14" class="h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition col-span-2 sm:col-span-1">
-              <span class="font-display text-lg tracking-wider text-zinc-200 depth-layer-1">BD<span class="text-crimson">×</span>AU</span>
+            <div data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition col-span-2 sm:col-span-1">
+              <span class="font-display text-base sm:text-lg tracking-wider text-zinc-200 depth-layer-1">BD<span class="text-crimson">×</span>AU</span>
             </div>
           </div>
         </div>
@@ -597,38 +558,35 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 3: 02 / AWARDS — "THE SKILLS. THE RECOGNITION." (00:15 - 00:24)
+         SECTION 3: 02 / AWARDS & CERTIFICATIONS
          =================================================================== -->
-    <section id="penghargaan" class="py-20 sm:py-28 border-b border-white/[0.06] relative">
+    <section id="experience" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
       <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-          <!-- LEFT COLUMN: Title + Giant 10+ Laurel Emblem -->
-          <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-6" data-inspectable="Awards • Summary Column">
+          <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-5" data-inspectable="Awards • Summary Column">
             <div>
-              <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-2">02 / CERTIFICATIONS & HONORS</p>
-              <h2 class="font-display text-4xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
+              <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">02 / CERTIFICATIONS & HONORS</p>
+              <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
                 THE SKILLS.<br/>
                 <span class="text-crimson">THE RECOGNITION.</span>
               </h2>
             </div>
 
-            <!-- 10+ Trophy Laurel Graphic (Matches 00:18 - 00:22 in Video) -->
-            <div data-inspectable="Badge • 10+ Certs & Badges" data-3d-tilt data-max-tilt="14" class="py-6 px-6 rounded-2xl bg-gradient-to-b from-zinc-900/70 to-[#09090d] border border-zinc-800/80 inline-flex flex-col items-center justify-center relative overflow-hidden">
+            <!-- Laurel Emblem -->
+            <div data-inspectable="Badge • 10+ Certs & Badges" data-3d-tilt data-max-tilt="14" class="py-5 sm:py-6 px-6 rounded-2xl bg-gradient-to-b from-zinc-900/70 to-[#09090d] border border-zinc-800/80 inline-flex flex-col items-center justify-center relative overflow-hidden">
               <div class="glare-overlay"></div>
               <div class="absolute inset-0 bg-crimson/5 blur-2xl pointer-events-none"></div>
               <div class="flex items-center gap-3 relative z-10 depth-layer-1">
-                <!-- Left Laurel SVG -->
-                <svg class="w-10 h-16 text-zinc-600" viewBox="0 0 40 64" fill="currentColor">
+                <svg class="w-8 sm:w-10 h-14 sm:h-16 text-zinc-600" viewBox="0 0 40 64" fill="currentColor">
                   <path d="M34 58C20 50 12 36 14 10C18 18 22 28 34 58Z" opacity="0.35"/>
                   <circle cx="16" cy="18" r="2.5"/><circle cx="14" cy="28" r="2.5"/><circle cx="16" cy="38" r="2.5"/><circle cx="22" cy="48" r="2.5"/>
                 </svg>
                 <div class="text-center">
-                  <span class="font-display text-6xl sm:text-7xl text-crimson leading-none block">10+</span>
-                  <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-300 bg-zinc-900 border border-zinc-700 px-2.5 py-0.5 rounded-full">BADGES & HONORS</span>
+                  <span class="font-display text-5xl sm:text-7xl text-crimson leading-none block">10+</span>
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-300 bg-zinc-900 border border-zinc-700 px-2.5 py-0.5 rounded-full font-bold">BADGES & HONORS</span>
                 </div>
-                <!-- Right Laurel SVG -->
-                <svg class="w-10 h-16 text-zinc-600 scale-x-[-1]" viewBox="0 0 40 64" fill="currentColor">
+                <svg class="w-8 sm:w-10 h-14 sm:h-16 text-zinc-600 scale-x-[-1]" viewBox="0 0 40 64" fill="currentColor">
                   <path d="M34 58C20 50 12 36 14 10C18 18 22 28 34 58Z" opacity="0.35"/>
                   <circle cx="16" cy="18" r="2.5"/><circle cx="14" cy="28" r="2.5"/><circle cx="16" cy="38" r="2.5"/><circle cx="22" cy="48" r="2.5"/>
                 </svg>
@@ -640,73 +598,67 @@
             </p>
 
             <div>
-              <a href="#kontak" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white hover:text-crimson transition">
+              <a href="#contact" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white hover:text-crimson transition">
                 <span>REQUEST CREDENTIALS</span>
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-crimson"></i>
               </a>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Interactive 3D Awards Timeline List (00:18 - 00:24) -->
+          <!-- Awards Timeline -->
           <div class="lg:col-span-7 divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80" data-inspectable="List • Cybersecurity Recognition">
-            <!-- Award Item 1 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
                 <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-crimson/15 text-crimson border border-crimson/30">La Trobe University • Australia</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">Cybersecurity Academic Excellence</h3>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Cybersecurity Academic Excellence</h3>
                 <p class="text-xs text-zinc-500">Network Defense, Threat Hunting & Secure Systems</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2026</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2026</span>
             </div>
 
-            <!-- Award Item 2 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
-                <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Capture The Flag (CTF)</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">Top Rank — University Cyber Defense Challenge</h3>
-                <p class="text-xs text-zinc-500">Web Exploitation, Reverse Engineering & Forensics</p>
+                <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">PortSwigger Academy</span>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Web Security & SQL Injection Mastery</h3>
+                <p class="text-xs text-zinc-500">Blind SQLi, Broken Access Controls & CSRF</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2026</span>
             </div>
 
-            <!-- Award Item 3 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
                 <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Professional Certificate</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">Google & Cisco Cybersecurity Specialization</h3>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Google & Cisco Cybersecurity Specialization</h3>
                 <p class="text-xs text-zinc-500">SIEM Tools, IDS/IPS, Linux Security & Python Automation</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
             </div>
 
-            <!-- Award Item 4 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
-                <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Offensive & Defensive Lab</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">TryHackMe & HackTheBox Top Percentile</h3>
+                <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Offensive & Defensive Labs</span>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">TryHackMe & HackTheBox Top Percentile</h3>
                 <p class="text-xs text-zinc-500">50+ Red Team & Blue Team Labs Completed</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2024</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
             </div>
 
-            <!-- Award Item 5 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
                 <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">International Scholar</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">Australian Higher Education Awardee (BD → AU)</h3>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Australian Higher Education Awardee (BD → AU)</h3>
                 <p class="text-xs text-zinc-500">Selected to pursue Cybersecurity at La Trobe University</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2024</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2024</span>
             </div>
 
-            <!-- Award Item 6 -->
-            <div data-3d-tilt data-max-tilt="8" class="py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+            <div data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
               <div class="space-y-1 depth-layer-1">
                 <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Bangladesh National ICT</span>
-                <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-crimson transition">Excellence in Computing & STEM</h3>
+                <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Excellence in Computing & STEM</h3>
                 <p class="text-xs text-zinc-500">Dhaka, Bangladesh • Programming & Network Foundations</p>
               </div>
-              <span class="font-display text-2xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2023</span>
+              <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2023</span>
             </div>
           </div>
 
@@ -715,17 +667,16 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 4: 03 / LAB BREAKDOWN — "FROM RAW LOGS. TO SECURED." (00:25 - 00:29)
+         SECTION 4: 03 / THREAT DEFENSE BREAKDOWN
          =================================================================== -->
-    <section id="vfx-breakdown" class="py-20 sm:py-28 border-b border-white/[0.06] relative">
+    <section id="threat-breakdown" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
       <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-          <!-- LEFT COLUMN: Title & Layer Controls -->
-          <div class="lg:col-span-5 space-y-5" data-inspectable="Security • From Vulnerable To Secure" data-3d-tilt data-max-tilt="8">
+          <div class="lg:col-span-5 space-y-4 sm:space-y-5" data-inspectable="Security • Threat Comparison" data-3d-tilt data-max-tilt="8">
             <div class="depth-layer-1">
-              <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-2">03 / THREAT DEFENSE BREAKDOWN</p>
-              <h2 class="font-display text-4xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
+              <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">03 / THREAT DEFENSE BREAKDOWN</p>
+              <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
                 FROM RAW LOGS.<br/>
                 <span class="text-crimson">TO SECURED.</span>
               </h2>
@@ -735,42 +686,38 @@
               Every system is hardened layer by layer—from raw packet capture and vulnerability scanning to zero-trust firewall rules and real-time SIEM threat mitigation.
             </p>
 
-            <!-- Scene Preset Selector -->
-            <div class="space-y-2 pt-2 depth-layer-2">
+            <div class="space-y-2 pt-1 depth-layer-2">
               <span class="text-[10px] font-mono uppercase text-zinc-500 block">SELECT SECURITY LAB SCENARIO:</span>
               <div class="flex flex-wrap gap-2">
-                <button onclick="switchBreakdownScene(0)" id="scene-btn-0" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition">01. SOC Threat Detection</button>
-                <button onclick="switchBreakdownScene(1)" id="scene-btn-1" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">02. Web App Pentest</button>
-                <button onclick="switchBreakdownScene(2)" id="scene-btn-2" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">03. Zero-Trust Cloud</button>
+                <button onclick="switchBreakdownScene(0)" id="scene-btn-0" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition">01. SOC Threat</button>
+                <button onclick="switchBreakdownScene(1)" id="scene-btn-1" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">02. Web Pentest</button>
+                <button onclick="switchBreakdownScene(2)" id="scene-btn-2" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">03. Zero-Trust</button>
               </div>
             </div>
 
-            <!-- Slider Quick Jump Buttons -->
-            <div class="pt-2 flex items-center gap-3 depth-layer-2">
-              <button onclick="setComparisonSlider(85)" class="px-3 py-1.5 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-400 hover:text-white transition">Raw Packet Dump</button>
-              <button onclick="setComparisonSlider(50)" class="px-3 py-1.5 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-400 hover:text-white transition">50 / 50 Split</button>
-              <button onclick="setComparisonSlider(15)" class="px-3 py-1.5 rounded bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-crimson hover:bg-crimson/10 transition">Hardened Defense</button>
+            <div class="pt-1 flex items-center gap-2 sm:gap-3 depth-layer-2 flex-wrap">
+              <button onclick="setComparisonSlider(85)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400 hover:text-white transition">Raw Packet Dump</button>
+              <button onclick="setComparisonSlider(50)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400 hover:text-white transition">50 / 50 Split</button>
+              <button onclick="setComparisonSlider(15)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-crimson hover:bg-crimson/10 transition">Hardened</button>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Interactive Before/After Comparison Slider -->
+          <!-- Comparison Slider Container -->
           <div class="lg:col-span-7" data-inspectable="Interactive • Threat Defense Slider" data-3d-tilt data-max-tilt="7">
-            <div id="comparison-container" class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-zinc-800 select-none cursor-ew-resize shadow-2xl bg-zinc-950">
+            <div id="comparison-container" class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-zinc-800 select-none cursor-ew-resize shadow-2xl bg-zinc-950 touch-pan-x">
 
-              <!-- AFTER LAYER (Hardened SOC Visual + Neon Telemetry) -->
               <img 
                 id="after-img"
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85" 
                 alt="After Hardened SOC Defense" 
                 class="absolute inset-0 w-full h-full object-cover saturate-150 contrast-125"
               />
-              <!-- Neon Cyberpunk Overlay HUD on After Layer -->
               <div class="absolute inset-0 bg-gradient-to-tr from-crimson/25 via-transparent to-cyan-500/20 mix-blend-screen pointer-events-none"></div>
-              <span class="absolute top-3 right-3 z-20 bg-crimson text-white text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded shadow">
-                AFTER • ZERO-TRUST MITIGATED
+              <span class="absolute top-3 right-3 z-20 bg-crimson text-white text-[9px] sm:text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow">
+                AFTER • ZERO-TRUST
               </span>
 
-              <!-- BEFORE LAYER (Unfiltered Traffic + Anomaly Nodes) -->
+              <!-- Before Layer -->
               <div id="before-layer" class="absolute inset-0 bg-zinc-900">
                 <img 
                   id="before-img"
@@ -778,27 +725,22 @@
                   alt="Before Unfiltered Traffic" 
                   class="w-full h-full object-cover grayscale contrast-75 brightness-90"
                 />
-                <!-- Green/Blue Wireframe Tracking Crosshairs Overlay -->
                 <div class="absolute inset-0 bg-grid-pattern opacity-60 pointer-events-none"></div>
-                <div class="absolute top-1/3 left-1/4 w-4 h-4 border border-emerald-400 flex items-center justify-center text-[8px] text-emerald-400">+</div>
-                <div class="absolute top-1/2 left-1/3 w-4 h-4 border border-emerald-400 flex items-center justify-center text-[8px] text-emerald-400">+</div>
-                <div class="absolute bottom-1/3 left-1/2 w-4 h-4 border border-emerald-400 flex items-center justify-center text-[8px] text-emerald-400">+</div>
-                <span class="absolute top-3 left-3 z-20 bg-zinc-900/90 border border-zinc-700 text-zinc-200 text-[10px] font-mono uppercase px-2.5 py-1 rounded shadow">
-                  BEFORE • RAW PCAP + CVE SCAN
+                <span class="absolute top-3 left-3 z-20 bg-zinc-900/90 border border-zinc-700 text-zinc-200 text-[9px] sm:text-[10px] font-mono uppercase px-2 py-0.5 rounded shadow">
+                  BEFORE • RAW PCAP
                 </span>
               </div>
 
-              <!-- Vertical Divider Line & Drag Handle -->
+              <!-- Slider Divider -->
               <div id="slider-divider" class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-white z-30 pointer-events-none shadow-[0_0_15px_rgba(255,255,255,0.9)]">
-                <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-crimson border-2 border-white text-white flex items-center justify-center shadow-xl">
-                  <i data-lucide="move-horizontal" class="w-4 h-4"></i>
+                <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 sm:w-9 h-8 sm:h-9 rounded-full bg-crimson border-2 border-white text-white flex items-center justify-center shadow-xl">
+                  <i data-lucide="move-horizontal" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
                 </div>
               </div>
 
-              <!-- Bottom Technical Specs Bar inside Viewer -->
-              <div class="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-sm border-t border-white/10 px-4 py-2 flex items-center justify-between text-[10px] font-mono text-zinc-300 z-20">
-                <span id="breakdown-caption">LAB_01 • WIRESHARK PACKET INSPECTION & SIEM CORRELATION</span>
-                <span id="slider-percent-readout" class="text-crimson font-bold">50% SPLIT</span>
+              <div class="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-sm border-t border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-300 z-20">
+                <span id="breakdown-caption" class="truncate pr-2">LAB_01 • PACKET INSPECTION</span>
+                <span id="slider-percent-readout" class="text-crimson font-bold shrink-0">50% SPLIT</span>
               </div>
             </div>
           </div>
@@ -808,16 +750,14 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 5: 04 / BEHIND THE FIREWALL — "NOT JUST DEFENSE. IT'S PROACTIVE SECURITY." (00:30 - 00:38)
+         SECTION 5: 04 / ABOUT & HARDWARE WORKSTATION
          =================================================================== -->
-    <section id="tentang" class="py-20 sm:py-28 border-b border-white/[0.06] relative">
+    <section id="about" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
       <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
-
-        <!-- Top Header Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mb-10 sm:mb-14">
           <div class="lg:col-span-7" data-inspectable="Heading • Behind The Firewall">
-            <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-2">04 / ABOUT MD SOHAN MAHMUD</p>
-            <h2 class="font-display text-4xl sm:text-6xl uppercase leading-[0.94] tracking-tight">
+            <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">04 / ABOUT MD SOHAN MAHMUD</p>
+            <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.94] tracking-tight">
               NOT JUST DEFENSE.<br/>
               <span class="text-crimson">IT'S PROACTIVE SECURITY.</span>
             </h2>
@@ -829,107 +769,103 @@
           </div>
         </div>
 
-        <!-- 3-Column Bento Grid (00:32 - 00:38 in Video) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-
-          <!-- COLUMN 1: EDUCATION & SKILLS -->
-          <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-6 flex flex-col justify-between space-y-6" data-inspectable="Card • Education & Skills" data-3d-tilt data-max-tilt="9">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+          <!-- Col 1: Education & Workstation -->
+          <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 flex flex-col justify-between space-y-6" data-inspectable="Card • Education & Skills" data-3d-tilt data-max-tilt="9">
             <div class="glare-overlay"></div>
-            <div class="space-y-5 depth-layer-1">
-              <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-3">
-                EDUCATION & SKILLS
+            <div class="space-y-4 depth-layer-1">
+              <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-2.5">
+                EDUCATION & WORKSTATION
               </h3>
 
-              <!-- Education List -->
-              <div class="space-y-4">
+              <div class="space-y-3.5">
                 <div class="pl-3 border-l-2 border-crimson">
                   <h4 class="text-sm font-bold text-white">La Trobe University, Australia</h4>
-                  <p class="text-xs text-zinc-400">Cybersecurity • Melbourne, Victoria, Australia</p>
+                  <p class="text-xs text-zinc-400">Cybersecurity • Melbourne & Sydney Campuses</p>
                 </div>
                 <div class="pl-3 border-l-2 border-zinc-700">
-                  <h4 class="text-sm font-bold text-white">Higher Secondary & STEM Foundation</h4>
-                  <p class="text-xs text-zinc-400">Bangladesh • Computer Science & Mathematics</p>
+                  <h4 class="text-sm font-bold text-white">Bare-Metal Workstation Rig</h4>
+                  <p class="text-xs text-zinc-400">Lenovo ThinkPad T490 • Native Kali Linux</p>
                 </div>
                 <div class="pl-3 border-l-2 border-zinc-700">
-                  <h4 class="text-sm font-bold text-white">Security Labs & Certifications</h4>
-                  <p class="text-xs text-zinc-400">Ethical Hacking • SOC Operations • Network Defense</p>
+                  <h4 class="text-sm font-bold text-white">Hardware & RF Testing</h4>
+                  <p class="text-xs text-zinc-400">ESP32 (CP2102/CH340) Microcontrollers & esptool</p>
                 </div>
               </div>
 
-              <!-- Skill Pills -->
               <div class="pt-2">
-                <span class="text-[10px] font-mono uppercase text-zinc-500 block mb-2.5">CORE EXPERTISE</span>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">Penetration Testing</span>
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">Network Security</span>
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">SIEM & Incident Response</span>
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">Digital Forensics</span>
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">Python & Bash Security</span>
-                  <span class="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300">OWASP Top 10</span>
+                <span class="text-[10px] font-mono uppercase text-zinc-500 block mb-2">CORE EXPERTISE</span>
+                <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px]">
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Penetration Testing</span>
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Network Security</span>
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">SIEM & Wazuh</span>
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Digital Forensics</span>
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Python Automation</span>
+                  <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">OWASP Top 10</span>
                 </div>
               </div>
             </div>
 
-            <!-- Bottom Software Icons Strip -->
-            <div class="pt-4 border-t border-zinc-800/80 flex items-center gap-2 depth-layer-2">
-              <div class="w-8 h-8 rounded bg-zinc-900 border border-sky-500/40 flex items-center justify-center text-[10px] font-mono font-bold text-sky-400">KL</div>
-              <div class="w-8 h-8 rounded bg-zinc-900 border border-emerald-500/40 flex items-center justify-center text-[10px] font-mono font-bold text-emerald-400">WS</div>
-              <div class="w-8 h-8 rounded bg-zinc-900 border border-orange-500/40 flex items-center justify-center text-[10px] font-mono font-bold text-orange-400">BP</div>
-              <div class="w-8 h-8 rounded bg-zinc-900 border border-amber-500/40 flex items-center justify-center text-[10px] font-mono font-bold text-amber-400">PY</div>
-              <div class="w-8 h-8 rounded bg-zinc-900 border border-indigo-500/40 flex items-center justify-center text-[10px] font-mono font-bold text-[#9999FF]">LNX</div>
+            <!-- Software Icons Strip -->
+            <div class="pt-3 border-t border-zinc-800/80 flex items-center gap-2 depth-layer-2">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-sky-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-sky-400">KL</div>
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-emerald-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400">WS</div>
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-orange-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-orange-400">BP</div>
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-amber-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-amber-400">PY</div>
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-indigo-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-[#9999FF]">LNX</div>
             </div>
           </div>
 
-          <!-- COLUMN 2: SECURITY METHODOLOGY (01-04) -->
-          <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-6 space-y-4" data-inspectable="Card • Security Approach" data-3d-tilt data-max-tilt="9">
+          <!-- Col 2: Security Methodology -->
+          <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 space-y-4" data-inspectable="Card • Security Approach" data-3d-tilt data-max-tilt="9">
             <div class="glare-overlay"></div>
-            <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-3 depth-layer-1">
+            <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-2.5 depth-layer-1">
               SECURITY METHODOLOGY
             </h3>
 
-            <div class="space-y-3.5 depth-layer-1">
-              <div class="p-3.5 rounded-xl bg-zinc-900/50 border border-zinc-800/70 flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">01</span>
+            <div class="space-y-3 depth-layer-1">
+              <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">01</span>
                 <div>
-                  <h4 class="text-sm font-bold text-white">Reconnaissance & Threat Modeling</h4>
-                  <p class="text-xs text-zinc-400 mt-0.5">Mapping attack surfaces, assets, and potential adversary entry points systematically.</p>
+                  <h4 class="text-xs sm:text-sm font-bold text-white">Reconnaissance & Threat Modeling</h4>
+                  <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Mapping attack surfaces, open daemons, and potential entry vectors systematically.</p>
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-xl bg-zinc-900/50 border border-zinc-800/70 flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">02</span>
+              <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">02</span>
                 <div>
-                  <h4 class="text-sm font-bold text-white">Vulnerability Assessment & Pentesting</h4>
-                  <p class="text-xs text-zinc-400 mt-0.5">Validating exposures through controlled ethical exploitation and OWASP standards.</p>
+                  <h4 class="text-xs sm:text-sm font-bold text-white">Vulnerability Auditing & Pentesting</h4>
+                  <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Validating exposures through controlled ethical exploitation and OWASP standards.</p>
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-xl bg-zinc-900/50 border border-zinc-800/70 flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">03</span>
+              <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">03</span>
                 <div>
-                  <h4 class="text-sm font-bold text-white">Zero-Trust Architecture & Hardening</h4>
-                  <p class="text-xs text-zinc-400 mt-0.5">Implementing strict access controls, encryption, and network segmentation.</p>
+                  <h4 class="text-xs sm:text-sm font-bold text-white">Zero-Trust Network Hardening</h4>
+                  <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Implementing microsegmentation, role-based access, and egress filtering.</p>
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-xl bg-zinc-900/50 border border-zinc-800/70 flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">04</span>
+              <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">04</span>
                 <div>
-                  <h4 class="text-sm font-bold text-white">Continuous Monitoring & Forensics</h4>
-                  <p class="text-xs text-zinc-400 mt-0.5">Real-time SIEM log correlation and rapid incident containment.</p>
+                  <h4 class="text-xs sm:text-sm font-bold text-white">Continuous Monitoring & Forensics</h4>
+                  <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Real-time SIEM log correlation and rapid incident containment.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- COLUMN 3: RED SIGNATURE QUOTE CARD (Matches 00:33 - 00:38 in Video) -->
-          <div class="lg:col-span-4 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#450a0a] to-[#1a0505] border border-crimson/40 p-7 flex flex-col justify-between relative overflow-hidden shadow-2xl" data-inspectable="Card • Quote Md Sohan Mahmud" data-3d-tilt data-max-tilt="11">
+          <!-- Col 3: Signature Quote Card -->
+          <div class="lg:col-span-4 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#450a0a] to-[#1a0505] border border-crimson/40 p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden shadow-2xl" data-inspectable="Card • Quote Md Sohan Mahmud" data-3d-tilt data-max-tilt="11">
             <div class="glare-overlay"></div>
             <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-crimson/20 rounded-full blur-2xl pointer-events-none"></div>
 
-            <span class="font-display text-6xl text-crimson/60 leading-none select-none depth-layer-1">“</span>
-            <blockquote class="my-6 space-y-2 relative z-10 depth-layer-2">
-              <p class="text-xl sm:text-2xl font-bold text-white leading-snug">
+            <span class="font-display text-5xl sm:text-6xl text-crimson/60 leading-none select-none depth-layer-1">“</span>
+            <blockquote class="my-4 sm:my-6 space-y-2 relative z-10 depth-layer-2">
+              <p class="text-lg sm:text-2xl font-bold text-white leading-snug">
                 Security is not a single product—it is a continuous mindset of vigilance and precision.
               </p>
               <p class="text-xs text-red-200/75">
@@ -939,8 +875,8 @@
 
             <div class="pt-4 border-t border-white/10 flex items-center justify-between relative z-10 depth-layer-1">
               <div>
-                <p class="font-script text-3xl text-white leading-none">Md Sohan Mahmud</p>
-                <p class="text-[10px] font-mono uppercase tracking-widest text-red-300 mt-1">CYBERSECURITY • LA TROBE UNIVERSITY</p>
+                <p class="font-script text-2xl sm:text-3xl text-white leading-none">Md Sohan Mahmud</p>
+                <p class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-red-300 mt-1">CYBERSECURITY • LA TROBE UNIVERSITY</p>
               </div>
               <span class="w-8 h-8 rounded-full bg-black/30 border border-white/15 flex items-center justify-center text-white">
                 <i data-lucide="shield-check" class="w-4 h-4"></i>
@@ -953,30 +889,26 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 6: 05 / THE JOURNEY — "KEEP LEARNING. KEEP DEFENDING." (00:39 - 00:46)
+         SECTION 6: 05 / THE JOURNEY
          =================================================================== -->
-    <section id="perjalanan" class="py-20 sm:py-28 border-b border-white/[0.06] relative">
+    <section id="journey" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
       <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
-
-        <div class="mb-12" data-inspectable="Heading • Keep Learning Keep Defending">
-          <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-2">05 / THE JOURNEY</p>
-          <h2 class="font-display text-4xl sm:text-6xl uppercase leading-none tracking-tight">
+        <div class="mb-10 sm:mb-12" data-inspectable="Heading • Keep Learning Keep Defending">
+          <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">05 / THE JOURNEY</p>
+          <h2 class="font-display text-3xl sm:text-6xl uppercase leading-none tracking-tight">
             KEEP LEARNING. <span class="text-crimson">KEEP DEFENDING.</span>
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
-          <!-- LEFT COLUMN: Academic & Cyber Journey Timeline (00:41 - 00:45) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <!-- Timeline List -->
           <div class="lg:col-span-7 divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80" data-inspectable="Timeline • Cybersecurity Journey">
-
-            <!-- Role 1 -->
-            <div data-3d-tilt data-max-tilt="7" class="py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-start">
+            <div data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
               <div class="sm:col-span-4 depth-layer-1">
                 <span class="text-xs font-mono font-bold text-crimson uppercase">PRESENT • AUSTRALIA</span>
               </div>
-              <div class="sm:col-span-8 space-y-2 depth-layer-1">
-                <h3 class="text-lg font-bold text-white">Cybersecurity Student</h3>
+              <div class="sm:col-span-8 space-y-1 sm:space-y-2 depth-layer-1">
+                <h3 class="text-base sm:text-lg font-bold text-white">Cybersecurity Student</h3>
                 <p class="text-xs font-mono text-zinc-400">La Trobe University • Australia</p>
                 <p class="text-xs text-zinc-400 leading-relaxed">
                   Specializing in network security, ethical hacking, cryptography, cloud defense, and incident response at La Trobe University.
@@ -984,89 +916,84 @@
               </div>
             </div>
 
-            <!-- Role 2 -->
-            <div data-3d-tilt data-max-tilt="7" class="py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-start">
+            <div data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
               <div class="sm:col-span-4 depth-layer-1">
                 <span class="text-xs font-mono text-crimson uppercase">2025 – PRESENT</span>
               </div>
               <div class="sm:col-span-8 space-y-1 depth-layer-1">
-                <h3 class="text-lg font-bold text-white">CTF Competitor & Security Researcher</h3>
+                <h3 class="text-base sm:text-lg font-bold text-white">CTF Competitor & Security Researcher</h3>
                 <p class="text-xs font-mono text-zinc-400">TryHackMe, HackTheBox & University Cyber Society</p>
               </div>
             </div>
 
-            <!-- Role 3 -->
-            <div data-3d-tilt data-max-tilt="7" class="py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-start">
+            <div data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
               <div class="sm:col-span-4 depth-layer-1">
                 <span class="text-xs font-mono text-crimson uppercase">2024 – 2025</span>
               </div>
               <div class="sm:col-span-8 space-y-1 depth-layer-1">
-                <h3 class="text-lg font-bold text-white">Home SOC & Penetration Testing Lab Builder</h3>
+                <h3 class="text-base sm:text-lg font-bold text-white">Home SOC & Lab Builder</h3>
                 <p class="text-xs font-mono text-zinc-400">Virtualized SIEM, Active Directory & Kali Linux Environments</p>
               </div>
             </div>
 
-            <!-- Role 4 -->
-            <div data-3d-tilt data-max-tilt="7" class="py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-start">
+            <div data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
               <div class="sm:col-span-4 depth-layer-1">
                 <span class="text-xs font-mono text-crimson uppercase">2023 – 2024</span>
               </div>
               <div class="sm:col-span-8 space-y-1 depth-layer-1">
-                <h3 class="text-lg font-bold text-white">Python & Network Automation Developer</h3>
+                <h3 class="text-base sm:text-lg font-bold text-white">Python & Network Automation Developer</h3>
                 <p class="text-xs font-mono text-zinc-400">Custom Port Scanners, Log Parsers & Security Scripts</p>
               </div>
             </div>
 
-            <!-- Role 5 -->
-            <div data-3d-tilt data-max-tilt="7" class="py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-start">
+            <div data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
               <div class="sm:col-span-4 depth-layer-1">
                 <span class="text-xs font-mono text-crimson uppercase">BANGLADESH 🇧🇩</span>
               </div>
               <div class="sm:col-span-8 space-y-1 depth-layer-1">
-                <h3 class="text-lg font-bold text-white">Computer Science & STEM Foundations</h3>
+                <h3 class="text-base sm:text-lg font-bold text-white">Computer Science & STEM Foundations</h3>
                 <p class="text-xs font-mono text-zinc-400">Originated in Bangladesh before relocating to Australia</p>
               </div>
             </div>
-
           </div>
 
-          <!-- RIGHT COLUMN: "LITTLE WINS, BIG MEANING." (Matches 00:40 - 00:44 in Video) -->
-          <div class="lg:col-span-5 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 space-y-6" data-inspectable="Card • Little Wins Big Meaning" data-3d-tilt data-max-tilt="9">
+          <!-- Milestones Card -->
+          <div class="lg:col-span-5 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-8 space-y-5 sm:space-y-6" data-inspectable="Card • Little Wins Big Meaning" data-3d-tilt data-max-tilt="9">
             <div class="glare-overlay"></div>
             <div class="depth-layer-1">
               <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">MILESTONES & HIGHLIGHTS</span>
-              <h3 class="font-display text-3xl sm:text-4xl uppercase leading-none">
+              <h3 class="font-display text-2xl sm:text-4xl uppercase leading-none">
                 LITTLE WINS,<br/>
                 <span class="text-crimson">BIG MEANING.</span>
               </h3>
             </div>
 
             <div class="divide-y divide-zinc-800/80 text-xs depth-layer-1">
-              <div class="py-3.5 flex items-center justify-between gap-4">
+              <div class="py-3 flex items-center justify-between gap-4">
                 <div>
                   <p class="font-bold text-white">Pursuing Cybersecurity at La Trobe University</p>
                   <p class="text-zinc-500 mt-0.5">Representing Bangladesh in Australia's tech ecosystem</p>
                 </div>
                 <span class="text-crimson font-mono">01</span>
               </div>
-              <div class="py-3.5 flex items-center justify-between gap-4">
+              <div class="py-3 flex items-center justify-between gap-4">
                 <div>
                   <p class="font-bold text-white">Built Full-Stack Virtual SOC & Honeypot Lab</p>
                   <p class="text-zinc-500 mt-0.5">Analyzing live attack telemetry and SIEM alerts</p>
                 </div>
                 <span class="text-crimson font-mono">02</span>
               </div>
-              <div class="py-3.5 flex items-center justify-between gap-4">
+              <div class="py-3 flex items-center justify-between gap-4">
                 <div>
                   <p class="font-bold text-white">50+ CTF Machines & Security Labs Pwned</p>
-                  <p class="text-zinc-500 mt-0.5">Consistent practice across web, network & privilege escalation</p>
+                  <p class="text-zinc-500 mt-0.5">PortSwigger, THM & HTB privilege escalation</p>
                 </div>
                 <span class="text-crimson font-mono">03</span>
               </div>
-              <div class="py-3.5 flex items-center justify-between gap-4">
+              <div class="py-3 flex items-center justify-between gap-4">
                 <div>
                   <p class="font-bold text-white">Developed Custom Python Security Toolkit</p>
-                  <p class="text-zinc-500 mt-0.5">Automated recon, hash analysis, and packet inspection scripts</p>
+                  <p class="text-zinc-500 mt-0.5">Automated recon, hash analysis, and packet inspection</p>
                 </div>
                 <span class="text-crimson font-mono">04</span>
               </div>
@@ -1078,19 +1005,17 @@
     </section>
 
     <!-- ===================================================================
-         SECTION 7: 06 / CONTACT — "LET'S WORK TOGETHER." & DIRECT CHANNELS
-         (WhatsApp, Facebook, Instagram, Telegram, Email)
+         SECTION 7: 06 / CONTACT & COLLABORATION
          =================================================================== -->
-    <section id="kontak" class="py-20 sm:py-28 relative overflow-hidden">
-      <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+    <section id="contact" class="py-16 sm:py-28 relative overflow-hidden z-20 pb-28 sm:pb-32">
+      <div class="max-w-[1380px] mx-auto px-4 sm:px-8 relative z-30">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
-
-          <!-- LEFT COLUMN: LET'S WORK TOGETHER -->
-          <div class="lg:col-span-5 flex flex-col justify-between space-y-6" data-inspectable="Contact • Let's Connect" data-3d-tilt data-max-tilt="8">
+          <!-- Left Column -->
+          <div class="lg:col-span-5 flex flex-col justify-between space-y-5" data-inspectable="Contact • Let's Connect" data-3d-tilt data-max-tilt="8">
             <div class="space-y-4 depth-layer-1">
-              <p class="text-[11px] font-mono uppercase tracking-widest text-zinc-500">06 / GET IN TOUCH</p>
-              <h2 class="font-display text-5xl sm:text-7xl uppercase leading-[0.9] tracking-tight">
+              <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500">06 / GET IN TOUCH</p>
+              <h2 class="font-display text-4xl sm:text-7xl uppercase leading-[0.9] tracking-tight">
                 LET'S WORK<br/>
                 <span class="text-crimson">TOGETHER.</span>
               </h2>
@@ -1099,15 +1024,14 @@
               </p>
 
               <div class="pt-2 flex flex-wrap items-center gap-3 depth-layer-2">
-                <button onclick="openContactModal()" class="inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs uppercase tracking-wider px-6 py-3.5 rounded-lg shadow-lg shadow-crimson/25 transition">
+                <button type="button" onclick="openContactModal()" class="clickable-node inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs font-mono uppercase tracking-wider px-6 py-3.5 rounded-lg shadow-lg shadow-crimson/25 transition">
                   <span>SEND DIRECT MESSAGE</span>
                   <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Location & Heritage Status Pill Bottom Left -->
-            <div class="space-y-2 depth-layer-1">
+            <div class="space-y-2 depth-layer-1 pt-2">
               <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-zinc-900/90 border border-zinc-800 w-fit text-xs text-zinc-300">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                 <span>La Trobe University, Australia 🇦🇺 • From Bangladesh 🇧🇩</span>
@@ -1115,105 +1039,102 @@
             </div>
           </div>
 
-          <!-- MIDDLE COLUMN: 5 Requested Contact Channels (WhatsApp, Facebook, Instagram, Telegram, Email) -->
-          <div class="lg:col-span-4 flex flex-col justify-center space-y-3" data-inspectable="Contact • 5 Direct Channels">
-
+          <!-- Middle Column: 5 Direct Channels -->
+          <div class="lg:col-span-4 flex flex-col justify-center space-y-3 relative z-30" data-inspectable="Contact • 5 Direct Channels">
             <!-- 1. WhatsApp -->
-            <a href="https://wa.me/+61420407745" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening WhatsApp Chat with Md Sohan Mahmud')" class="w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-emerald-500/60 flex items-center justify-between gap-3.5 text-left transition group">
-              <div class="flex items-center gap-3.5 overflow-hidden depth-layer-1">
-                <span class="w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition">
+            <a href="https://wa.me/61420407745" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening WhatsApp Chat with Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-emerald-500/60 flex items-center justify-between gap-3 text-left transition group">
+              <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition pointer-events-none">
                   <i data-lucide="message-circle" class="w-4 h-4"></i>
                 </span>
-                <div class="overflow-hidden">
-                  <span class="text-[10px] font-mono uppercase text-zinc-500 block">WHATSAPP</span>
-                  <span class="text-xs sm:text-sm font-medium text-white truncate block">Chat on WhatsApp • Md Sohan Mahmud</span>
+                <div class="overflow-hidden pointer-events-none">
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">WHATSAPP</span>
+                  <span class="text-xs sm:text-sm font-medium text-white truncate block">Chat on WhatsApp • Sohan</span>
                 </div>
               </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 shrink-0 transition depth-layer-1"></i>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
             </a>
 
             <!-- 2. Facebook -->
-            <a href="https://facebook.com/MD.Sohan.Mahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Facebook • Md Sohan Mahmud')" class="w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-blue-500/60 flex items-center justify-between gap-3.5 text-left transition group">
-              <div class="flex items-center gap-3.5 overflow-hidden depth-layer-1">
-                <span class="w-10 h-10 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+            <a href="https://facebook.com/MD.Sohan.Mahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Facebook • Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-blue-500/60 flex items-center justify-between gap-3 text-left transition group">
+              <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition pointer-events-none">
                   <i data-lucide="facebook" class="w-4 h-4"></i>
                 </span>
-                <div class="overflow-hidden">
-                  <span class="text-[10px] font-mono uppercase text-zinc-500 block">FACEBOOK</span>
+                <div class="overflow-hidden pointer-events-none">
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">FACEBOOK</span>
                   <span class="text-xs sm:text-sm font-medium text-white truncate block">Md Sohan Mahmud</span>
                 </div>
               </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-blue-400 shrink-0 transition depth-layer-1"></i>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-blue-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
             </a>
 
             <!-- 3. Instagram -->
-            <a href="https://instagram.com/sohanmahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Instagram • Sohan celebirity')" class="w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-pink-500/60 flex items-center justify-between gap-3.5 text-left transition group">
-              <div class="flex items-center gap-3.5 overflow-hidden depth-layer-1">
-                <span class="w-10 h-10 rounded-lg bg-pink-500/15 border border-pink-500/30 text-pink-400 flex items-center justify-center shrink-0 group-hover:bg-pink-600 group-hover:text-white transition">
+            <a href="https://instagram.com/sohanmahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Instagram • Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-pink-500/60 flex items-center justify-between gap-3 text-left transition group">
+              <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-pink-500/15 border border-pink-500/30 text-pink-400 flex items-center justify-center shrink-0 group-hover:bg-pink-600 group-hover:text-white transition pointer-events-none">
                   <i data-lucide="instagram" class="w-4 h-4"></i>
                 </span>
-                <div class="overflow-hidden">
-                  <span class="text-[10px] font-mono uppercase text-zinc-500 block">INSTAGRAM</span>
-                  <span class="text-xs sm:text-sm font-medium text-white truncate block">celibrity bro</span>
+                <div class="overflow-hidden pointer-events-none">
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">INSTAGRAM</span>
+                  <span class="text-xs sm:text-sm font-medium text-white truncate block">@sohanmahmud484</span>
                 </div>
               </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-pink-400 shrink-0 transition depth-layer-1"></i>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-pink-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
             </a>
 
             <!-- 4. Telegram -->
-            <a href="https://t.me/mds0h41" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Telegram • need link???')" class="w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-sky-500/60 flex items-center justify-between gap-3.5 text-left transition group">
-              <div class="flex items-center gap-3.5 overflow-hidden depth-layer-1">
-                <span class="w-10 h-10 rounded-lg bg-sky-500/15 border border-sky-500/30 text-sky-400 flex items-center justify-center shrink-0 group-hover:bg-sky-500 group-hover:text-white transition">
+            <a href="https://t.me/mds0h41" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Telegram • @mds0h41')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-sky-500/60 flex items-center justify-between gap-3 text-left transition group">
+              <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-sky-500/15 border border-sky-500/30 text-sky-400 flex items-center justify-center shrink-0 group-hover:bg-sky-500 group-hover:text-white transition pointer-events-none">
                   <i data-lucide="send" class="w-4 h-4"></i>
                 </span>
-                <div class="overflow-hidden">
-                  <span class="text-[10px] font-mono uppercase text-zinc-500 block">TELEGRAM</span>
-                  <span class="text-xs sm:text-sm font-medium text-white truncate block">need link?</span>
+                <div class="overflow-hidden pointer-events-none">
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">TELEGRAM</span>
+                  <span class="text-xs sm:text-sm font-medium text-white truncate block">@mds0h41</span>
                 </div>
               </div>
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-sky-400 shrink-0 transition depth-layer-1"></i>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-sky-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
             </a>
 
             <!-- 5. Email (Click to Copy) -->
-            <button onclick="copyEmail('sohanmahmud484897@gmail.com')" data-3d-tilt data-max-tilt="10" class="w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-between gap-3.5 text-left transition group">
-              <div class="flex items-center gap-3.5 overflow-hidden depth-layer-1">
-                <span class="w-10 h-10 rounded-lg bg-crimson/15 border border-crimson/30 text-crimson flex items-center justify-center shrink-0 group-hover:bg-crimson group-hover:text-white transition">
+            <button type="button" onclick="copyEmail('sohanmahmud484897@gmail.com')" data-3d-tilt data-max-tilt="10" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-between gap-3 text-left transition group">
+              <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-crimson/15 border border-crimson/30 text-crimson flex items-center justify-center shrink-0 group-hover:bg-crimson group-hover:text-white transition pointer-events-none">
                   <i data-lucide="mail" class="w-4 h-4"></i>
                 </span>
-                <div class="overflow-hidden">
-                  <span class="text-[10px] font-mono uppercase text-zinc-500 block">EMAIL (CLICK TO COPY)</span>
-                  <span class="text-xs sm:text-sm font-medium text-white truncate block">Sohan's mail</span>
+                <div class="overflow-hidden pointer-events-none">
+                  <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">EMAIL (CLICK TO COPY)</span>
+                  <span class="text-xs sm:text-sm font-medium text-white truncate block">sohanmahmud484897@gmail.com</span>
                 </div>
               </div>
-              <i data-lucide="copy" class="w-4 h-4 text-zinc-600 group-hover:text-crimson shrink-0 transition depth-layer-1"></i>
+              <i data-lucide="copy" class="w-4 h-4 text-zinc-600 group-hover:text-crimson shrink-0 transition depth-layer-1 pointer-events-none"></i>
             </button>
-
           </div>
 
-          <!-- RIGHT COLUMN: "SECURE THE FUTURE." Interactive Card (00:50 - 00:55 in Video) -->
-          <div class="lg:col-span-3" data-inspectable="Card • Secure The Future" data-3d-tilt data-max-tilt="12">
-            <div onclick="triggerCursorBurst(event)" class="h-full min-h-[260px] rounded-2xl bg-gradient-to-b from-[#13090b] to-[#09090d] border border-zinc-800 hover:border-crimson/60 p-6 flex flex-col justify-between relative overflow-hidden cursor-pointer group">
+          <!-- Right Column: Swarm Trigger -->
+          <div class="lg:col-span-3 relative z-30" data-inspectable="Card • Secure The Future" data-3d-tilt data-max-tilt="12">
+            <div onclick="triggerCursorBurst(event)" class="clickable-node h-full min-h-[220px] sm:min-h-[260px] rounded-2xl bg-gradient-to-b from-[#13090b] to-[#09090d] border border-zinc-800 hover:border-crimson/60 p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden group">
               <div class="glare-overlay"></div>
-              <!-- Subtle corner crimson glow -->
               <div class="absolute -top-12 -right-12 w-36 h-36 bg-crimson/25 rounded-full blur-2xl group-hover:bg-crimson/40 transition"></div>
 
-              <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500 depth-layer-1">
+              <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500 depth-layer-1 pointer-events-none">
                 <span>SOHAN CYBER LAB</span>
                 <span class="text-emerald-400">● ONLINE</span>
               </div>
 
-              <div class="my-auto py-6 depth-layer-2">
-                <h3 class="font-display text-4xl sm:text-5xl uppercase leading-[0.92] text-white">
+              <div class="my-auto py-4 sm:py-6 depth-layer-2 pointer-events-none">
+                <h3 class="font-display text-3xl sm:text-5xl uppercase leading-[0.92] text-white">
                   SECURE<br/>
                   <span class="text-crimson">THE FUTURE.</span>
                 </h3>
                 <p class="text-[11px] text-zinc-500 mt-2">Tap or click this card to unleash the live security node swarm.</p>
               </div>
 
-              <div class="flex items-center justify-between pt-3 border-t border-zinc-800/80 depth-layer-1">
+              <div class="flex items-center justify-between pt-3 border-t border-zinc-800/80 depth-layer-1 pointer-events-none">
                 <span class="text-[10px] font-mono text-zinc-400">CYBERSECURITY • AU</span>
-                <span class="w-8 h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:rotate-90 transition">
-                  <i data-lucide="plus" class="w-4 h-4"></i>
+                <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:rotate-90 transition">
+                  <i data-lucide="plus" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
                 </span>
               </div>
             </div>
@@ -1221,221 +1142,197 @@
 
         </div>
 
-        <!-- Bottom Footer Credits -->
-        <div class="mt-20 pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 pb-20">
-          <div class="flex items-center gap-3">
-            <span class="font-display text-xl text-white">MD SOHAN MAHMUD<span class="text-crimson">.</span></span>
-            <span>© 2026 Md Sohan Mahmud • La Trobe University, Australia (From Bangladesh).</span>
+        <!-- Footer -->
+        <div class="mt-16 sm:mt-20 pt-6 sm:pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500 font-mono">
+          <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <span class="font-display text-lg sm:text-xl text-white">MD SOHAN MAHMUD<span class="text-crimson">.</span></span>
+            <span>© 2026 Md Sohan Mahmud • La Trobe University, Australia.</span>
           </div>
-          <div class="flex items-center gap-6 font-mono text-[11px]">
-            <a href="#hero" class="hover:text-white transition flex items-center gap-1">
+          <div>
+            <a href="#hero" class="hover:text-white transition flex items-center gap-1 text-[11px]">
               <span>BACK TO TOP</span>
               <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-crimson"></i>
             </a>
           </div>
         </div>
-
       </div>
     </section>
 
-  </div><!-- /#canvas-viewport -->
+  </div>
 
   <!-- =====================================================================
-       4. PERSISTENT FLOATING FIGMA / CANVAS TOOLBAR AT BOTTOM CENTER
-          (Seen in every frame of the video at the bottom center of the screen)
+       4. PERSISTENT FLOATING CANVAS TOOLBAR (MOBILE SAFE)
        ===================================================================== -->
-  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[70] flex items-center gap-2 max-w-[95vw]">
-    <!-- Main Tools Pill -->
-    <div class="flex items-center gap-1 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 rounded-full p-1.5 shadow-2xl">
-      <!-- 1. Select / Inspect Tool (V) -->
-      <button onclick="setCanvasTool('select')" id="tool-select" title="Select & Inspect Element (V)" class="tool-btn w-8 h-8 rounded-full bg-blueprint text-white flex items-center justify-center transition">
-        <i data-lucide="mouse-pointer" class="w-4 h-4"></i>
+  <div class="fixed bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-[70] flex items-center gap-1.5 sm:gap-2 max-w-[96vw] safe-dock-pb pointer-events-auto">
+    <div class="flex items-center gap-1 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 rounded-full p-1 sm:p-1.5 shadow-2xl">
+      <button onclick="setCanvasTool('select')" id="tool-select" title="Select & Inspect Element (V)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blueprint text-white flex items-center justify-center transition">
+        <i data-lucide="mouse-pointer" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
       </button>
 
-      <!-- 2. Hand / Pan Scroll Tool (H) -->
-      <button onclick="setCanvasTool('hand')" id="tool-hand" title="Hand / Smooth Drag Scroll (H)" class="tool-btn w-8 h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
-        <i data-lucide="hand" class="w-4 h-4"></i>
+      <button onclick="setCanvasTool('hand')" id="tool-hand" title="Hand / Drag Scroll (H)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="hand" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
       </button>
 
-      <!-- 3. Pen / Annotate On Screen Tool (P) -->
-      <button onclick="setCanvasTool('pen')" id="tool-pen" title="Draw Annotations on Page (P)" class="tool-btn w-8 h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
-        <i data-lucide="pencil" class="w-4 h-4"></i>
+      <button onclick="setCanvasTool('pen')" id="tool-pen" title="Draw Annotations on Page (P)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="pencil" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
       </button>
 
-      <!-- 4. Collaborator Cursors Swarm Toggle -->
-      <button onclick="toggleCursorSwarm()" id="tool-swarm" title="Toggle Live Collaborator Cursors" class="tool-btn w-8 h-8 rounded-full text-crimson bg-crimson/10 hover:bg-crimson/20 flex items-center justify-center transition">
-        <i data-lucide="sparkles" class="w-4 h-4"></i>
+      <button onclick="toggleCursorSwarm()" id="tool-swarm" title="Toggle Live Collaborator Cursors" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-crimson bg-crimson/10 hover:bg-crimson/20 flex items-center justify-center transition">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
       </button>
 
-      <!-- 5. Clear Drawings / Reset -->
-      <button onclick="clearCanvasDrawings()" title="Clear Drawings & Reset Zoom" class="w-8 h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
-        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+      <button onclick="clearCanvasDrawings()" title="Clear Drawings & Reset Zoom" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="rotate-ccw" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
       </button>
 
-      <div class="h-4 w-[1px] bg-zinc-800 mx-1"></div>
+      <div class="h-3.5 w-[1px] bg-zinc-800 mx-0.5"></div>
 
-      <!-- Zoom Controls -->
-      <button onclick="adjustCanvasZoom(-10)" class="w-6 h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom Out">-</button>
-      <span id="zoom-readout" class="text-[11px] font-mono text-zinc-200 px-1.5 select-none">100%</span>
-      <button onclick="adjustCanvasZoom(10)" class="w-6 h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom In">+</button>
+      <button onclick="adjustCanvasZoom(-10)" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom Out">-</button>
+      <span id="zoom-readout" class="text-[10px] sm:text-[11px] font-mono text-zinc-200 px-1 select-none">100%</span>
+      <button onclick="adjustCanvasZoom(10)" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom In">+</button>
     </div>
 
-    <!-- 3D Mode Indicator & Switcher Pill (Laptop Cursor 3D vs Mobile Scroll 3D) -->
-    <button onclick="toggle3DDeviceMode()" id="btn-3d-mode" title="Switch between Laptop Cursor 3D and Mobile Auto-Scroll 3D" class="flex items-center gap-2 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 hover:border-crimson rounded-full px-3 py-2 text-[10px] sm:text-[11px] font-mono text-zinc-200 shadow-2xl transition">
+    <!-- 3D Mode Indicator & Switcher -->
+    <button onclick="toggle3DDeviceMode()" id="btn-3d-mode" title="Switch 3D Mode" class="flex items-center gap-1.5 sm:gap-2 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 hover:border-crimson rounded-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-[11px] font-mono text-zinc-200 shadow-2xl transition">
       <span id="mode-3d-dot" class="w-2 h-2 rounded-full bg-crimson animate-pulse"></span>
-      <span id="mode-3d-label">3D: Cursor</span>
-    </button>
-
-    <!-- Right Secondary Pill: Replay 00:00 Canvas Intro / Wireframe -->
-    <button onclick="replayCanvasIntro()" class="hidden md:flex items-center gap-2 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 hover:border-blueprint rounded-full px-3.5 py-2 text-[11px] font-mono text-zinc-200 shadow-2xl transition">
-      <span class="w-2 h-2 rounded-full bg-blueprint"></span>
-      <span>Canvas Mode</span>
+      <span id="mode-3d-label" class="hidden xs:inline">3D</span>
     </button>
   </div>
 
   <!-- =====================================================================
-       5. PROJECT VIDEO / BREAKDOWN MODAL, CONTACT MODAL & TOAST
+       5. MODALS & TOAST NOTIFICATION
        ===================================================================== -->
-  <div id="project-modal" class="fixed inset-0 z-[90] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl" data-3d-tilt data-max-tilt="6">
-      <div class="flex items-center justify-between px-5 py-3.5 border-b border-zinc-800">
+  <div id="project-modal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-zinc-800">
         <div class="flex items-center gap-2">
-          <span id="modal-badge" class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-crimson text-white">VFX</span>
-          <h3 id="modal-title" class="font-bold text-sm sm:text-base text-white">ENTERPRISE SOC & SIEM LAB</h3>
+          <span id="modal-badge" class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-crimson text-white">LAB</span>
+          <h3 id="modal-title" class="font-bold text-xs sm:text-base text-white truncate max-w-[200px] sm:max-w-none">Lab Details</h3>
         </div>
-        <button onclick="closeProjectModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white">
+        <button onclick="closeProjectModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-      <div class="relative aspect-video bg-black">
-        <img id="modal-img" src="" alt="Preview" class="w-full h-full object-cover opacity-80" />
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent flex flex-col justify-end p-6">
-          <p id="modal-desc" class="text-xs sm:text-sm text-zinc-200 max-w-xl"></p>
-          <div class="mt-4 flex flex-wrap items-center gap-3 text-[11px] font-mono text-zinc-400">
-            <span id="modal-year" class="text-crimson font-bold">2026</span>
-            <span>•</span>
-            <span id="modal-tools">Splunk, Wazuh, Wireshark</span>
-          </div>
+      <div class="p-4 sm:p-5 space-y-3 sm:space-y-4">
+        <div class="relative aspect-video rounded-lg overflow-hidden bg-black border border-zinc-800">
+          <img id="modal-img" src="" alt="Preview" class="w-full h-full object-cover" />
+        </div>
+        <p id="modal-desc" class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans"></p>
+        <div class="flex items-center justify-between pt-2.5 border-t border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400">
+          <span id="modal-tools" class="truncate pr-2">Stack</span>
+          <span id="modal-year" class="text-crimson font-bold shrink-0">2026</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Contact Direct Message Modal -->
-  <div id="contact-modal" class="fixed inset-0 z-[90] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4" data-3d-tilt data-max-tilt="6">
+  <div id="contact-modal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
         <div>
-          <span class="text-[10px] font-mono uppercase text-crimson block">DIRECT ENCRYPTED CHANNEL</span>
-          <h3 class="text-lg font-bold text-white">Message Md Sohan Mahmud</h3>
+          <span class="text-[10px] font-mono uppercase text-crimson block font-bold">DIRECT ENCRYPTED CHANNEL</span>
+          <h3 class="text-base font-bold text-white">Message Md Sohan Mahmud</h3>
         </div>
-        <button onclick="closeContactModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white">
+        <button onclick="closeContactModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-      <form onsubmit="submitContactForm(event)" class="space-y-3">
+      <form onsubmit="submitContactForm(event)" class="space-y-3 font-mono text-xs">
         <div>
-          <label class="text-[10px] font-mono uppercase text-zinc-400 block mb-1">Your Name</label>
-          <input type="text" required placeholder="Enter your name" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white focus:outline-none focus:border-crimson" />
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Your Name</label>
+          <input type="text" required placeholder="Enter your name" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson" />
         </div>
         <div>
-          <label class="text-[10px] font-mono uppercase text-zinc-400 block mb-1">Your Email</label>
-          <input type="email" required placeholder="name@company.com" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white focus:outline-none focus:border-crimson" />
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Your Email</label>
+          <input type="email" required placeholder="name@company.com" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson" />
         </div>
         <div>
-          <label class="text-[10px] font-mono uppercase text-zinc-400 block mb-1">Message / Collaboration</label>
-          <textarea rows="3" required placeholder="Write your message here..." class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white focus:outline-none focus:border-crimson"></textarea>
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Message / Collaboration</label>
+          <textarea rows="3" required placeholder="Write your message here..." class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson"></textarea>
         </div>
-        <button type="submit" class="w-full py-3 rounded-lg bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs uppercase tracking-wider transition">
-          Send Message
+        <button type="submit" class="w-full py-3 rounded-lg bg-crimson hover:bg-crimson-bright text-white font-semibold uppercase tracking-wider transition cursor-pointer">
+          Transmit Message
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-20 right-4 sm:right-6 z-[95] bg-[#121218] border border-crimson/60 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-mono opacity-0 pointer-events-none transition-opacity duration-300">
+  <div id="toast" class="fixed bottom-16 sm:bottom-20 right-4 sm:right-6 z-[120] bg-[#121218] border border-crimson/60 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-mono opacity-0 pointer-events-none transition-opacity duration-300">
     <span class="w-2 h-2 rounded-full bg-crimson animate-ping"></span>
     <span id="toast-msg">Action completed</span>
   </div>
 
   <!-- =====================================================================
-       6. COMPLETE APPLICATION LOGIC (SAFE-GUARDED FOR MOBILE & DESKTOP)
+       6. COMPLETE JAVASCRIPT ENGINE (MOBILE HARDENED)
        ===================================================================== -->
   <script>
-    // Safe icon initialization so offline/slow CDN on mobile never halts JS
     function safeCreateIcons() {
       try {
-        if (typeof lucide !== 'undefined' && lucide.createIcons) {
-          lucide.createIcons();
-        }
+        if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
       } catch (e) {}
     }
-    safeCreateIcons();
 
-    // ---------------------------------------------------------------------
-    // 1. PROJECTS DATA (Complete with all filter tags from the video)
-    // ---------------------------------------------------------------------
+    // Projects Dataset
     const projectsData = [
       {
         id: '01',
         title: 'ENTERPRISE SOC & SIEM LAB',
-        category: 'VFX',
+        category: 'Defensive',
         subBadge: 'Threat Detection',
         year: '2026',
         tools: 'Splunk, Wazuh, Wireshark, Sysmon',
         image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
-        desc: 'Designed and deployed a virtual Security Operations Center (SOC) to ingest real-time endpoint logs, detect brute-force anomalies, and automate incident playbooks.'
+        desc: 'Designed and deployed a virtual Security Operations Center (SOC) to ingest real-time endpoint logs, detect brute-force anomalies, and automate incident response playbooks.'
       },
       {
         id: '02',
         title: 'WEB APP PENTESTING SUITE',
-        category: 'Film',
+        category: 'Offensive',
         subBadge: 'OWASP Top 10',
-        year: '2025',
+        year: '2026',
         tools: 'Burp Suite, Kali Linux, Nmap, SQLMap',
         image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
-        desc: 'Comprehensive security auditing and ethical penetration testing against vulnerable web architectures with full remediation reports.'
+        desc: 'Comprehensive security auditing and ethical penetration testing against vulnerable web architectures with full remediation reports and exploit proofs.'
       },
       {
         id: '03',
         title: 'ZERO-TRUST NETWORK ARCHITECTURE',
-        category: '3D',
+        category: 'Defensive',
         subBadge: 'Firewall & IDS',
         year: '2025',
         tools: 'pfSense, Suricata IDS, VLANs, WireGuard',
         image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80',
-        desc: 'Segmented enterprise network simulation studied at La Trobe University featuring deep packet inspection and intrusion detection.'
+        desc: 'Segmented enterprise network simulation studied at La Trobe University featuring deep packet inspection, egress controls, and intrusion detection.'
       },
       {
         id: '04',
         title: 'PYTHON THREAT RECON & SCANNER',
-        category: 'Commercial',
+        category: 'Automation',
         subBadge: 'SecOps Automation',
         year: '2025',
-        tools: 'Python, Scapy, Shodan API, Linux',
+        tools: 'Python 3, Scapy, Shodan API, Linux',
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-        desc: 'Multi-threaded Python reconnaissance and port-scanning tool that fingerprints exposed services and cross-references CVE databases.'
+        desc: 'Multi-threaded Python reconnaissance and port-scanning tool that fingerprints exposed services and cross-references live CVE vulnerability databases.'
       },
       {
         id: '05',
         title: 'MEMORY & DISK FORENSICS LAB',
-        category: 'Photography',
+        category: 'Defensive',
         subBadge: 'Visual Forensics',
-        year: '2024',
+        year: '2025',
         tools: 'Volatility, Autopsy, FTK Imager',
         image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
-        desc: 'Extracted volatile memory artifacts and reconstructed timeline evidence from compromised disk images during simulated investigations.'
+        desc: 'Extracted volatile memory artifacts and reconstructed timeline incident evidence from compromised disk images during simulated forensic investigations.'
       },
       {
         id: '06',
-        title: 'END-TO-END CRYPTOGRAPHIC VAULT',
-        category: 'Motion Graphic',
-        subBadge: 'AES-256 & Visual',
+        title: 'ESP32 FIRMWARE & RF SECURITY LAB',
+        category: 'Hardware',
+        subBadge: 'Embedded IoT',
         year: '2024',
-        tools: 'Python, OpenSSL, SHA-256',
+        tools: 'ESP32-WROOM-32, esptool, picocom, Kali',
         image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
-        desc: 'Secure file encryption and digital signature verification tool implementing hybrid RSA key exchange and AES-GCM encryption.'
+        desc: 'Testing microcontroller hardware interfaces, serial debugging buses (UART), wireless packet analysis, and firmware extraction on bare-metal Kali Linux.'
       }
     ];
 
@@ -1444,42 +1341,39 @@
       if (!grid) return;
 
       let listToShow = projectsData.slice(0, 3);
-      if (category === 'ShowAll6') {
+      if (category === 'ShowAll6' || category === 'All') {
         listToShow = projectsData;
-      } else if (category !== 'All' && category !== 'Semua') {
-        const filtered = projectsData.filter(p =>
-          p.category.toLowerCase() === category.toLowerCase() ||
-          p.subBadge.toLowerCase().includes(category.toLowerCase())
-        );
-        listToShow = filtered.length ? filtered : projectsData.slice(0, 3);
+      } else {
+        const filtered = projectsData.filter(p => p.category.toLowerCase() === category.toLowerCase());
+        listToShow = filtered.length ? filtered : projectsData;
       }
 
-      grid.innerHTML = listToShow.map((item) => `
+      grid.innerHTML = listToShow.map(item => `
         <article 
           onclick="openProjectModal(${projectsData.indexOf(item)})"
           data-inspectable="Card • ${item.title}"
           data-3d-tilt
           data-max-tilt="12"
-          class="group cursor-pointer rounded-2xl bg-[#0b0b10] border border-zinc-800/80 hover:border-crimson/70 overflow-hidden transition-all duration-300 flex flex-col justify-between"
+          class="clickable-node group rounded-2xl bg-[#0b0b10] border border-zinc-800/80 hover:border-crimson/70 overflow-hidden transition-all duration-300 flex flex-col justify-between"
         >
           <div class="glare-overlay"></div>
-          <div class="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+          <div class="relative aspect-[16/10] overflow-hidden bg-zinc-900 pointer-events-none">
             <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b10] via-transparent to-black/30"></div>
-            <div class="absolute top-3 left-3 flex items-center gap-1.5 depth-layer-1">
-              <span class="px-2.5 py-0.5 rounded bg-black/75 backdrop-blur-md border border-white/15 text-[10px] font-mono text-white">${item.category}</span>
-              <span class="px-2 py-0.5 rounded bg-crimson/90 text-[10px] font-mono text-white">${item.subBadge}</span>
+            <div class="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 flex items-center gap-1.5 depth-layer-1">
+              <span class="px-2 py-0.5 rounded bg-black/75 backdrop-blur-md border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">${item.category}</span>
+              <span class="px-2 py-0.5 rounded bg-crimson/90 text-[9px] sm:text-[10px] font-mono text-white font-bold">${item.subBadge}</span>
             </div>
           </div>
-          <div class="p-4 sm:p-5 flex items-center justify-between gap-3 depth-layer-1">
-            <div class="flex items-baseline gap-3">
-              <span class="font-display text-2xl sm:text-3xl text-crimson leading-none">${item.id}</span>
+          <div class="p-3.5 sm:p-5 flex items-center justify-between gap-3 depth-layer-1 pointer-events-none">
+            <div class="flex items-baseline gap-2.5 sm:gap-3">
+              <span class="font-display text-xl sm:text-3xl text-crimson leading-none">${item.id}</span>
               <div>
-                <h3 class="font-bold text-sm sm:text-base text-white group-hover:text-crimson transition uppercase tracking-wide">${item.title}</h3>
-                <p class="text-[11px] font-mono text-zinc-500 mt-0.5">${item.category} • ${item.year}</p>
+                <h3 class="font-bold text-xs sm:text-base text-white group-hover:text-crimson transition uppercase tracking-wide font-mono">${item.title}</h3>
+                <p class="text-[10px] sm:text-[11px] font-mono text-zinc-500 mt-0.5">${item.category} • ${item.year}</p>
               </div>
             </div>
-            <span class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-700 group-hover:bg-crimson group-hover:border-crimson text-white flex items-center justify-center transition shrink-0">
+            <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-900 border border-zinc-700 group-hover:bg-crimson group-hover:border-crimson text-white flex items-center justify-center transition shrink-0">
               <svg class="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </span>
           </div>
@@ -1487,14 +1381,15 @@
       `).join('');
 
       bind3DTiltListeners();
+      safeCreateIcons();
     }
 
     function filterProjects(category) {
       document.querySelectorAll('.filter-btn').forEach(btn => {
         if (btn.dataset.cat === category || (category === 'ShowAll6' && btn.dataset.cat === 'All')) {
-          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-crimson text-white transition whitespace-nowrap';
+          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-crimson text-white transition whitespace-nowrap';
         } else {
-          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap';
+          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap';
         }
       });
       renderProjects(category);
@@ -1519,9 +1414,7 @@
       modal.classList.remove('flex');
     }
 
-    // ---------------------------------------------------------------------
-    // 2. INTERACTIVE BEFORE / AFTER SLIDER ("FROM RAW LOGS. TO SECURED.")
-    // ---------------------------------------------------------------------
+    // Comparison Slider
     const breakdownScenes = [
       {
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85',
@@ -1545,8 +1438,8 @@
       [0, 1, 2].forEach(i => {
         const btn = document.getElementById('scene-btn-' + i);
         btn.className = i === idx
-          ? 'px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition'
-          : 'px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition';
+          ? 'clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition'
+          : 'clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition';
       });
     }
 
@@ -1582,9 +1475,7 @@
       if (isSliding && e.touches[0]) handleSliderMove(e.touches[0].clientX);
     }, { passive: true });
 
-    // ---------------------------------------------------------------------
-    // 3. WEB AUDIO SYNTHESIZER FOR "PLAY CYBER REEL" WAVEFORM BAR
-    // ---------------------------------------------------------------------
+    // Audio Reel Engine with Mobile Autoplay Unblock
     let audioCtx = null;
     let isPlayingAudio = false;
     let audioInterval = null;
@@ -1595,14 +1486,19 @@
       const timerEl = document.getElementById('audio-timer');
       const btn = document.getElementById('btn-audio-play');
 
+      // Initialize on direct user tap
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
       if (!isPlayingAudio) {
         isPlayingAudio = true;
         waveContainer.classList.remove('wave-paused');
         btn.innerHTML = '<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
 
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
         playCinematicPulse();
         audioInterval = setInterval(() => {
           playCinematicPulse();
@@ -1634,15 +1530,12 @@
       } catch (err) {}
     }
 
-    // ---------------------------------------------------------------------
-    // 4. FIGMA SELECTION HUD & BOTTOM CANVAS DOCK (Desktop + Mobile Touch!)
-    // ---------------------------------------------------------------------
+    // Figma Selection Box & Drawing Canvas
     let currentTool = 'select';
     let currentZoom = 100;
     const selectionHud = document.getElementById('selection-hud');
     const selectionTag = document.getElementById('selection-tag');
     const selectionDims = document.getElementById('selection-dims');
-    let activeInspectEl = null;
 
     function updateSelectionBox(el) {
       if (!el || currentTool !== 'select') {
@@ -1662,29 +1555,10 @@
     document.addEventListener('mouseover', (e) => {
       if (currentTool !== 'select') return;
       const target = e.target.closest('[data-inspectable]');
-      if (target) {
-        activeInspectEl = target;
-        updateSelectionBox(target);
-      }
+      if (target) updateSelectionBox(target);
     });
 
-    // Mobile Touch Inspect Support
-    document.addEventListener('touchstart', (e) => {
-      if (currentTool !== 'select') return;
-      const target = e.target.closest('[data-inspectable]');
-      if (target) {
-        activeInspectEl = target;
-        updateSelectionBox(target);
-      }
-    }, { passive: true });
-
-    window.addEventListener('scroll', () => {
-      if (activeInspectEl && currentTool === 'select') {
-        updateSelectionBox(activeInspectEl);
-      }
-    }, { passive: true });
-
-    // Freehand Annotation Drawing Canvas (Mouse + Mobile Touch Support)
+    // Drawing Canvas
     const drawCanvas = document.getElementById('drawing-canvas');
     const drawCtx = drawCanvas.getContext('2d');
     let isDrawing = false;
@@ -1712,10 +1586,8 @@
     });
     window.addEventListener('mouseup', () => { isDrawing = false; });
 
-    // Mobile Touch Drawing Support for Pen Tool
     drawCanvas.addEventListener('touchstart', (e) => {
       if (currentTool !== 'pen' || !e.touches[0]) return;
-      e.preventDefault();
       isDrawing = true;
       drawCtx.strokeStyle = '#dc2626';
       drawCtx.lineWidth = 3;
@@ -1746,19 +1618,17 @@
       }
 
       if (tool === 'pen') {
-        drawCanvas.classList.remove('pointer-events-none');
-        drawCanvas.style.cursor = 'crosshair';
+        document.body.classList.add('pen-mode-active');
         selectionHud.classList.add('hidden');
-        showToast('Pen Mode Active: Draw anywhere with finger or mouse');
+        showToast('Pen Mode Active: Draw annotations anywhere');
       } else {
-        drawCanvas.classList.add('pointer-events-none');
-        drawCanvas.style.cursor = 'default';
+        document.body.classList.remove('pen-mode-active');
       }
 
       if (tool === 'hand') {
         document.body.style.cursor = 'grab';
         selectionHud.classList.add('hidden');
-        showToast('Hand Pan Mode Active');
+        showToast('Hand Mode Active');
       } else if (tool === 'select') {
         document.body.style.cursor = 'default';
       }
@@ -1785,55 +1655,7 @@
       showToast(isWire ? 'Blueprint Wireframe Mode Active' : 'Normal Visual Mode');
     }
 
-    // ---------------------------------------------------------------------
-    // 4B. PERMANENT HD PORTRAIT HANDLER (Restored in full!)
-    // ---------------------------------------------------------------------
-    const FALLBACK_HD_PORTRAIT = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1200&q=90';
-    let portraitFallbackTriggered = false;
-
-    async function handlePortraitFallback(imgEl) {
-      if (portraitFallbackTriggered) return;
-      portraitFallbackTriggered = true;
-
-      try {
-        const cached = localStorage.getItem('renando_hd_portrait_v2');
-        if (cached && cached.startsWith('data:image/')) {
-          imgEl.src = cached;
-          return;
-        }
-      } catch (e) {}
-
-      imgEl.src = FALLBACK_HD_PORTRAIT;
-
-      try {
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=${apiKey}`;
-        const prompt = "High-definition studio portrait photograph of a young South Asian man with thick dark wavy hair parted on the side, expressive dark eyes, subtle mustache and light jawline beard stubble, wearing a black mandarin-collar buttoned kurta shirt with dark buttons, warm vertical wooden slat wall background with subtle dramatic red and dark studio rim lighting, sharp focus, 4k DSLR quality.";
-
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
-          })
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-          if (part?.inlineData?.data) {
-            const hdDataUrl = `data:${part.inlineData.mimeType || 'image/png'};base64,${part.inlineData.data}`;
-            imgEl.src = hdDataUrl;
-            try { localStorage.setItem('renando_hd_portrait_v2', hdDataUrl); } catch (e) {}
-          }
-        }
-      } catch (err) {}
-    }
-
-    // ---------------------------------------------------------------------
-    // 5. BOIDS FLOCKING CURSOR SWARM (Matches 00:00, 00:08, 00:52-00:55 in Video)
-    // ---------------------------------------------------------------------
+    // Flocking Boids Collaborator Cursor Swarm
     const swarmCanvas = document.getElementById('swarm-canvas');
     const swarmCtx = swarmCanvas.getContext('2d');
     let swarmActive = true;
@@ -1843,7 +1665,7 @@
 
     const cursors = [];
     const cursorColors = ['#ffffff', '#38bdf8', '#a855f7', '#ef4444', '#e4e4e7', '#60a5fa'];
-    const NUM_CURSORS = 28;
+    const NUM_CURSORS = 24;
 
     function resizeSwarmCanvas() {
       swarmCanvas.width = window.innerWidth;
@@ -1854,19 +1676,19 @@
 
     for (let i = 0; i < NUM_CURSORS; i++) {
       const angle = (i / NUM_CURSORS) * Math.PI * 2;
-      const radius = 45 + (i % 6) * 24 + Math.random() * 25;
+      const radius = 40 + (i % 6) * 20 + Math.random() * 20;
       cursors.push({
         x: mousePos.x + Math.cos(angle) * radius,
         y: mousePos.y + Math.sin(angle) * radius,
-        vx: (Math.random() - 0.5) * 2.5,
-        vy: (Math.random() - 0.5) * 2.5,
+        vx: (Math.random() - 0.5) * 2.2,
+        vy: (Math.random() - 0.5) * 2.2,
         angle: angle,
         orbitAngle: angle,
         orbitSpeed: (i % 2 === 0 ? 1 : -1) * (0.006 + (i % 5) * 0.0025),
         orbitRadius: radius,
         noiseOffset: i * 1.37,
         color: cursorColors[i % cursorColors.length],
-        size: 6.5 + (i % 3) * 1.4,
+        size: 6.2 + (i % 3) * 1.2,
         hollow: i % 3 === 1
       });
     }
@@ -1881,12 +1703,11 @@
       mousePos.y = e.clientY;
     });
 
-    // Mobile Touch also attracts the collaborator cursor swarm!
     window.addEventListener('touchmove', (e) => {
       if (e.touches && e.touches[0]) {
         mousePos.x = e.touches[0].clientX;
         mousePos.y = e.touches[0].clientY;
-        mouseSpeed = 12;
+        mouseSpeed = 10;
       }
     }, { passive: true });
 
@@ -1895,9 +1716,9 @@
       const cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : window.innerHeight / 2);
       for (let i = 0; i < cursors.length; i++) {
         const burstAngle = (i / cursors.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-        const speed = 6 + Math.random() * 8;
-        cursors[i].x = cx + Math.cos(burstAngle) * 18;
-        cursors[i].y = cy + Math.sin(burstAngle) * 18;
+        const speed = 5 + Math.random() * 7;
+        cursors[i].x = cx + Math.cos(burstAngle) * 16;
+        cursors[i].y = cy + Math.sin(burstAngle) * 16;
         cursors[i].vx = Math.cos(burstAngle) * speed;
         cursors[i].vy = Math.sin(burstAngle) * speed;
       }
@@ -1913,9 +1734,7 @@
       }
     }
 
-    // ---------------------------------------------------------------------
-    // 5B. DUAL-MODE 3D ENGINE (Laptop Cursor 3D + Mobile Touch & Auto-Scroll 3D)
-    // ---------------------------------------------------------------------
+    // Dual-Mode 3D Physics Engine (Desktop Tilt & Mobile Scroll Tilt)
     let isMobileScroll3D = false;
     let manualModeOverride = null;
     let scrollYPos = window.scrollY || 0;
@@ -1924,15 +1743,16 @@
     let smoothScrollY = scrollYPos;
     let scrollPhase = 0;
     let normMouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    let cachedCardRects = [];
 
     function detectDevice3DMode() {
       if (manualModeOverride) {
         isMobileScroll3D = (manualModeOverride === 'mobile');
       } else {
-        const isTouchOrSmall = window.matchMedia('(max-width: 1023px), (hover: none) and (pointer: coarse)').matches;
-        isMobileScroll3D = isTouchOrSmall;
+        isMobileScroll3D = window.matchMedia('(max-width: 1023px), (hover: none) and (pointer: coarse)').matches;
       }
       update3DModeUI();
+      cacheCardOffsets();
     }
 
     function update3DModeUI() {
@@ -1942,41 +1762,53 @@
 
       if (label && dot) {
         if (isMobileScroll3D) {
-          label.textContent = '3D: Scroll Auto';
+          label.textContent = '3D: Scroll';
           dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
         } else {
           label.textContent = '3D: Cursor';
           dot.className = 'w-2 h-2 rounded-full bg-crimson animate-pulse';
         }
       }
-
-      document.querySelectorAll('[data-3d-tilt]').forEach(el => {
-        el.style.transform = '';
-      });
+      document.querySelectorAll('[data-3d-tilt]').forEach(el => { el.style.transform = ''; });
     }
 
     function toggle3DDeviceMode() {
       if (isMobileScroll3D) {
         manualModeOverride = 'laptop';
-        showToast('Laptop 3D Mode: Effects follow cursor');
+        showToast('Laptop 3D Mode: Follows cursor');
       } else {
         manualModeOverride = 'mobile';
-        showToast('Mobile 3D Mode: Effects work automatically on scroll!');
+        showToast('Mobile 3D Mode: Automatic scroll tilt');
       }
       detectDevice3DMode();
     }
 
-    window.addEventListener('resize', detectDevice3DMode);
+    function cacheCardOffsets() {
+      cachedCardRects = [];
+      const cards = document.querySelectorAll('[data-3d-tilt]');
+      cards.forEach((card, idx) => {
+        if (card.id === 'hero-portrait-3d') return;
+        const rect = card.getBoundingClientRect();
+        cachedCardRects.push({
+          el: card,
+          idx: idx,
+          topOffset: rect.top + window.scrollY,
+          height: rect.height,
+          maxTilt: parseFloat(card.dataset.maxTilt) || 7
+        });
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      detectDevice3DMode();
+      cacheCardOffsets();
+    });
 
     window.addEventListener('scroll', () => {
       scrollYPos = window.scrollY || window.pageYOffset;
       const delta = scrollYPos - lastScrollY;
-      scrollVelocity = Math.max(-65, Math.min(65, delta));
+      scrollVelocity = Math.max(-50, Math.min(50, delta));
       lastScrollY = scrollYPos;
-
-      if (isMobileScroll3D && currentTool === 'select') {
-        autoInspectOnMobileScroll();
-      }
     }, { passive: true });
 
     window.addEventListener('mousemove', (e) => {
@@ -2002,14 +1834,14 @@
 
         const applyCardTilt = (clientX, clientY) => {
           const rect = card.getBoundingClientRect();
-          const maxTilt = parseFloat(card.dataset.maxTilt) || 10;
+          const maxTilt = parseFloat(card.dataset.maxTilt) || 9;
           const relX = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
           const relY = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
 
           const rotateY = (relX - 0.5) * (maxTilt * 2);
           const rotateX = (0.5 - relY) * (maxTilt * 2);
 
-          card.style.transform = `perspective(1100px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.018, 1.018, 1.018)`;
+          card.style.transform = `perspective(1100px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
           card.style.setProperty('--glare-x', `${(relX * 100).toFixed(1)}%`);
           card.style.setProperty('--glare-y', `${(relY * 100).toFixed(1)}%`);
         };
@@ -2023,41 +1855,11 @@
           if (isMobileScroll3D) return;
           card.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
         });
-
-        // Direct Mobile Touch 3D Tilt when touching a card
-        card.addEventListener('touchmove', (e) => {
-          if (e.touches && e.touches[0]) {
-            applyCardTilt(e.touches[0].clientX, e.touches[0].clientY);
-          }
-        }, { passive: true });
       });
+      cacheCardOffsets();
     }
 
-    function autoInspectOnMobileScroll() {
-      const inspectables = document.querySelectorAll('[data-inspectable]');
-      const viewportCenter = window.innerHeight * 0.48;
-      let closestEl = null;
-      let minDistance = Infinity;
-
-      inspectables.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom > 80 && rect.top < window.innerHeight - 80 && rect.height > 30) {
-          const elCenter = rect.top + rect.height / 2;
-          const dist = Math.abs(elCenter - viewportCenter);
-          if (dist < minDistance) {
-            minDistance = dist;
-            closestEl = el;
-          }
-        }
-      });
-
-      if (closestEl && minDistance < 240) {
-        activeInspectEl = closestEl;
-        updateSelectionBox(closestEl);
-      }
-    }
-
-    // THREE.JS 3D VFX WIREFRAME & PARTICLE DEPTH SCENE
+    // Three.js 3D Wireframe Scene
     let threeScene, threeCamera, threeRenderer, vfxGroup, wireframeMeshes = [], particleSystem;
 
     function initThree3DScene() {
@@ -2077,23 +1879,23 @@
         threeScene.add(vfxGroup);
 
         const geometries = [
-          new THREE.IcosahedronGeometry(2.6, 1),
-          new THREE.OctahedronGeometry(2.1, 0),
-          new THREE.TorusGeometry(2.2, 0.08, 8, 24),
-          new THREE.BoxGeometry(2.4, 2.4, 2.4)
+          new THREE.IcosahedronGeometry(2.4, 1),
+          new THREE.OctahedronGeometry(2.0, 0),
+          new THREE.TorusGeometry(2.0, 0.08, 8, 24),
+          new THREE.BoxGeometry(2.2, 2.2, 2.2)
         ];
 
-        const matCrimson = new THREE.MeshBasicMaterial({ color: 0xdc2626, wireframe: true, transparent: true, opacity: 0.22 });
-        const matBlueprint = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.16 });
+        const matCrimson = new THREE.MeshBasicMaterial({ color: 0xdc2626, wireframe: true, transparent: true, opacity: 0.2 });
+        const matBlueprint = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.15 });
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
           const geom = geometries[i % geometries.length];
           const mat = i % 2 === 0 ? matCrimson : matBlueprint;
           const mesh = new THREE.Mesh(geom, mat);
 
-          const spreadX = (i % 2 === 0 ? -1 : 1) * (8 + (i * 2.1) % 14);
-          const spreadY = 14 - i * 4.5;
-          const spreadZ = -6 - (i % 4) * 4;
+          const spreadX = (i % 2 === 0 ? -1 : 1) * (7 + (i * 2) % 12);
+          const spreadY = 12 - i * 4;
+          const spreadZ = -6 - (i % 4) * 3;
 
           mesh.position.set(spreadX, spreadY, spreadZ);
           mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
@@ -2101,8 +1903,8 @@
             baseX: spreadX,
             baseY: spreadY,
             baseZ: spreadZ,
-            rotSpeedX: (Math.random() - 0.5) * 0.012,
-            rotSpeedY: (Math.random() - 0.5) * 0.015,
+            rotSpeedX: (Math.random() - 0.5) * 0.01,
+            rotSpeedY: (Math.random() - 0.5) * 0.012,
             phaseOffset: i * 0.85
           };
 
@@ -2110,16 +1912,16 @@
           wireframeMeshes.push(mesh);
         }
 
-        const particleCount = 160;
+        const particleCount = 120;
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
-          positions[i * 3] = (Math.random() - 0.5) * 55;
-          positions[i * 3 + 1] = (Math.random() - 0.5) * 65;
-          positions[i * 3 + 2] = (Math.random() - 0.5) * 30 - 5;
+          positions[i * 3] = (Math.random() - 0.5) * 50;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 60;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 28 - 5;
         }
         const pGeom = new THREE.BufferGeometry();
         pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const pMat = new THREE.PointsMaterial({ color: 0xef4444, size: 0.18, transparent: true, opacity: 0.45 });
+        const pMat = new THREE.PointsMaterial({ color: 0xef4444, size: 0.16, transparent: true, opacity: 0.42 });
         particleSystem = new THREE.Points(pGeom, pMat);
         threeScene.add(particleSystem);
 
@@ -2132,6 +1934,7 @@
       } catch (e) {}
     }
 
+    // Animation & Swarm Render Loop
     function animateSwarm() {
       smoothScrollY += (scrollYPos - smoothScrollY) * 0.1;
       scrollVelocity *= 0.92;
@@ -2145,16 +1948,16 @@
 
       if (!isMobileScroll3D) {
         if (heroGiantWrapper && scrollYPos < window.innerHeight) {
-          const tx = normMouse.x * -22;
-          const ty = normMouse.y * -12;
-          const rx = normMouse.y * -6;
-          const ry = normMouse.x * 8;
+          const tx = normMouse.x * -18;
+          const ty = normMouse.y * -10;
+          const rx = normMouse.y * -5;
+          const ry = normMouse.x * 6;
           heroGiantWrapper.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
         }
 
         if (threeScene && threeCamera && vfxGroup) {
-          vfxGroup.rotation.y = normMouse.x * 0.35;
-          vfxGroup.rotation.x = normMouse.y * 0.25;
+          vfxGroup.rotation.y = normMouse.x * 0.32;
+          vfxGroup.rotation.x = normMouse.y * 0.22;
           vfxGroup.position.y = (smoothScrollY * 0.012);
 
           wireframeMeshes.forEach(m => {
@@ -2172,61 +1975,60 @@
         const waveX = Math.sin(smoothScrollY * 0.0065);
 
         if (heroGiantWrapper && scrollYPos < window.innerHeight * 1.2) {
-          const heroRotateX = Math.min(25, smoothScrollY * 0.045);
-          const heroRotateY = waveX * 10;
-          const heroTranslateY = smoothScrollY * 0.22;
-          heroGiantWrapper.style.transform = `translate3d(0px, ${heroTranslateY.toFixed(1)}px, -30px) rotateX(${heroRotateX.toFixed(1)}deg) rotateY(${heroRotateY.toFixed(1)}deg)`;
+          const heroRotateX = Math.min(20, smoothScrollY * 0.04);
+          const heroRotateY = waveX * 8;
+          const heroTranslateY = smoothScrollY * 0.2;
+          heroGiantWrapper.style.transform = `translate3d(0px, ${heroTranslateY.toFixed(1)}px, -20px) rotateX(${heroRotateX.toFixed(1)}deg) rotateY(${heroRotateY.toFixed(1)}deg)`;
         }
 
         if (heroPortrait && scrollYPos < window.innerHeight * 1.2) {
-          const pRotY = Math.sin(smoothScrollY * 0.009) * 11;
-          const pRotX = Math.max(-12, Math.min(12, scrollVelocity * 0.28));
-          heroPortrait.style.transform = `perspective(1100px) rotateX(${pRotX.toFixed(2)}deg) rotateY(${pRotY.toFixed(2)}deg) translateZ(18px)`;
+          const pRotY = Math.sin(smoothScrollY * 0.008) * 8;
+          const pRotX = Math.max(-10, Math.min(10, scrollVelocity * 0.22));
+          heroPortrait.style.transform = `perspective(1000px) rotateX(${pRotX.toFixed(2)}deg) rotateY(${pRotY.toFixed(2)}deg) translateZ(14px)`;
         }
 
         const vh = window.innerHeight;
-        document.querySelectorAll('[data-3d-tilt]').forEach((card, idx) => {
-          if (card.id === 'hero-portrait-3d') return;
-          const rect = card.getBoundingClientRect();
-          if (rect.bottom > -40 && rect.top < vh + 40) {
-            const centerOffset = ((rect.top + rect.height / 2) - vh / 2) / (vh / 2);
-            const maxTilt = parseFloat(card.dataset.maxTilt) || 9;
-            const directionSign = idx % 2 === 0 ? 1 : -1;
-            const rotateX = (centerOffset * -maxTilt) + (scrollVelocity * 0.12);
-            const rotateY = Math.sin((smoothScrollY * 0.007) + idx * 1.1) * (maxTilt * 0.85) * directionSign;
-            const translateZ = (1 - Math.min(1, Math.abs(centerOffset))) * 14;
+        for (let i = 0; i < cachedCardRects.length; i++) {
+          const c = cachedCardRects[i];
+          const currentTop = c.topOffset - smoothScrollY;
+          if (currentTop + c.height > -30 && currentTop < vh + 30) {
+            const centerOffset = ((currentTop + c.height / 2) - vh / 2) / (vh / 2);
+            const directionSign = c.idx % 2 === 0 ? 1 : -1;
+            const rotateX = (centerOffset * -c.maxTilt) + (scrollVelocity * 0.09);
+            const rotateY = Math.sin((smoothScrollY * 0.007) + c.idx * 1.1) * (c.maxTilt * 0.75) * directionSign;
+            const translateZ = (1 - Math.min(1, Math.abs(centerOffset))) * 10;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(${translateZ.toFixed(1)}px)`;
+            c.el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(${translateZ.toFixed(1)}px)`;
 
-            const glareX = 50 + Math.sin(smoothScrollY * 0.008 + idx) * 42;
-            const glareY = 50 + centerOffset * 40;
-            card.style.setProperty('--glare-x', `${glareX.toFixed(1)}%`);
-            card.style.setProperty('--glare-y', `${glareY.toFixed(1)}%`);
+            const glareX = 50 + Math.sin(smoothScrollY * 0.008 + c.idx) * 36;
+            const glareY = 50 + centerOffset * 36;
+            c.el.style.setProperty('--glare-x', `${glareX.toFixed(1)}%`);
+            c.el.style.setProperty('--glare-y', `${glareY.toFixed(1)}%`);
           }
-        });
+        }
 
         if (threeScene && threeCamera && vfxGroup) {
-          vfxGroup.rotation.y = scrollProgress * Math.PI * 3.2;
-          vfxGroup.rotation.x = Math.sin(scrollProgress * Math.PI * 2) * 0.45 + (scrollVelocity * 0.006);
-          threeCamera.position.z = 26 - Math.sin(scrollProgress * Math.PI) * 7;
+          vfxGroup.rotation.y = scrollProgress * Math.PI * 2.5;
+          vfxGroup.rotation.x = Math.sin(scrollProgress * Math.PI * 2) * 0.35 + (scrollVelocity * 0.005);
+          threeCamera.position.z = 26 - Math.sin(scrollProgress * Math.PI) * 6;
 
-          wireframeMeshes.forEach((m) => {
-            const spinBoost = 1 + Math.abs(scrollVelocity) * 0.15;
+          wireframeMeshes.forEach(m => {
+            const spinBoost = 1 + Math.abs(scrollVelocity) * 0.12;
             m.rotation.x += m.userData.rotSpeedX * spinBoost;
             m.rotation.y += m.userData.rotSpeedY * spinBoost;
-            m.position.y = m.userData.baseY + Math.sin(scrollProgress * 12 + m.userData.phaseOffset) * 3.5;
+            m.position.y = m.userData.baseY + Math.sin(scrollProgress * 10 + m.userData.phaseOffset) * 2.8;
           });
 
           if (particleSystem) {
-            particleSystem.rotation.y = scrollProgress * Math.PI * 2;
-            particleSystem.position.y = (scrollProgress - 0.5) * 18;
+            particleSystem.rotation.y = scrollProgress * Math.PI * 1.8;
+            particleSystem.position.y = (scrollProgress - 0.5) * 15;
           }
           threeRenderer.render(threeScene, threeCamera);
         }
 
         if (mouseSpeed < 1) {
-          mousePos.x = (window.innerWidth * 0.5) + Math.sin(smoothScrollY * 0.008 + scrollPhase * 0.5) * (window.innerWidth * 0.34);
-          mousePos.y = (window.innerHeight * 0.46) + Math.cos(smoothScrollY * 0.012 + scrollPhase * 0.4) * (window.innerHeight * 0.26);
+          mousePos.x = (window.innerWidth * 0.5) + Math.sin(smoothScrollY * 0.008 + scrollPhase * 0.5) * (window.innerWidth * 0.3);
+          mousePos.y = (window.innerHeight * 0.46) + Math.cos(smoothScrollY * 0.012 + scrollPhase * 0.4) * (window.innerHeight * 0.22);
         }
       }
 
@@ -2234,12 +2036,12 @@
 
       if (swarmActive) {
         swarmCtx.clearRect(0, 0, swarmCanvas.width, swarmCanvas.height);
-        const minSeparation = 38;
+        const minSeparation = 34;
 
         for (let i = 0; i < cursors.length; i++) {
           const c = cursors[i];
-          c.orbitAngle += c.orbitSpeed + (isMobileScroll3D ? Math.abs(scrollVelocity) * 0.0008 : 0);
-          const dynamicRadius = c.orbitRadius + Math.sin(scrollPhase * 1.4 + c.noiseOffset) * 22 + mouseSpeed * 1.8;
+          c.orbitAngle += c.orbitSpeed + (isMobileScroll3D ? Math.abs(scrollVelocity) * 0.0006 : 0);
+          const dynamicRadius = c.orbitRadius + Math.sin(scrollPhase * 1.4 + c.noiseOffset) * 18 + mouseSpeed * 1.5;
 
           const targetX = mousePos.x + Math.cos(c.orbitAngle) * dynamicRadius;
           const targetY = mousePos.y + Math.sin(c.orbitAngle) * dynamicRadius;
@@ -2264,25 +2066,23 @@
           const dxMouse = c.x - mousePos.x;
           const dyMouse = c.y - mousePos.y;
           const distMouse = Math.hypot(dxMouse, dyMouse) || 1;
-          if (distMouse < 34) {
-            const evade = (34 - distMouse) / 34;
-            c.vx += (dxMouse / distMouse) * evade * 1.1;
-            c.vy += (dyMouse / distMouse) * evade * 1.1;
+          if (distMouse < 30) {
+            const evade = (30 - distMouse) / 30;
+            c.vx += (dxMouse / distMouse) * evade * 1.05;
+            c.vy += (dyMouse / distMouse) * evade * 1.05;
           }
 
-          c.vx += Math.cos(scrollPhase * 2 + c.noiseOffset) * 0.07;
-          c.vy += Math.sin(scrollPhase * 2 + c.noiseOffset) * 0.07;
+          c.vx += Math.cos(scrollPhase * 2 + c.noiseOffset) * 0.06;
+          c.vy += Math.sin(scrollPhase * 2 + c.noiseOffset) * 0.06;
 
-          if (isMobileScroll3D) {
-            c.vy -= scrollVelocity * 0.015;
-          }
+          if (isMobileScroll3D) c.vy -= scrollVelocity * 0.012;
 
           c.vx *= 0.91;
           c.vy *= 0.91;
           const spd = Math.hypot(c.vx, c.vy);
-          if (spd > 9) {
-            c.vx = (c.vx / spd) * 9;
-            c.vy = (c.vy / spd) * 9;
+          if (spd > 8) {
+            c.vx = (c.vx / spd) * 8;
+            c.vy = (c.vy / spd) * 8;
           }
 
           c.x += c.vx;
@@ -2297,7 +2097,7 @@
           }
 
           const depthScale = isMobileScroll3D
-            ? 0.85 + Math.sin(smoothScrollY * 0.01 + i) * 0.25
+            ? 0.88 + Math.sin(smoothScrollY * 0.01 + i) * 0.2
             : 1;
 
           swarmCtx.save();
@@ -2326,9 +2126,7 @@
       requestAnimationFrame(animateSwarm);
     }
 
-    // ---------------------------------------------------------------------
-    // 6. INTRO SPLASH SEQUENCE (Replicates 00:00 -> 00:02 of the video)
-    // ---------------------------------------------------------------------
+    // Converging Intro Splash Animation
     function runIntroSplash() {
       const splash = document.getElementById('intro-splash');
       const introCursors = document.getElementById('intro-cursors');
@@ -2350,7 +2148,7 @@
         el.style.top = `${startY}%`;
         el.innerHTML = `
           <svg class="w-4 h-4 text-crimson -rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
-          <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-[9px] font-mono text-zinc-300">${label}</span>
+          <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-[9px] font-mono text-zinc-300 font-bold">${label}</span>
         `;
         introCursors.appendChild(el);
 
@@ -2376,47 +2174,65 @@
       runIntroSplash();
     }
 
-    // ---------------------------------------------------------------------
-    // 7. UTILITIES (Mobile Menu, Clipboard Toast, Contact Modal)
-    // ---------------------------------------------------------------------
+    // Utilities
     function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
+      document.getElementById('mobile-menu').classList.toggle('hidden');
     }
 
     function copyEmail(email) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(email).catch(() => {});
+        navigator.clipboard.writeText(email).then(() => {
+          showToast(`Email ${email} copied!`);
+        }).catch(() => {
+          fallbackCopyEmail(email);
+        });
       } else {
-        const temp = document.createElement('textarea');
-        temp.value = email;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
+        fallbackCopyEmail(email);
       }
-      showToast(`Email ${email} copied to clipboard!`);
+    }
+
+    function fallbackCopyEmail(email) {
+      const temp = document.createElement('textarea');
+      temp.value = email;
+      temp.style.position = 'fixed';
+      temp.style.left = '-9999px';
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand('copy');
+        showToast(`Email ${email} copied!`);
+      } catch (e) {
+        showToast(`Email: ${email}`);
+      }
+      document.body.removeChild(temp);
     }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
       toast.style.opacity = '1';
-      setTimeout(() => {
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
         toast.style.opacity = '0';
-      }, 2600);
+      }, 2400);
     }
 
     function openContactModal() {
       const m = document.getElementById('contact-modal');
-      m.classList.remove('hidden');
-      m.classList.add('flex');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
     }
 
     function closeContactModal() {
       const m = document.getElementById('contact-modal');
-      m.classList.add('hidden');
-      m.classList.remove('flex');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
     }
 
     function submitContactForm(e) {
@@ -2425,7 +2241,7 @@
       showToast('Message sent! Md Sohan Mahmud will get back to you shortly.');
     }
 
-    // Initialize immediately on DOMContentLoaded so mobile never waits for slow external assets
+    // App Initialization
     function initPortfolioApp() {
       safeCreateIcons();
       renderProjects('All');
