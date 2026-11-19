@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>MD SOHAN MAHMUD. — Cybersecurity Analyst & Security Researcher</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Anton/Bebas Neue for ultra-condensed headlines, Plus Jakarta Sans for body, Caveat for script, JetBrains Mono for technical specs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Three.js for 3D VFX Wireframe & Depth Particle Scene -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: {
+              DEFAULT: '#060608',
+              card: '#0d0d11',
+              elevated: '#131319',
+              glass: 'rgba(15, 15, 20, 0.85)'
+            },
+            crimson: {
+              DEFAULT: '#dc2626',
+              bright: '#ef4444',
+              deep: '#991b1b',
+              dark: '#450a0a'
+            },
+            blueprint: '#3b82f6'
+          },
+          fontFamily: {
+            display: ['Anton', 'Bebas Neue', 'Impact', 'sans-serif'],
+            condensed: ['Bebas Neue', 'Anton', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            script: ['Caveat', 'cursive'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --crimson: #dc2626;
+      --blueprint: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: clip;
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      background-color: #060608;
+      color: #f4f4f5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-bottom: env(safe-area-inset-bottom, 24px);
+    }
+
+    ::selection {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    /* Technical grid pattern */
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+
+    /* Giant PORTFOLIO hero background typography */
+    .hero-giant-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.85rem, 18.2vw, 21rem);
+      line-height: 0.88;
+      letter-spacing: -0.015em;
+      color: #c81e1e;
+      text-transform: uppercase;
+      user-select: none;
+      text-shadow: 0 16px 50px rgba(220, 38, 38, 0.28);
+      white-space: nowrap;
+    }
+
+    /* Inspect Outline Effect */
+    .inspect-active [data-inspectable]:hover,
+    .inspect-active [data-inspectable].inspect-locked,
+    .wireframe-mode [data-inspectable] {
+      outline: 1.5px solid #3b82f6 !important;
+      outline-offset: 2px;
+      position: relative;
+    }
+
+    /* Blueprint / Wireframe Flash Mode */
+    .wireframe-mode * {
+      border-color: rgba(59, 130, 246, 0.35) !important;
+    }
+    .wireframe-mode section {
+      outline: 1px dashed rgba(59, 130, 246, 0.45);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #060608;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #dc2626;
+    }
+
+    /* Sound wave animation */
+    @keyframes soundbar {
+      0%, 100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+    .wave-bar {
+      animation: soundbar 1.1s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+    .wave-paused .wave-bar {
+      animation-play-state: paused;
+      transform: scaleY(0.35);
+    }
+
+    /* Before/After Slider Clip */
+    #before-layer {
+      clip-path: inset(0 50% 0 0);
+    }
+
+    #comparison-container {
+      touch-action: none;
+    }
+
+    /* Stable Viewport Wrapper (No nauseating page tilt on scroll) */
+    #canvas-stage {
+      width: 100%;
+      overflow-x: clip;
+    }
+
+    #canvas-viewport {
+      transform-origin: top center;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      perspective: 1200px;
+      width: 100%;
+    }
+
+    body.hand-mode-active {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Agent Content-Build Reveal States (Zero layout shift) */
+    [data-build-state="pending"] {
+      opacity: 0 !important;
+      visibility: hidden;
+    }
+
+    [data-build-state="building"] {
+      opacity: 1;
+      visibility: visible;
+      will-change: clip-path, opacity;
+    }
+
+    [data-build-state="built"] {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* 3D Interactive Tilt Cards & Layers */
+    [data-3d-tilt] {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+      position: relative;
+    }
+
+    [data-3d-tilt] .glare-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 25;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: radial-gradient(
+        420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(220, 38, 38, 0.2),
+        rgba(59, 130, 246, 0.09) 40%,
+        transparent 75%
+      );
+      mix-blend-mode: screen;
+    }
+
+    [data-3d-tilt]:hover .glare-overlay,
+    body.mobile-3d-active [data-3d-tilt] .glare-overlay {
+      opacity: 1;
+    }
+
+    /* 3D Depth Layers inside Cards */
+    .depth-layer-1 { transform: translateZ(18px); }
+    .depth-layer-2 { transform: translateZ(34px); }
+    .depth-layer-3 { transform: translateZ(52px); }
+
+    /* Failsafe Intro Splash */
+    @keyframes splashFailSafe {
+      0%, 80% { opacity: 1; pointer-events: auto; }
+      100% { opacity: 0; pointer-events: none; visibility: hidden; }
+    }
+    .splash-auto-hide {
+      animation: splashFailSafe 2.2s forwards;
+    }
+
+    /* Mobile & Desktop Canvas Interaction Safeguards */
+    canvas#drawing-canvas,
+    canvas#three-canvas,
+    canvas#swarm-canvas {
+      pointer-events: none !important;
+      touch-action: pan-y !important;
+    }
+
+    body.pen-mode-active canvas#drawing-canvas {
+      pointer-events: auto !important;
+      touch-action: none !important;
+    }
+
+    .clickable-node {
+      position: relative;
+      z-index: 35;
+      cursor: pointer;
+    }
+
+    .safe-dock-pb {
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body class="inspect-active bg-grid-pattern antialiased selection:bg-crimson selection:text-white">
+
+  <!-- =====================================================================
+       1. INTRO SPLASH OVERLAY WITH CONVERGING COLLABORATOR CURSORS
+       ===================================================================== -->
+  <div id="intro-splash" class="splash-auto-hide fixed inset-0 z-[100] bg-[#050507] flex flex-col items-center justify-center transition-opacity duration-700">
+    <div id="intro-cursors" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <div class="relative flex flex-col items-center">
+      <div id="intro-r-box" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center relative shadow-2xl">
+        <span class="font-display text-4xl sm:text-5xl tracking-wider text-zinc-100 select-none">S</span>
+        <span class="w-2 h-2 bg-blueprint absolute -top-1 -left-1"></span>
+        <span class="w-2 h-2 bg-blueprint absolute -top-1 -right-1"></span>
+        <span class="w-2 h-2 bg-blueprint absolute -bottom-1 -left-1"></span>
+        <span class="w-2 h-2 bg-blueprint absolute -bottom-1 -right-1"></span>
+      </div>
+      <div class="mt-4 flex items-center gap-2 text-xs font-mono text-zinc-400">
+        <span class="w-2 h-2 rounded-full bg-crimson animate-ping"></span>
+        <span id="intro-status-text">INITIALIZING AGENT BUILDERS...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       2. LIVE FIGMA SELECTION HUD & AGENT BUILDER SWARM CANVAS
+       ===================================================================== -->
+  <div id="selection-hud" class="fixed pointer-events-none z-[60] hidden border-[1.5px] border-[#3b82f6] bg-[#3b82f6]/[0.03] transition-all duration-75">
+    <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -top-1 -left-1"></span>
+    <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -top-1 -right-1"></span>
+    <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -bottom-1 -left-1"></span>
+    <span class="w-2 h-2 bg-white border border-[#3b82f6] absolute -bottom-1 -right-1"></span>
+    <div id="selection-tag" class="absolute -top-5 left-0 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.5 rounded-t whitespace-nowrap">Frame</div>
+    <div id="selection-dims" class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-[#3b82f6] text-white text-[10px] font-mono px-1.5 py-0.2 rounded whitespace-nowrap shadow">420 × 128</div>
+  </div>
+
+  <canvas id="drawing-canvas" class="fixed inset-0 z-[55]"></canvas>
+  <canvas id="three-canvas" class="fixed inset-0 z-[1] opacity-75"></canvas>
+  <!-- Swarm canvas renders agent cursors + temporary construction frames only while an element is loading -->
+  <canvas id="swarm-canvas" class="fixed inset-0 z-[65]"></canvas>
+
+  <!-- =====================================================================
+       3. TOP NAVIGATION BAR
+       ===================================================================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#060608]/90 backdrop-blur-md border-b border-white/[0.06]">
+    <div class="max-w-[1380px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#hero" data-inspectable="Logo • SOHAN" class="font-display text-2xl sm:text-3xl tracking-tight text-white flex items-center">
+        SOHAN<span class="text-crimson">.</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-zinc-400">
+        <a href="#projects" class="hover:text-white transition-colors">01 / Projects</a>
+        <a href="#experience" class="hover:text-white transition-colors">02 / Honors</a>
+        <a href="#threat-breakdown" class="hover:text-white transition-colors">03 / Threat Lab</a>
+        <a href="#about" class="hover:text-white transition-colors">04 / Profile</a>
+        <a href="#journey" class="hover:text-white transition-colors">05 / Journey</a>
+        <a href="#contact" class="hover:text-white transition-colors">06 / Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-blueprint-top" onclick="toggleWireframeMode()" title="Toggle Blueprint Inspect Mode" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 hover:border-blueprint text-[11px] font-mono text-zinc-300 transition">
+          <i data-lucide="scan" class="w-3.5 h-3.5 text-blueprint"></i>
+          <span class="hidden sm:inline">Inspect</span>
+        </button>
+
+        <a href="#contact" data-inspectable="Button • Academic Status" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-700/70 text-xs font-medium text-white transition">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="hidden sm:inline">La Trobe • Australia</span>
+          <span class="sm:hidden text-[11px]">La Trobe AU</span>
+        </a>
+
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 active:scale-95 transition" aria-label="Menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0f] border-b border-zinc-800 px-6 py-4 space-y-3 text-xs font-mono shadow-2xl">
+      <a href="#projects" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">01 / Security Projects</a>
+      <a href="#experience" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">02 / Certifications & CTF</a>
+      <a href="#threat-breakdown" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">03 / Threat Defense Breakdown</a>
+      <a href="#about" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">04 / Education & Arsenal</a>
+      <a href="#journey" onclick="toggleMobileMenu()" class="block py-1 text-zinc-300 hover:text-white">05 / Milestones</a>
+      <a href="#contact" onclick="toggleMobileMenu()" class="block py-1 text-crimson font-semibold">06 / Connect Directly</a>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN 3D PERSPECTIVE CANVAS STAGE & VIEWPORT WRAPPER
+       ===================================================================== -->
+  <div id="canvas-stage">
+    <div id="canvas-viewport" class="pt-16 relative z-10">
+
+      <!-- ===================================================================
+           SECTION 1: HERO SECTION
+           =================================================================== -->
+      <section id="hero" class="relative min-h-[90vh] flex flex-col justify-between overflow-hidden pt-4 pb-12 sm:py-12 border-b border-white/[0.06]" style="perspective: 1400px;">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[780px] h-[300px] sm:h-[380px] bg-crimson/20 blur-[110px] rounded-full pointer-events-none"></div>
+
+        <!-- Giant Background Title -->
+        <div id="hero-giant-wrapper" class="relative z-20 lg:z-0 w-full text-center mt-2 sm:mt-4 pointer-events-none select-none overflow-hidden px-2 will-change-transform">
+          <h1 data-inspectable="Display • PORTFOLIO" class="hero-giant-text tracking-tight">
+            PORTFOLIO
+          </h1>
+        </div>
+
+        <!-- Foreground Grid -->
+        <div class="max-w-[1380px] w-full mx-auto px-4 sm:px-8 relative z-10 mt-5 sm:mt-8 lg:-mt-44">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+
+            <!-- Left Column -->
+            <div class="lg:col-span-4 space-y-4 order-2 lg:order-1" data-inspectable="Hero • Bio Column" data-3d-tilt data-max-tilt="8">
+              <div class="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-400 depth-layer-1">
+                <span class="w-2 h-2 rounded-full bg-crimson"></span>
+                <span>FROM BANGLADESH 🇧🇩 • IN AUSTRALIA 🇦🇺</span>
+              </div>
+
+              <div class="space-y-0 depth-layer-2">
+                <p class="font-script text-2xl sm:text-4xl text-zinc-200 -mb-1 ml-1">Hello, I'm</p>
+                <h2 class="font-display text-4xl sm:text-5xl xl:text-6xl tracking-tight text-white uppercase leading-[0.95]">
+                  MD SOHAN<br/>MAHMUD<span class="text-crimson">.</span>
+                </h2>
+              </div>
+
+              <div class="pt-1 depth-layer-1">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-crimson block font-bold">LA TROBE UNIVERSITY, AUSTRALIA</span>
+                <h3 class="font-display text-xl sm:text-3xl text-white tracking-wide uppercase leading-tight">
+                  CYBERSECURITY<br/>STUDENT & ANALYST
+                </h3>
+              </div>
+
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm depth-layer-1">
+                Cybersecurity student at La Trobe University, Australia, originally from Bangladesh. Passionate about network defense, ethical hacking, digital forensics, and building resilient security architectures.
+              </p>
+
+              <div class="pt-2 flex flex-wrap items-center gap-3 depth-layer-2">
+                <a href="#projects" data-inspectable="Button • Explore Work" class="clickable-node inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs font-mono uppercase tracking-wider px-5 py-3 rounded-lg shadow-lg shadow-crimson/25 transition group">
+                  <span>EXPLORE MY PROJECTS</span>
+                  <span class="w-5 h-5 rounded-full bg-black/30 flex items-center justify-center group-hover:translate-x-0.5 transition">
+                    <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </a>
+              </div>
+
+              <!-- Audio Telemetry Reel -->
+              <div id="showreel-audio-bar" data-inspectable="Component • Security Audio Pulse" class="pt-3 flex items-center gap-3 max-w-xs depth-layer-1">
+                <button onclick="toggleShowreelAudio()" id="btn-audio-play" class="clickable-node w-9 h-9 rounded-full bg-zinc-900 hover:bg-crimson border border-zinc-700 text-white flex items-center justify-center transition shrink-0" aria-label="Play Security Reel">
+                  <i data-lucide="play" id="audio-icon" class="w-4 h-4 fill-current ml-0.5"></i>
+                </button>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="text-white font-medium">PLAY CYBER REEL</span>
+                    <span id="audio-timer" class="text-zinc-500">00:45</span>
+                  </div>
+                  <div id="waveform-container" class="wave-paused flex items-end gap-[3px] h-3 mt-1">
+                    <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.0s"></span>
+                    <span class="wave-bar w-1 h-2/3 bg-zinc-500 rounded-full" style="animation-delay:0.2s"></span>
+                    <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.4s"></span>
+                    <span class="wave-bar w-1 h-1/2 bg-zinc-500 rounded-full" style="animation-delay:0.1s"></span>
+                    <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.3s"></span>
+                    <span class="wave-bar w-1 h-3/4 bg-zinc-400 rounded-full" style="animation-delay:0.5s"></span>
+                    <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.2s"></span>
+                    <span class="wave-bar w-1 h-1/2 bg-zinc-600 rounded-full" style="animation-delay:0.4s"></span>
+                    <span class="wave-bar w-1 h-3/4 bg-zinc-500 rounded-full" style="animation-delay:0.1s"></span>
+                    <span class="wave-bar w-1 h-full bg-crimson rounded-full" style="animation-delay:0.3s"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Center Column: Portrait -->
+            <div class="lg:col-span-4 flex justify-center relative order-1 lg:order-2" data-inspectable="Hero • Md Sohan Mahmud Portrait">
+              <div id="hero-portrait-3d" data-3d-tilt data-max-tilt="14" class="relative w-[270px] sm:w-[360px] lg:w-[410px] aspect-[4/5] flex items-end justify-center select-none group/portrait">
+                <div class="absolute inset-x-6 bottom-6 top-12 bg-gradient-to-t from-crimson/35 via-crimson/10 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10 w-full h-full rounded-t-[2rem] overflow-hidden depth-layer-1 flex items-end justify-center border-t border-x border-zinc-800 bg-[#0c0c11]">
+                  <img 
+                    id="hero-portrait-img"
+                    src="./Sohan.jpg"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80';"
+                    alt="Md Sohan Mahmud — Cybersecurity Student Portrait"
+                    class="w-full h-full object-cover object-center brightness-105 contrast-110 saturate-105 transition duration-500"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-transparent pointer-events-none"></div>
+                </div>
+
+                <!-- Red Floating Technical Node Accents -->
+                <div class="absolute top-8 -left-2 z-20 bg-black/85 backdrop-blur-md border border-zinc-800 px-2.5 py-1 rounded text-[10px] font-mono text-zinc-300 flex items-center gap-1.5 shadow-lg depth-layer-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span>SEC • LA TROBE AU</span>
+                </div>
+
+                <!-- Cyber Lab Mini Preview Card -->
+                <button onclick="openProjectModal(0)" data-inspectable="Card • Mini Security Lab Preview" class="clickable-node absolute -bottom-2 -right-1 sm:right-0 z-30 w-40 sm:w-52 bg-[#111116]/95 backdrop-blur-md border border-zinc-700/80 hover:border-crimson rounded-xl p-2 text-left shadow-2xl transition group depth-layer-3">
+                  <div class="relative h-20 sm:h-24 rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
+                    <img 
+                      src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" 
+                      alt="Cybersecurity Lab Preview" 
+                      class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    />
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                        <i data-lucide="shield" class="w-3.5 h-3.5 fill-current"></i>
+                      </span>
+                    </div>
+                    <span class="absolute top-1.5 left-1.5 bg-crimson text-white text-[9px] font-mono px-1.5 py-0.5 rounded font-bold">SOC LAB</span>
+                  </div>
+                  <div class="mt-1.5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-300 px-0.5">
+                    <span class="truncate">Cyber Defense Lab</span>
+                    <span class="text-crimson font-bold">ACTIVE</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Column: Stats & Security Stack -->
+            <div class="lg:col-span-4 flex flex-col lg:items-end justify-end space-y-5 order-3" data-inspectable="Hero • Stats & Security Stack" data-3d-tilt data-max-tilt="8">
+              <div class="grid grid-cols-3 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-5 w-full lg:w-60 text-left lg:text-right depth-layer-1">
+                <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                  <span class="font-display text-2xl sm:text-4xl text-crimson">25+</span>
+                  <div>
+                    <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">Security Labs</p>
+                    <p class="text-[9px] text-zinc-500 hidden sm:block">Pentest & Defenses</p>
+                  </div>
+                </div>
+
+                <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                  <span class="font-display text-2xl sm:text-4xl text-crimson">50+</span>
+                  <div>
+                    <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">CTF Solved</p>
+                    <p class="text-[9px] text-zinc-500 hidden sm:block">TryHackMe, HTB</p>
+                  </div>
+                </div>
+
+                <div class="border-b border-zinc-800/80 pb-2 sm:pb-3 flex flex-col lg:flex-row-reverse items-start lg:items-baseline justify-between gap-1">
+                  <span class="font-display text-2xl sm:text-4xl text-crimson">10+</span>
+                  <div>
+                    <p class="text-[10px] sm:text-[11px] font-bold uppercase text-white font-mono">Certifications</p>
+                    <p class="text-[9px] text-zinc-500 hidden sm:block">Cloud & Defense</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security Badges Row -->
+              <div class="flex flex-wrap items-center lg:justify-end gap-1.5 pt-1 depth-layer-2">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase mr-1">TOOLS:</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-sky-400">Kali</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-emerald-400">Wireshark</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-orange-400">Burp</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-amber-400">Python</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono font-bold text-[#9999FF]">SIEM</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 2: 01 / PROJECTS — "DEFENSE THAT SPEAKS."
+           =================================================================== -->
+      <section id="projects" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div data-inspectable="Heading • Selected Security Projects">
+              <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1">01 / CYBERSECURITY PROJECTS & LABS</p>
+              <h2 class="font-display text-3xl sm:text-6xl uppercase tracking-tight leading-none">
+                DEFENSE THAT <span class="text-crimson">SPEAKS.</span>
+              </h2>
+            </div>
+            <button onclick="filterProjects('ShowAll6')" class="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition">
+              <span>Explore All Labs</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-crimson"></i>
+            </button>
+          </div>
+
+          <!-- Category Filters -->
+          <div id="work-filters" class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar" data-inspectable="Filter Bar • Domains">
+            <button onclick="filterProjects('All')" data-cat="All" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-crimson text-white transition whitespace-nowrap">All Labs</button>
+            <button onclick="filterProjects('Offensive')" data-cat="Offensive" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Offensive & Pentest</button>
+            <button onclick="filterProjects('Defensive')" data-cat="Defensive" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">SOC & Telemetry</button>
+            <button onclick="filterProjects('Hardware')" data-cat="Hardware" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">IoT & Embedded</button>
+            <button onclick="filterProjects('Automation')" data-cat="Automation" class="filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap">Automation Tools</button>
+          </div>
+
+          <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
+
+          <!-- Ecosystem Strip -->
+          <div class="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-zinc-900" data-inspectable="Section • Affiliations & Platforms">
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-500">ACADEMIC & SECURITY ECOSYSTEM</span>
+              <span class="text-[9px] sm:text-[10px] font-mono text-zinc-500">AUSTRALIA • BANGLADESH • GLOBAL</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+              <div data-inspectable="Node • La Trobe" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition group">
+                <span class="font-display text-base sm:text-lg text-[#E50914] tracking-wider group-hover:scale-105 transition leading-none depth-layer-1">LA TROBE</span>
+                <span class="text-[8px] font-mono tracking-widest text-zinc-400 mt-0.5 depth-layer-1">UNIVERSITY • AU</span>
+              </div>
+              <div data-inspectable="Node • Kali Linux" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
+                <span class="font-display text-base sm:text-lg tracking-wider text-sky-400 leading-none depth-layer-1">KALI LINUX</span>
+                <span class="text-[8px] font-mono tracking-widest text-zinc-400 mt-0.5 depth-layer-1">OFFENSIVE SEC</span>
+              </div>
+              <div data-inspectable="Node • HTB" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex flex-col items-center justify-center px-3 transition">
+                <span class="font-display text-lg sm:text-xl tracking-widest text-white leading-none depth-layer-1">HTB</span>
+                <span class="text-[8px] font-mono tracking-widest text-emerald-400 mt-0.5 depth-layer-1">HACK THE BOX</span>
+              </div>
+              <div data-inspectable="Node • TryHackMe" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
+                <span class="w-5 h-5 rounded-full bg-crimson/20 border border-crimson text-crimson flex items-center justify-center text-[10px] font-bold depth-layer-1">T</span>
+                <span class="font-bold text-xs tracking-wider text-zinc-300 depth-layer-1">TRYHACKME</span>
+              </div>
+              <div data-inspectable="Node • OWASP" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center gap-2 px-3 transition">
+                <span class="w-5 h-5 rounded bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[10px] font-bold depth-layer-1">O</span>
+                <span class="font-mono text-xs text-zinc-300 depth-layer-1">OWASP</span>
+              </div>
+              <div data-inspectable="Node • Cisco" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition">
+                <span class="font-bold text-xs tracking-wide text-crimson depth-layer-1">CISCO SEC</span>
+              </div>
+              <div data-inspectable="Node • BDxAU" data-3d-tilt data-max-tilt="14" class="h-14 sm:h-16 rounded-xl bg-[#0d0d12] border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-center px-3 transition col-span-2 sm:col-span-1">
+                <span class="font-display text-base sm:text-lg tracking-wider text-zinc-200 depth-layer-1">BD<span class="text-crimson">×</span>AU</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 3: 02 / AWARDS & CERTIFICATIONS
+           =================================================================== -->
+      <section id="experience" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+            <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-5" data-inspectable="Awards • Summary Column">
+              <div>
+                <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">02 / CERTIFICATIONS & HONORS</p>
+                <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
+                  THE SKILLS.<br/>
+                  <span class="text-crimson">THE RECOGNITION.</span>
+                </h2>
+              </div>
+
+              <!-- Laurel Emblem -->
+              <div data-inspectable="Badge • 10+ Certs & Badges" data-3d-tilt data-max-tilt="14" class="py-5 sm:py-6 px-6 rounded-2xl bg-gradient-to-b from-zinc-900/70 to-[#09090d] border border-zinc-800/80 inline-flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="glare-overlay"></div>
+                <div class="absolute inset-0 bg-crimson/5 blur-2xl pointer-events-none"></div>
+                <div class="flex items-center gap-3 relative z-10 depth-layer-1">
+                  <svg class="w-8 sm:w-10 h-14 sm:h-16 text-zinc-600" viewBox="0 0 40 64" fill="currentColor">
+                    <path d="M34 58C20 50 12 36 14 10C18 18 22 28 34 58Z" opacity="0.35"/>
+                    <circle cx="16" cy="18" r="2.5"/><circle cx="14" cy="28" r="2.5"/><circle cx="16" cy="38" r="2.5"/><circle cx="22" cy="48" r="2.5"/>
+                  </svg>
+                  <div class="text-center">
+                    <span class="font-display text-5xl sm:text-7xl text-crimson leading-none block">10+</span>
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-300 bg-zinc-900 border border-zinc-700 px-2.5 py-0.5 rounded-full font-bold">BADGES & HONORS</span>
+                  </div>
+                  <svg class="w-8 sm:w-10 h-14 sm:h-16 text-zinc-600 scale-x-[-1]" viewBox="0 0 40 64" fill="currentColor">
+                    <path d="M34 58C20 50 12 36 14 10C18 18 22 28 34 58Z" opacity="0.35"/>
+                    <circle cx="16" cy="18" r="2.5"/><circle cx="14" cy="28" r="2.5"/><circle cx="16" cy="38" r="2.5"/><circle cx="22" cy="48" r="2.5"/>
+                  </svg>
+                </div>
+              </div>
+
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md">
+                Every certification, CTF challenge, and university lab reinforces a commitment to ethical hacking, cyber resilience, and protecting digital infrastructure.
+              </p>
+
+              <div>
+                <a href="#contact" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white hover:text-crimson transition">
+                  <span>REQUEST CREDENTIALS</span>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-crimson"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Awards Timeline -->
+            <div class="lg:col-span-7 divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80" data-inspectable="List • Cybersecurity Recognition">
+              <div data-inspectable="Honor • La Trobe" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-crimson/15 text-crimson border border-crimson/30">La Trobe University • Australia</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Cybersecurity Academic Excellence</h3>
+                  <p class="text-xs text-zinc-500">Network Defense, Threat Hunting & Secure Systems</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2026</span>
+              </div>
+
+              <div data-inspectable="Honor • PortSwigger" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">PortSwigger Academy</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Web Security & SQL Injection Mastery</h3>
+                  <p class="text-xs text-zinc-500">Blind SQLi, Broken Access Controls & CSRF</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2026</span>
+              </div>
+
+              <div data-inspectable="Honor • Google & Cisco" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Professional Certificate</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Google & Cisco Cybersecurity Specialization</h3>
+                  <p class="text-xs text-zinc-500">SIEM Tools, IDS/IPS, Linux Security & Python Automation</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
+              </div>
+
+              <div data-inspectable="Honor • THM & HTB" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Offensive & Defensive Labs</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">TryHackMe & HackTheBox Top Percentile</h3>
+                  <p class="text-xs text-zinc-500">50+ Red Team & Blue Team Labs Completed</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2025</span>
+              </div>
+
+              <div data-inspectable="Honor • AU Scholar" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">International Scholar</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Australian Higher Education Awardee (BD → AU)</h3>
+                  <p class="text-xs text-zinc-500">Selected to pursue Cybersecurity at La Trobe University</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2024</span>
+              </div>
+
+              <div data-inspectable="Honor • Bangladesh ICT" data-3d-tilt data-max-tilt="8" class="py-4 sm:py-5 px-3 hover:bg-zinc-900/40 transition flex items-center justify-between gap-4 group">
+                <div class="space-y-1 depth-layer-1">
+                  <span class="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Bangladesh National ICT</span>
+                  <h3 class="text-sm sm:text-lg font-bold text-white group-hover:text-crimson transition">Excellence in Computing & STEM</h3>
+                  <p class="text-xs text-zinc-500">Dhaka, Bangladesh • Programming & Network Foundations</p>
+                </div>
+                <span class="font-display text-xl sm:text-3xl text-crimson shrink-0 depth-layer-2">2023</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 4: 03 / THREAT DEFENSE BREAKDOWN
+           =================================================================== -->
+      <section id="threat-breakdown" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
+            <div class="lg:col-span-5 space-y-4 sm:space-y-5" data-inspectable="Security • Threat Comparison" data-3d-tilt data-max-tilt="8">
+              <div class="depth-layer-1">
+                <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">03 / THREAT DEFENSE BREAKDOWN</p>
+                <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.92] tracking-tight">
+                  FROM RAW LOGS.<br/>
+                  <span class="text-crimson">TO SECURED.</span>
+                </h2>
+              </div>
+
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed depth-layer-1">
+                Every system is hardened layer by layer—from raw packet capture and vulnerability scanning to zero-trust firewall rules and real-time SIEM threat mitigation.
+              </p>
+
+              <div class="space-y-2 pt-1 depth-layer-2">
+                <span class="text-[10px] font-mono uppercase text-zinc-500 block">SELECT SECURITY LAB SCENARIO:</span>
+                <div class="flex flex-wrap gap-2">
+                  <button onclick="switchBreakdownScene(0)" id="scene-btn-0" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition">01. SOC Threat</button>
+                  <button onclick="switchBreakdownScene(1)" id="scene-btn-1" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">02. Web Pentest</button>
+                  <button onclick="switchBreakdownScene(2)" id="scene-btn-2" class="clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition">03. Zero-Trust</button>
+                </div>
+              </div>
+
+              <div class="pt-1 flex items-center gap-2 sm:gap-3 depth-layer-2 flex-wrap">
+                <button onclick="setComparisonSlider(85)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400 hover:text-white transition">Raw Packet Dump</button>
+                <button onclick="setComparisonSlider(50)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400 hover:text-white transition">50 / 50 Split</button>
+                <button onclick="setComparisonSlider(15)" class="clickable-node px-2.5 sm:px-3 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] sm:text-[11px] font-mono text-crimson hover:bg-crimson/10 transition">Hardened</button>
+              </div>
+            </div>
+
+              <!-- Comparison Slider Container -->
+            <div class="lg:col-span-7" data-inspectable="Interactive • Threat Defense Slider" data-3d-tilt data-max-tilt="7">
+              <div id="comparison-container" class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-zinc-800 select-none cursor-ew-resize shadow-2xl bg-zinc-950 touch-none">
+
+                <img 
+                  id="after-img"
+                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85" 
+                  alt="After Hardened SOC Defense" 
+                  class="absolute inset-0 w-full h-full object-cover saturate-150 contrast-125"
+                />
+                <div class="absolute inset-0 bg-gradient-to-tr from-crimson/25 via-transparent to-cyan-500/20 mix-blend-screen pointer-events-none"></div>
+                <span class="absolute top-3 right-3 z-20 bg-crimson text-white text-[9px] sm:text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded shadow">
+                  AFTER • ZERO-TRUST
+                </span>
+
+                <!-- Before Layer -->
+                <div id="before-layer" class="absolute inset-0 bg-zinc-900">
+                  <img 
+                    id="before-img"
+                    src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85" 
+                    alt="Before Unfiltered Traffic" 
+                    class="w-full h-full object-cover grayscale contrast-75 brightness-90"
+                  />
+                  <div class="absolute inset-0 bg-grid-pattern opacity-60 pointer-events-none"></div>
+                  <span class="absolute top-3 left-3 z-20 bg-zinc-900/90 border border-zinc-700 text-zinc-200 text-[9px] sm:text-[10px] font-mono uppercase px-2 py-0.5 rounded shadow">
+                    BEFORE • RAW PCAP
+                  </span>
+                </div>
+
+                <!-- Slider Divider -->
+                <div id="slider-divider" class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-white z-30 pointer-events-none shadow-[0_0_15px_rgba(255,255,255,0.9)]">
+                  <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 sm:w-9 h-8 sm:h-9 rounded-full bg-crimson border-2 border-white text-white flex items-center justify-center shadow-xl">
+                    <i data-lucide="move-horizontal" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
+                  </div>
+                </div>
+
+                <div class="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-sm border-t border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-300 z-20">
+                  <span id="breakdown-caption" class="truncate pr-2">LAB_01 • PACKET INSPECTION</span>
+                  <span id="slider-percent-readout" class="text-crimson font-bold shrink-0">50% SPLIT</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 5: 04 / ABOUT & HARDWARE WORKSTATION
+           =================================================================== -->
+      <section id="about" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mb-10 sm:mb-14">
+            <div class="lg:col-span-7" data-inspectable="Heading • Behind The Firewall">
+              <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">04 / ABOUT MD SOHAN MAHMUD</p>
+              <h2 class="font-display text-3xl sm:text-6xl uppercase leading-[0.94] tracking-tight">
+                NOT JUST DEFENSE.<br/>
+                <span class="text-crimson">IT'S PROACTIVE SECURITY.</span>
+              </h2>
+            </div>
+            <div class="lg:col-span-5" data-inspectable="Text • Cybersecurity Philosophy">
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                From Bangladesh to La Trobe University in Australia, I am dedicated to understanding how attackers think so we can engineer safer, more resilient systems for everyone.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+            <!-- Col 1: Education & Workstation -->
+            <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 flex flex-col justify-between space-y-6" data-inspectable="Card • Education & Skills" data-3d-tilt data-max-tilt="9">
+              <div class="glare-overlay"></div>
+              <div class="space-y-4 depth-layer-1">
+                <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-2.5">
+                  EDUCATION & WORKSTATION
+                </h3>
+
+                <div class="space-y-3.5">
+                  <div class="pl-3 border-l-2 border-crimson">
+                    <h4 class="text-sm font-bold text-white">La Trobe University, Australia</h4>
+                    <p class="text-xs text-zinc-400">Cybersecurity • Melbourne & Sydney Campuses</p>
+                  </div>
+                  <div class="pl-3 border-l-2 border-zinc-700">
+                    <h4 class="text-sm font-bold text-white">Bare-Metal Workstation Rig</h4>
+                    <p class="text-xs text-zinc-400">Lenovo ThinkPad T490 • Native Kali Linux</p>
+                  </div>
+                  <div class="pl-3 border-l-2 border-zinc-700">
+                    <h4 class="text-sm font-bold text-white">Hardware & RF Testing</h4>
+                    <p class="text-xs text-zinc-400">ESP32 (CP2102/CH340) Microcontrollers & esptool</p>
+                  </div>
+                </div>
+
+                <div class="pt-2">
+                  <span class="text-[10px] font-mono uppercase text-zinc-500 block mb-2">CORE EXPERTISE</span>
+                  <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px]">
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Penetration Testing</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Network Security</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">SIEM & Wazuh</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Digital Forensics</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">Python Automation</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">OWASP Top 10</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Software Icons Strip -->
+              <div class="pt-3 border-t border-zinc-800/80 flex items-center gap-2 depth-layer-2">
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-sky-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-sky-400">KL</div>
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-emerald-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400">WS</div>
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-orange-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-orange-400">BP</div>
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-amber-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-amber-400">PY</div>
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-zinc-900 border border-indigo-500/40 flex items-center justify-center text-[9px] sm:text-[10px] font-mono font-bold text-[#9999FF]">LNX</div>
+              </div>
+            </div>
+
+            <!-- Col 2: Security Methodology -->
+            <div class="lg:col-span-4 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 space-y-4" data-inspectable="Card • Security Approach" data-3d-tilt data-max-tilt="9">
+              <div class="glare-overlay"></div>
+              <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-400 border-b border-zinc-800 pb-2.5 depth-layer-1">
+                SECURITY METHODOLOGY
+              </h3>
+
+              <div class="space-y-3 depth-layer-1">
+                <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                  <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">01</span>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-white">Reconnaissance & Threat Modeling</h4>
+                    <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Mapping attack surfaces, open daemons, and potential entry vectors systematically.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                  <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">02</span>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-white">Vulnerability Auditing & Pentesting</h4>
+                    <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Validating exposures through controlled ethical exploitation and OWASP standards.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                  <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">03</span>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-white">Zero-Trust Network Hardening</h4>
+                    <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Implementing microsegmentation, role-based access, and egress filtering.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-start gap-3">
+                  <span class="w-5 h-5 rounded bg-crimson/20 border border-crimson/40 text-crimson font-mono text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">04</span>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-white">Continuous Monitoring & Forensics</h4>
+                    <p class="text-[11px] sm:text-xs text-zinc-400 mt-0.5">Real-time SIEM log correlation and rapid incident containment.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Col 3: Signature Quote Card -->
+            <div class="lg:col-span-4 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#450a0a] to-[#1a0505] border border-crimson/40 p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden shadow-2xl" data-inspectable="Card • Quote Md Sohan Mahmud" data-3d-tilt data-max-tilt="11">
+              <div class="glare-overlay"></div>
+              <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-crimson/20 rounded-full blur-2xl pointer-events-none"></div>
+
+              <span class="font-display text-5xl sm:text-6xl text-crimson/60 leading-none select-none depth-layer-1">“</span>
+              <blockquote class="my-4 sm:my-6 space-y-2 relative z-10 depth-layer-2">
+                <p class="text-lg sm:text-2xl font-bold text-white leading-snug">
+                  Security is not a single product—it is a continuous mindset of vigilance and precision.
+                </p>
+                <p class="text-xs text-red-200/75">
+                  Bridging global perspectives from Bangladesh to La Trobe University, Australia.
+                </p>
+              </blockquote>
+
+              <div class="pt-4 border-t border-white/10 flex items-center justify-between relative z-10 depth-layer-1">
+                <div>
+                  <p class="font-script text-2xl sm:text-3xl text-white leading-none">Md Sohan Mahmud</p>
+                  <p class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-red-300 mt-1">CYBERSECURITY • LA TROBE UNIVERSITY</p>
+                </div>
+                <span class="w-8 h-8 rounded-full bg-black/30 border border-white/15 flex items-center justify-center text-white">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 6: 05 / THE JOURNEY
+           =================================================================== -->
+      <section id="journey" class="py-16 sm:py-28 border-b border-white/[0.06] relative">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8">
+          <div class="mb-10 sm:mb-12" data-inspectable="Heading • Keep Learning Keep Defending">
+            <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1.5">05 / THE JOURNEY</p>
+            <h2 class="font-display text-3xl sm:text-6xl uppercase leading-none tracking-tight">
+              KEEP LEARNING. <span class="text-crimson">KEEP DEFENDING.</span>
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <!-- Timeline List -->
+            <div class="lg:col-span-7 divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80" data-inspectable="Timeline • Cybersecurity Journey">
+              <div data-inspectable="Timeline • Present AU" data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
+                <div class="sm:col-span-4 depth-layer-1">
+                  <span class="text-xs font-mono font-bold text-crimson uppercase">PRESENT • AUSTRALIA</span>
+                </div>
+                <div class="sm:col-span-8 space-y-1 sm:space-y-2 depth-layer-1">
+                  <h3 class="text-base sm:text-lg font-bold text-white">Cybersecurity Student</h3>
+                  <p class="text-xs font-mono text-zinc-400">La Trobe University • Australia</p>
+                  <p class="text-xs text-zinc-400 leading-relaxed">
+                    Specializing in network security, ethical hacking, cryptography, cloud defense, and incident response at La Trobe University.
+                  </p>
+                </div>
+              </div>
+
+              <div data-inspectable="Timeline • CTF" data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
+                <div class="sm:col-span-4 depth-layer-1">
+                  <span class="text-xs font-mono text-crimson uppercase">2025 – PRESENT</span>
+                </div>
+                <div class="sm:col-span-8 space-y-1 depth-layer-1">
+                  <h3 class="text-base sm:text-lg font-bold text-white">CTF Competitor & Security Researcher</h3>
+                  <p class="text-xs font-mono text-zinc-400">TryHackMe, HackTheBox & University Cyber Society</p>
+                </div>
+              </div>
+
+              <div data-inspectable="Timeline • Home SOC" data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
+                <div class="sm:col-span-4 depth-layer-1">
+                  <span class="text-xs font-mono text-crimson uppercase">2024 – 2025</span>
+                </div>
+                <div class="sm:col-span-8 space-y-1 depth-layer-1">
+                  <h3 class="text-base sm:text-lg font-bold text-white">Home SOC & Lab Builder</h3>
+                  <p class="text-xs font-mono text-zinc-400">Virtualized SIEM, Active Directory & Kali Linux Environments</p>
+                </div>
+              </div>
+
+              <div data-inspectable="Timeline • Automation" data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
+                <div class="sm:col-span-4 depth-layer-1">
+                  <span class="text-xs font-mono text-crimson uppercase">2023 – 2024</span>
+                </div>
+                <div class="sm:col-span-8 space-y-1 depth-layer-1">
+                  <h3 class="text-base sm:text-lg font-bold text-white">Python & Network Automation Developer</h3>
+                  <p class="text-xs font-mono text-zinc-400">Custom Port Scanners, Log Parsers & Security Scripts</p>
+                </div>
+              </div>
+
+              <div data-inspectable="Timeline • Bangladesh" data-3d-tilt data-max-tilt="7" class="py-5 sm:py-6 px-3 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6 items-start">
+                <div class="sm:col-span-4 depth-layer-1">
+                  <span class="text-xs font-mono text-crimson uppercase">BANGLADESH 🇧🇩</span>
+                </div>
+                <div class="sm:col-span-8 space-y-1 depth-layer-1">
+                  <h3 class="text-base sm:text-lg font-bold text-white">Computer Science & STEM Foundations</h3>
+                  <p class="text-xs font-mono text-zinc-400">Originated in Bangladesh before relocating to Australia</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Milestones Card -->
+            <div class="lg:col-span-5 bg-[#0b0b0f] border border-zinc-800/80 rounded-2xl p-5 sm:p-8 space-y-5 sm:space-y-6" data-inspectable="Card • Little Wins Big Meaning" data-3d-tilt data-max-tilt="9">
+              <div class="glare-overlay"></div>
+              <div class="depth-layer-1">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">MILESTONES & HIGHLIGHTS</span>
+                <h3 class="font-display text-2xl sm:text-4xl uppercase leading-none">
+                  LITTLE WINS,<br/>
+                  <span class="text-crimson">BIG MEANING.</span>
+                </h3>
+              </div>
+
+              <div class="divide-y divide-zinc-800/80 text-xs depth-layer-1">
+                <div class="py-3 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="font-bold text-white">Pursuing Cybersecurity at La Trobe University</p>
+                    <p class="text-zinc-500 mt-0.5">Representing Bangladesh in Australia's tech ecosystem</p>
+                  </div>
+                  <span class="text-crimson font-mono">01</span>
+                </div>
+                <div class="py-3 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="font-bold text-white">Built Full-Stack Virtual SOC & Honeypot Lab</p>
+                    <p class="text-zinc-500 mt-0.5">Analyzing live attack telemetry and SIEM alerts</p>
+                  </div>
+                  <span class="text-crimson font-mono">02</span>
+                </div>
+                <div class="py-3 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="font-bold text-white">50+ CTF Machines & Security Labs Pwned</p>
+                    <p class="text-zinc-500 mt-0.5">PortSwigger, THM & HTB privilege escalation</p>
+                  </div>
+                  <span class="text-crimson font-mono">03</span>
+                </div>
+                <div class="py-3 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="font-bold text-white">Developed Custom Python Security Toolkit</p>
+                    <p class="text-zinc-500 mt-0.5">Automated recon, hash analysis, and packet inspection</p>
+                  </div>
+                  <span class="text-crimson font-mono">04</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION 7: 06 / CONTACT & COLLABORATION
+           =================================================================== -->
+      <section id="contact" class="py-16 sm:py-28 relative overflow-hidden z-20 pb-28 sm:pb-32">
+        <div class="max-w-[1380px] mx-auto px-4 sm:px-8 relative z-30">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+
+            <!-- Left Column -->
+            <div class="lg:col-span-5 flex flex-col justify-between space-y-5" data-inspectable="Contact • Let's Connect" data-3d-tilt data-max-tilt="8">
+              <div class="space-y-4 depth-layer-1">
+                <p class="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-500">06 / GET IN TOUCH</p>
+                <h2 class="font-display text-4xl sm:text-7xl uppercase leading-[0.9] tracking-tight">
+                  LET'S WORK<br/>
+                  <span class="text-crimson">TOGETHER.</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm">
+                  Looking to collaborate on cybersecurity projects, research, internships, or tech initiatives? Reach out directly via WhatsApp, Facebook, Instagram, Telegram, or Email.
+                </p>
+
+                <div class="pt-2 flex flex-wrap items-center gap-3 depth-layer-2">
+                  <button type="button" onclick="openContactModal()" class="clickable-node inline-flex items-center gap-3 bg-crimson hover:bg-crimson-bright text-white font-semibold text-xs font-mono uppercase tracking-wider px-6 py-3.5 rounded-lg shadow-lg shadow-crimson/25 transition">
+                    <span>SEND DIRECT MESSAGE</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="space-y-2 depth-layer-1 pt-2">
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-zinc-900/90 border border-zinc-800 w-fit text-xs text-zinc-300">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span>La Trobe University, Australia 🇦🇺 • From Bangladesh 🇧🇩</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Middle Column: 5 Direct Channels -->
+            <div class="lg:col-span-4 flex flex-col justify-center space-y-3 relative z-30" data-inspectable="Contact • 5 Direct Channels">
+              <!-- 1. WhatsApp -->
+              <a href="https://wa.me/61420407745" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening WhatsApp Chat with Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-emerald-500/60 flex items-center justify-between gap-3 text-left transition group">
+                <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                  <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#25D366]/15 border border-[#25D366]/35 text-[#25D366] flex items-center justify-center shrink-0 group-hover:bg-[#25D366] group-hover:text-white transition pointer-events-none">
+                    <!-- Official WhatsApp Brand Icon -->
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12.031 2C6.512 2 2.022 6.49 2.022 12.008c0 1.764.461 3.485 1.337 5.002L2 22l5.117-1.342a9.956 9.956 0 0 0 4.914 1.292h.004c5.518 0 10.008-4.49 10.008-10.008 0-2.674-1.041-5.188-2.931-7.078A9.946 9.946 0 0 0 12.031 2zm5.814 14.129c-.246.693-1.433 1.326-1.976 1.409-.499.076-1.132.108-1.825-.113-.422-.134-.965-.314-1.659-.614-2.919-1.26-4.825-4.197-4.971-4.391-.146-.194-1.186-1.579-1.186-3.012 0-1.434.751-2.138 1.018-2.43.267-.291.582-.364.776-.364.194 0 .388.002.558.01.179.009.42-.068.657.502.246.591.835 2.036.908 2.182.073.146.121.316.024.51-.097.194-.146.316-.291.486-.146.17-.307.38-.438.51-.146.145-.298.303-.128.595.17.291.755 1.246 1.622 2.018 1.115.994 2.054 1.302 2.345 1.448.291.146.461.121.631-.073.17-.194.728-.85.922-1.141.194-.291.388-.243.655-.146.267.097 1.698.801 1.989.947.291.146.485.218.558.34.073.121.073.704-.173 1.397z"/>
+                    </svg>
+                  </span>
+                  <div class="overflow-hidden pointer-events-none">
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">WHATSAPP</span>
+                    <span class="text-xs sm:text-sm font-medium text-white truncate block">Chat on WhatsApp • Sohan</span>
+                  </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
+              </a>
+
+              <!-- 2. Facebook -->
+              <a href="https://facebook.com/MD.Sohan.Mahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Facebook • Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-blue-500/60 flex items-center justify-between gap-3 text-left transition group">
+                <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                  <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#1877F2]/15 border border-[#1877F2]/35 text-[#1877F2] flex items-center justify-center shrink-0 group-hover:bg-[#1877F2] group-hover:text-white transition pointer-events-none">
+                    <!-- Official Facebook Brand Icon -->
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
+                    </svg>
+                  </span>
+                  <div class="overflow-hidden pointer-events-none">
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">FACEBOOK</span>
+                    <span class="text-xs sm:text-sm font-medium text-white truncate block">Md Sohan Mahmud</span>
+                  </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-blue-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
+              </a>
+
+              <!-- 3. Instagram -->
+              <a href="https://instagram.com/sohanmahmud484" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Instagram • Md Sohan Mahmud')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-pink-500/60 flex items-center justify-between gap-3 text-left transition group">
+                <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                  <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#E4405F]/15 border border-[#E4405F]/35 text-[#E4405F] flex items-center justify-center shrink-0 group-hover:bg-gradient-to-tr group-hover:from-[#f09433] group-hover:via-[#dc2743] group-hover:to-[#bc1888] group-hover:text-white transition pointer-events-none">
+                    <!-- Official Instagram Brand Icon -->
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                  </span>
+                  <div class="overflow-hidden pointer-events-none">
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">INSTAGRAM</span>
+                    <span class="text-xs sm:text-sm font-medium text-white truncate block">@sohanmahmud484</span>
+                  </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-pink-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
+              </a>
+
+              <!-- 4. Telegram -->
+              <a href="https://t.me/mds0h41" target="_blank" rel="noopener noreferrer" data-3d-tilt data-max-tilt="10" onclick="showToast('Opening Telegram • @mds0h41')" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-sky-500/60 flex items-center justify-between gap-3 text-left transition group">
+                <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                  <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#26A5E4]/15 border border-[#26A5E4]/35 text-[#26A5E4] flex items-center justify-center shrink-0 group-hover:bg-[#26A5E4] group-hover:text-white transition pointer-events-none">
+                    <!-- Official Telegram Brand Icon -->
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </span>
+                  <div class="overflow-hidden pointer-events-none">
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">TELEGRAM</span>
+                    <span class="text-xs sm:text-sm font-medium text-white truncate block">@mds0h41</span>
+                  </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-sky-400 shrink-0 transition depth-layer-1 pointer-events-none"></i>
+              </a>
+
+              <!-- 5. Email (Click to Copy) -->
+              <button type="button" onclick="copyEmail('sohanmahmud484897@gmail.com')" data-3d-tilt data-max-tilt="10" class="clickable-node w-full p-3 rounded-xl bg-[#0c0c11] hover:bg-zinc-900 border border-zinc-800/80 hover:border-crimson/60 flex items-center justify-between gap-3 text-left transition group">
+                <div class="flex items-center gap-3 overflow-hidden depth-layer-1">
+                  <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#EA4335]/15 border border-[#EA4335]/35 text-[#EA4335] flex items-center justify-center shrink-0 group-hover:bg-[#EA4335] group-hover:text-white transition pointer-events-none">
+                    <!-- Official Gmail Brand Icon -->
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+                    </svg>
+                  </span>
+                  <div class="overflow-hidden pointer-events-none">
+                    <span class="text-[9px] sm:text-[10px] font-mono uppercase text-zinc-500 block">GMAIL (CLICK TO COPY)</span>
+                    <span class="text-xs sm:text-sm font-medium text-white truncate block">sohanmahmud484897@gmail.com</span>
+                  </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-zinc-600 group-hover:text-crimson shrink-0 transition depth-layer-1 pointer-events-none"></i>
+              </button>
+            </div>
+
+            <!-- Right Column: Swarm Trigger -->
+            <div class="lg:col-span-3 relative z-30" data-inspectable="Card • Secure The Future" data-3d-tilt data-max-tilt="12">
+              <div onclick="triggerCursorBurst(event)" class="clickable-node h-full min-h-[220px] sm:min-h-[260px] rounded-2xl bg-gradient-to-b from-[#13090b] to-[#09090d] border border-zinc-800 hover:border-crimson/60 p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden group">
+                <div class="glare-overlay"></div>
+                <div class="absolute -top-12 -right-12 w-36 h-36 bg-crimson/25 rounded-full blur-2xl group-hover:bg-crimson/40 transition"></div>
+
+                <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500 depth-layer-1 pointer-events-none">
+                  <span>SOHAN CYBER LAB</span>
+                  <span class="text-emerald-400">● ONLINE</span>
+                </div>
+
+                <div class="my-auto py-4 sm:py-6 depth-layer-2 pointer-events-none">
+                  <h3 class="font-display text-3xl sm:text-5xl uppercase leading-[0.92] text-white">
+                    SECURE<br/>
+                    <span class="text-crimson">THE FUTURE.</span>
+                  </h3>
+                  <p class="text-[11px] text-zinc-500 mt-2">Tap or click this card to unleash the live agent swarm.</p>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-zinc-800/80 depth-layer-1 pointer-events-none">
+                  <span class="text-[10px] font-mono text-zinc-400">CYBERSECURITY • AU</span>
+                  <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg group-hover:rotate-90 transition">
+                    <i data-lucide="plus" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Footer -->
+          <div class="mt-16 sm:mt-20 pt-6 sm:pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500 font-mono">
+            <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 text-center sm:text-left">
+              <span class="font-display text-lg sm:text-xl text-white">MD SOHAN MAHMUD<span class="text-crimson">.</span></span>
+              <span>© 2026 Md Sohan Mahmud • La Trobe University, Australia.</span>
+            </div>
+            <div>
+              <a href="#hero" class="hover:text-white transition flex items-center gap-1 text-[11px]">
+                <span>BACK TO TOP</span>
+                <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-crimson"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       4. PERSISTENT FLOATING CANVAS TOOLBAR (WITH LIVE SWARM TELEMETRY)
+       ===================================================================== -->
+  <div class="fixed bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-[70] flex items-center gap-1.5 sm:gap-2 max-w-[96vw] safe-dock-pb pointer-events-auto">
+    <div class="flex items-center gap-1 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 rounded-full p-1 sm:p-1.5 shadow-2xl">
+      <button onclick="setCanvasTool('select')" id="tool-select" title="Select & Inspect Element (V)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blueprint text-white flex items-center justify-center transition">
+        <i data-lucide="mouse-pointer" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+      </button>
+
+      <button onclick="setCanvasTool('hand')" id="tool-hand" title="Hand / Drag Scroll (H)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="hand" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+      </button>
+
+      <button onclick="setCanvasTool('pen')" id="tool-pen" title="Draw Annotations on Page (P)" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="pencil" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+      </button>
+
+      <button onclick="toggleCursorSwarm()" id="tool-swarm" title="Toggle Live Collaborator Cursors" class="tool-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full text-crimson bg-crimson/10 hover:bg-crimson/20 flex items-center justify-center transition">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+      </button>
+
+      <button onclick="replayPageBuild()" title="Replay Agent Build Animation" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-blueprint hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="layers" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+      </button>
+
+      <!-- Live Agent Builder Telemetry Readout (Visible on Mobile & Desktop) -->
+      <div class="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[9px] sm:text-[10px] font-mono text-zinc-300 select-none">
+        <span class="hidden sm:flex -space-x-1">
+          <span class="w-2 h-2 rounded-full bg-crimson"></span>
+          <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+          <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        </span>
+        <span id="agent-count-readout" class="text-white font-bold whitespace-nowrap">34 agents</span>
+        <span id="layer-telemetry-readout" class="hidden sm:inline text-zinc-500 whitespace-nowrap">0 / 0 blocks</span>
+      </div>
+
+      <button onclick="clearCanvasDrawings()" title="Clear Drawings & Reset Zoom" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center transition">
+        <i data-lucide="rotate-ccw" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
+      </button>
+
+      <div class="h-3.5 w-[1px] bg-zinc-800 mx-0.5"></div>
+
+      <button onclick="adjustCanvasZoom(-10)" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom Out">-</button>
+      <span id="zoom-readout" class="text-[10px] sm:text-[11px] font-mono text-zinc-200 px-1 select-none">100%</span>
+      <button onclick="adjustCanvasZoom(10)" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full text-zinc-400 hover:text-white flex items-center justify-center text-xs font-mono" title="Zoom In">+</button>
+    </div>
+
+    <!-- 3D / Swarm State Indicator & Switcher -->
+    <button onclick="toggle3DDeviceMode()" id="btn-3d-mode" title="Switch 3D Mode" class="flex items-center gap-1.5 sm:gap-2 bg-[#121218]/95 backdrop-blur-xl border border-zinc-700/80 hover:border-crimson rounded-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-[11px] font-mono text-zinc-200 shadow-2xl transition">
+      <span id="mode-3d-dot" class="w-2 h-2 rounded-full bg-crimson animate-pulse"></span>
+      <span id="mode-3d-label" class="whitespace-nowrap">Swarm: Follow</span>
+    </button>
+  </div>
+
+  <!-- =====================================================================
+       5. MODALS & TOAST NOTIFICATION
+       ===================================================================== -->
+  <div id="project-modal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-zinc-800">
+        <div class="flex items-center gap-2">
+          <span id="modal-badge" class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-crimson text-white">LAB</span>
+          <h3 id="modal-title" class="font-bold text-xs sm:text-base text-white truncate max-w-[200px] sm:max-w-none">Lab Details</h3>
+        </div>
+        <button onclick="closeProjectModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="p-4 sm:p-5 space-y-3 sm:space-y-4">
+        <div class="relative aspect-video rounded-lg overflow-hidden bg-black border border-zinc-800">
+          <img id="modal-img" src="" alt="Preview" class="w-full h-full object-cover" />
+        </div>
+        <p id="modal-desc" class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans"></p>
+        <div class="flex items-center justify-between pt-2.5 border-t border-zinc-800 text-[10px] sm:text-[11px] font-mono text-zinc-400">
+          <span id="modal-tools" class="truncate pr-2">Stack</span>
+          <span id="modal-year" class="text-crimson font-bold shrink-0">2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="contact-modal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#0e0e14] border border-zinc-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div>
+          <span class="text-[10px] font-mono uppercase text-crimson block font-bold">DIRECT ENCRYPTED CHANNEL</span>
+          <h3 class="text-base font-bold text-white">Message Md Sohan Mahmud</h3>
+        </div>
+        <button onclick="closeContactModal()" class="p-1.5 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form onsubmit="submitContactForm(event)" class="space-y-3 font-mono text-xs">
+        <div>
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Your Name</label>
+          <input type="text" required placeholder="Enter your name" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Your Email</label>
+          <input type="email" required placeholder="name@company.com" class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase text-zinc-400 block mb-1">Message / Collaboration</label>
+          <textarea rows="3" required placeholder="Write your message here..." class="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-crimson"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-lg bg-crimson hover:bg-crimson-bright text-white font-semibold uppercase tracking-wider transition cursor-pointer">
+          Transmit Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-16 sm:bottom-20 right-4 sm:right-6 z-[120] bg-[#121218] border border-crimson/60 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-mono opacity-0 pointer-events-none transition-opacity duration-300">
+    <span class="w-2 h-2 rounded-full bg-crimson animate-ping"></span>
+    <span id="toast-msg">Action completed</span>
+  </div>
+
+  <!-- =====================================================================
+       6. COMPLETE JAVASCRIPT ENGINE:
+          BLENDED NON-OVERLAPPING IDLE CURSOR SWARM + VIDEO-STYLE SCROLL INSPECTOR
+       ===================================================================== -->
+  <script>
+    function safeCreateIcons() {
+      try {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+      } catch (e) {}
+    }
+
+    // Projects Dataset
+    const projectsData = [
+      {
+        id: '01',
+        title: 'ENTERPRISE SOC & SIEM LAB',
+        category: 'Defensive',
+        subBadge: 'Threat Detection',
+        year: '2026',
+        tools: 'Splunk, Wazuh, Wireshark, Sysmon',
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+        desc: 'Designed and deployed a virtual Security Operations Center (SOC) to ingest real-time endpoint logs, detect brute-force anomalies, and automate incident response playbooks.'
+      },
+      {
+        id: '02',
+        title: 'WEB APP PENTESTING SUITE',
+        category: 'Offensive',
+        subBadge: 'OWASP Top 10',
+        year: '2026',
+        tools: 'Burp Suite, Kali Linux, Nmap, SQLMap',
+        image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+        desc: 'Comprehensive security auditing and ethical penetration testing against vulnerable web architectures with full remediation reports and exploit proofs.'
+      },
+      {
+        id: '03',
+        title: 'ZERO-TRUST NETWORK ARCHITECTURE',
+        category: 'Defensive',
+        subBadge: 'Firewall & IDS',
+        year: '2025',
+        tools: 'pfSense, Suricata IDS, VLANs, WireGuard',
+        image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80',
+        desc: 'Segmented enterprise network simulation studied at La Trobe University featuring deep packet inspection, egress controls, and intrusion detection.'
+      },
+      {
+        id: '04',
+        title: 'PYTHON THREAT RECON & SCANNER',
+        category: 'Automation',
+        subBadge: 'SecOps Automation',
+        year: '2025',
+        tools: 'Python 3, Scapy, Shodan API, Linux',
+        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+        desc: 'Multi-threaded Python reconnaissance and port-scanning tool that fingerprints exposed services and cross-references live CVE vulnerability databases.'
+      },
+      {
+        id: '05',
+        title: 'MEMORY & DISK FORENSICS LAB',
+        category: 'Defensive',
+        subBadge: 'Visual Forensics',
+        year: '2025',
+        tools: 'Volatility, Autopsy, FTK Imager',
+        image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+        desc: 'Extracted volatile memory artifacts and reconstructed timeline incident evidence from compromised disk images during simulated forensic investigations.'
+      },
+      {
+        id: '06',
+        title: 'ESP32 FIRMWARE & RF SECURITY LAB',
+        category: 'Hardware',
+        subBadge: 'Embedded IoT',
+        year: '2024',
+        tools: 'ESP32-WROOM-32, esptool, picocom, Kali',
+        image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+        desc: 'Testing microcontroller hardware interfaces, serial debugging buses (UART), wireless packet analysis, and firmware extraction on bare-metal Kali Linux.'
+      }
+    ];
+
+    function renderProjects(category = 'All') {
+      const grid = document.getElementById('projects-grid');
+      if (!grid) return;
+
+      let listToShow = projectsData.slice(0, 3);
+      if (category === 'ShowAll6' || category === 'All') {
+        listToShow = projectsData;
+      } else {
+        const filtered = projectsData.filter(p => p.category.toLowerCase() === category.toLowerCase());
+        listToShow = filtered.length ? filtered : projectsData;
+      }
+
+      grid.innerHTML = listToShow.map(item => `
+        <article 
+          onclick="openProjectModal(${projectsData.indexOf(item)})"
+          data-inspectable="Card • ${item.title}"
+          data-3d-tilt
+          data-max-tilt="12"
+          class="clickable-node group rounded-2xl bg-[#0b0b10] border border-zinc-800/80 hover:border-crimson/70 overflow-hidden transition-all duration-300 flex flex-col justify-between"
+        >
+          <div class="glare-overlay"></div>
+          <div class="relative aspect-[16/10] overflow-hidden bg-zinc-900 pointer-events-none">
+            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b10] via-transparent to-black/30"></div>
+            <div class="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 flex items-center gap-1.5 depth-layer-1">
+              <span class="px-2 py-0.5 rounded bg-black/75 backdrop-blur-md border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">${item.category}</span>
+              <span class="px-2 py-0.5 rounded bg-crimson/90 text-[9px] sm:text-[10px] font-mono text-white font-bold">${item.subBadge}</span>
+            </div>
+          </div>
+          <div class="p-3.5 sm:p-5 flex items-center justify-between gap-3 depth-layer-1 pointer-events-none">
+            <div class="flex items-baseline gap-2.5 sm:gap-3">
+              <span class="font-display text-xl sm:text-3xl text-crimson leading-none">${item.id}</span>
+              <div>
+                <h3 class="font-bold text-xs sm:text-base text-white group-hover:text-crimson transition uppercase tracking-wide font-mono">${item.title}</h3>
+                <p class="text-[10px] sm:text-[11px] font-mono text-zinc-500 mt-0.5">${item.category} • ${item.year}</p>
+              </div>
+            </div>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-900 border border-zinc-700 group-hover:bg-crimson group-hover:border-crimson text-white flex items-center justify-center transition shrink-0">
+              <svg class="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </span>
+          </div>
+        </article>
+      `).join('');
+
+      bind3DTiltListeners();
+      registerBuildableElements(true);
+      safeCreateIcons();
+    }
+
+    function filterProjects(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.cat === category || (category === 'ShowAll6' && btn.dataset.cat === 'All')) {
+          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-crimson text-white transition whitespace-nowrap';
+        } else {
+          btn.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800 transition whitespace-nowrap';
+        }
+      });
+      renderProjects(category);
+    }
+
+    function openProjectModal(index) {
+      const item = projectsData[index] || projectsData[0];
+      document.getElementById('modal-badge').textContent = item.category;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-img').src = item.image;
+      document.getElementById('modal-desc').textContent = item.desc;
+      document.getElementById('modal-year').textContent = item.year;
+      document.getElementById('modal-tools').textContent = item.tools;
+      const modal = document.getElementById('project-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('project-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Comparison Slider
+    const breakdownScenes = [
+      {
+        img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85',
+        caption: 'LAB_01 • WIRESHARK PACKET INSPECTION & SIEM CORRELATION'
+      },
+      {
+        img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=85',
+        caption: 'LAB_02 • BURP SUITE PAYLOAD ANALYSIS & WAF HARDENING'
+      },
+      {
+        img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85',
+        caption: 'LAB_03 • ZERO-TRUST SUBNET ISOLATION & IDS TELEMETRY'
+      }
+    ];
+
+    function switchBreakdownScene(idx) {
+      const scene = breakdownScenes[idx];
+      document.getElementById('after-img').src = scene.img;
+      document.getElementById('before-img').src = scene.img;
+      document.getElementById('breakdown-caption').textContent = scene.caption;
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById('scene-btn-' + i);
+        btn.className = i === idx
+          ? 'clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-crimson text-white transition'
+          : 'clickable-node px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition';
+      });
+    }
+
+    const compContainer = document.getElementById('comparison-container');
+    const beforeLayer = document.getElementById('before-layer');
+    const sliderDivider = document.getElementById('slider-divider');
+    const sliderReadout = document.getElementById('slider-percent-readout');
+    let isSliding = false;
+
+    function setComparisonSlider(percent) {
+      const clamped = Math.max(4, Math.min(96, percent));
+      beforeLayer.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+      sliderDivider.style.left = `${clamped}%`;
+      sliderReadout.textContent = `${Math.round(clamped)}% RAW`;
+    }
+
+    function handleSliderMove(clientX) {
+      const rect = compContainer.getBoundingClientRect();
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      setComparisonSlider(pct);
+    }
+
+    compContainer.addEventListener('mousedown', (e) => { isSliding = true; handleSliderMove(e.clientX); });
+    window.addEventListener('mouseup', () => { isSliding = false; });
+    window.addEventListener('mousemove', (e) => { if (isSliding) handleSliderMove(e.clientX); });
+
+    compContainer.addEventListener('touchstart', (e) => {
+      if (!e.touches[0]) return;
+      isSliding = true;
+      handleSliderMove(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('touchend', () => { isSliding = false; });
+    window.addEventListener('touchcancel', () => { isSliding = false; });
+    window.addEventListener('touchmove', (e) => {
+      if (isSliding && e.touches[0]) {
+        e.preventDefault();
+        handleSliderMove(e.touches[0].clientX);
+      }
+    }, { passive: false });
+
+    // Audio Reel Engine with Mobile Autoplay Unblock
+    let audioCtx = null;
+    let isPlayingAudio = false;
+    let audioInterval = null;
+    let secondsRemaining = 45;
+
+    function toggleShowreelAudio() {
+      const waveContainer = document.getElementById('waveform-container');
+      const timerEl = document.getElementById('audio-timer');
+      const btn = document.getElementById('btn-audio-play');
+
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      if (!isPlayingAudio) {
+        isPlayingAudio = true;
+        waveContainer.classList.remove('wave-paused');
+        btn.innerHTML = '<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+
+        playCinematicPulse();
+        audioInterval = setInterval(() => {
+          playCinematicPulse();
+          secondsRemaining = secondsRemaining > 1 ? secondsRemaining - 1 : 45;
+          timerEl.textContent = `00:${String(secondsRemaining).padStart(2, '0')}`;
+        }, 1000);
+      } else {
+        isPlayingAudio = false;
+        waveContainer.classList.add('wave-paused');
+        btn.innerHTML = '<svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+        clearInterval(audioInterval);
+      }
+    }
+
+    function playCinematicPulse() {
+      if (!audioCtx || !isPlayingAudio) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(65.41, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(42, audioCtx.currentTime + 0.45);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.52);
+      } catch (err) {}
+    }
+
+    // Figma Selection Box & Canvas Tool State
+    let currentTool = 'select';
+    let currentZoom = 100;
+    const selectionHud = document.getElementById('selection-hud');
+    const selectionTag = document.getElementById('selection-tag');
+    const selectionDims = document.getElementById('selection-dims');
+
+    function updateSelectionBox(el) {
+      if (!el || currentTool !== 'select') {
+        selectionHud.classList.add('hidden');
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      selectionHud.classList.remove('hidden');
+      selectionHud.style.top = `${rect.top}px`;
+      selectionHud.style.left = `${rect.left}px`;
+      selectionHud.style.width = `${rect.width}px`;
+      selectionHud.style.height = `${rect.height}px`;
+      selectionTag.textContent = el.getAttribute('data-inspectable') || 'Component';
+      selectionDims.textContent = `${Math.round(rect.width)} × ${Math.round(rect.height)}`;
+    }
+
+    document.addEventListener('mouseover', (e) => {
+      if (currentTool !== 'select' || isScrollingActive) return;
+      const target = e.target.closest('[data-inspectable]');
+      if (target) updateSelectionBox(target);
+    });
+
+    // Mobile & Tablet tap-to-inspect parity with desktop hover HUD
+    let touchInspectHideTimer = null;
+    document.addEventListener('touchstart', (e) => {
+      if (currentTool !== 'select' || isScrollingActive) return;
+      const target = e.target.closest('[data-inspectable]');
+      if (target) {
+        updateSelectionBox(target);
+        clearTimeout(touchInspectHideTimer);
+        touchInspectHideTimer = setTimeout(() => {
+          selectionHud.classList.add('hidden');
+        }, 1600);
+      }
+    }, { passive: true });
+
+    // Drawing Canvas (High-DPI sharp on Android, iOS, and PC)
+    const drawCanvas = document.getElementById('drawing-canvas');
+    const drawCtx = drawCanvas.getContext('2d');
+    let isDrawing = false;
+
+    function getViewportSize() {
+      const vv = window.visualViewport;
+      return {
+        width: Math.round(vv ? vv.width : window.innerWidth),
+        height: Math.round(vv ? vv.height : window.innerHeight)
+      };
+    }
+
+    function resizeDrawCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = getViewportSize();
+      drawCanvas.width = Math.round(width * dpr);
+      drawCanvas.height = Math.round(height * dpr);
+      drawCanvas.style.width = `${width}px`;
+      drawCanvas.style.height = `${height}px`;
+      drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resizeDrawCanvas);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', resizeDrawCanvas);
+    resizeDrawCanvas();
+
+    drawCanvas.addEventListener('mousedown', (e) => {
+      if (currentTool !== 'pen') return;
+      isDrawing = true;
+      drawCtx.strokeStyle = '#dc2626';
+      drawCtx.lineWidth = 2.5;
+      drawCtx.lineCap = 'round';
+      drawCtx.beginPath();
+      drawCtx.moveTo(e.clientX, e.clientY);
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDrawing || currentTool !== 'pen') return;
+      drawCtx.lineTo(e.clientX, e.clientY);
+      drawCtx.stroke();
+    });
+    window.addEventListener('mouseup', () => { isDrawing = false; });
+
+    drawCanvas.addEventListener('touchstart', (e) => {
+      if (currentTool !== 'pen' || !e.touches[0]) return;
+      isDrawing = true;
+      drawCtx.strokeStyle = '#dc2626';
+      drawCtx.lineWidth = 3;
+      drawCtx.lineCap = 'round';
+      drawCtx.beginPath();
+      drawCtx.moveTo(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    drawCanvas.addEventListener('touchmove', (e) => {
+      if (!isDrawing || currentTool !== 'pen' || !e.touches[0]) return;
+      e.preventDefault();
+      drawCtx.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+      drawCtx.stroke();
+    }, { passive: false });
+
+    drawCanvas.addEventListener('touchend', () => { isDrawing = false; });
+
+    // Hand Tool Drag-to-Scroll (Works on PC Mouse & Touch Devices)
+    let isHandPanning = false;
+    let handStartY = 0;
+    let handStartScrollY = 0;
+
+    window.addEventListener('mousedown', (e) => {
+      if (currentTool !== 'hand') return;
+      isHandPanning = true;
+      handStartY = e.clientY;
+      handStartScrollY = window.scrollY;
+      document.body.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isHandPanning || currentTool !== 'hand') return;
+      window.scrollTo({ top: handStartScrollY - (e.clientY - handStartY) * 1.35, behavior: 'auto' });
+    });
+    window.addEventListener('mouseup', () => {
+      if (isHandPanning) {
+        isHandPanning = false;
+        if (currentTool === 'hand') document.body.style.cursor = 'grab';
+      }
+    });
+
+    function setCanvasTool(tool) {
+      currentTool = tool;
+      document.querySelectorAll('.tool-btn').forEach(b => {
+        b.classList.remove('bg-blueprint', 'text-white');
+        b.classList.add('text-zinc-400');
+      });
+      const activeBtn = document.getElementById('tool-' + tool);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-blueprint', 'text-white');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+
+      if (tool === 'pen') {
+        document.body.classList.add('pen-mode-active');
+        selectionHud.classList.add('hidden');
+        showToast('Pen Mode Active: Draw annotations anywhere');
+      } else {
+        document.body.classList.remove('pen-mode-active');
+      }
+
+      if (tool === 'hand') {
+        document.body.classList.add('hand-mode-active');
+        document.body.style.cursor = 'grab';
+        selectionHud.classList.add('hidden');
+        showToast('Hand Mode Active: Drag to pan');
+      } else {
+        document.body.classList.remove('hand-mode-active');
+        if (tool === 'select') document.body.style.cursor = 'default';
+      }
+    }
+
+    function clearCanvasDrawings() {
+      const { width, height } = getViewportSize();
+      drawCtx.clearRect(0, 0, width, height);
+      currentZoom = 100;
+      document.getElementById('canvas-viewport').style.transform = 'scale(1)';
+      document.getElementById('zoom-readout').textContent = '100%';
+      document.body.classList.remove('wireframe-mode');
+      showToast('Canvas & Zoom Reset (100%)');
+    }
+
+    function adjustCanvasZoom(delta) {
+      currentZoom = Math.max(70, Math.min(120, currentZoom + delta));
+      document.getElementById('canvas-viewport').style.transform = `scale(${currentZoom / 100})`;
+      document.getElementById('zoom-readout').textContent = `${currentZoom}%`;
+    }
+
+    function toggleWireframeMode() {
+      document.body.classList.toggle('wireframe-mode');
+      const isWire = document.body.classList.contains('wireframe-mode');
+      showToast(isWire ? 'Blueprint Wireframe Mode Active' : 'Normal Visual Mode');
+    }
+
+    // =========================================================================
+    // BLENDED ENGINE (VIDEO-AUTHENTIC AGENT BUILDER + NON-OVERLAPPING FOLLOW):
+    // 1. WHEN SCROLLING INTO NEW CONTENT (Mobile & Desktop):
+    //    Unbuilt elements start hidden. As they enter the viewport, agent
+    //    cursors peel off from the swarm, fly to each element, draw a live
+    //    Figma blueprint frame with real-time dimensions (W × H), and drag/sweep
+    //    the actual DOM content into existence. Once loaded, the blue frame
+    //    cleanly fades away leaving crisp, completely stable UI.
+    // 2. WHEN STOPPED SCROLLING / IDLE:
+    //    All free cursors smoothly glide back to follow your cursor (or touch
+    //    focal point on mobile) in separated non-overlapping rings—guaranteed
+    //    to NEVER mix, clump, or collide.
+    // =========================================================================
+    const swarmCanvas = document.getElementById('swarm-canvas');
+    const swarmCtx = swarmCanvas.getContext('2d');
+    let swarmActive = true;
+    let mousePos = { x: window.innerWidth * 0.62, y: window.innerHeight * 0.44 };
+    let prevMousePos = { x: mousePos.x, y: mousePos.y };
+    let mouseSpeed = 0;
+    let hasPointerMoved = false;
+
+    // Scroll & Build Engine State
+    let isScrollingActive = false;
+    let scrollStopTimeout = null;
+    let buildableNodes = [];      // All tracked elements on the page
+    let activeBuildJobs = [];     // Currently constructing elements
+    let fadingFrames = [];        // Short 180ms clean fade-out after a build completes
+    let totalBuiltCount = 0;
+    let introFinished = false;
+
+    const cursors = [];
+    const cursorColors = [
+      '#ffffff', // White
+      '#38bdf8', // Sky
+      '#60a5fa', // Blueprint blue
+      '#f472b6', // Pink
+      '#c084fc', // Purple
+      '#34d399', // Emerald
+      '#fbbf24', // Amber
+      '#ef4444'  // Crimson
+    ];
+    // Consistent rich swarm count across Android, iOS, Tablets, and PC
+    const NUM_CURSORS = window.innerWidth < 480 ? 28 : 34;
+
+    let swarmViewW = window.innerWidth;
+    let swarmViewH = window.innerHeight;
+
+    function resizeSwarmCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = getViewportSize();
+      swarmViewW = width;
+      swarmViewH = height;
+      swarmCanvas.width = Math.round(width * dpr);
+      swarmCanvas.height = Math.round(height * dpr);
+      swarmCanvas.style.width = `${width}px`;
+      swarmCanvas.style.height = `${height}px`;
+      swarmCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resizeSwarmCanvas);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', resizeSwarmCanvas);
+    resizeSwarmCanvas();
+
+    // Initialize agent cursors in non-overlapping golden-angle rings
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < NUM_CURSORS; i++) {
+      const theta = i * goldenAngle;
+      const ringRadius = 44 + Math.sqrt(i + 1) * 24;
+      cursors.push({
+        id: i,
+        x: mousePos.x + Math.cos(theta) * ringRadius,
+        y: mousePos.y + Math.sin(theta) * ringRadius,
+        vx: 0,
+        vy: 0,
+        angle: theta,
+        orbitAngle: theta,
+        orbitSpeed: (i % 2 === 0 ? 1 : -1) * (0.0055 + (i % 6) * 0.0014),
+        orbitRadius: ringRadius,
+        noiseOffset: i * 1.618,
+        color: cursorColors[i % cursorColors.length],
+        size: 6.0 + (i % 3) * 0.85,
+        hollow: i % 4 === 2,
+        assignedJob: null,
+        role: null // 'lead' | 'helper'
+      });
+    }
+
+    // Classify how an element should be constructed by the agents
+    function detectBuildStyle(el) {
+      const tag = el.tagName.toLowerCase();
+      const label = (el.getAttribute('data-inspectable') || '').toLowerCase();
+      if (
+        label.includes('heading') ||
+        label.includes('display') ||
+        label.includes('text') ||
+        label.includes('filter') ||
+        tag === 'h1' || tag === 'h2' || tag === 'p'
+      ) {
+        return 'text-sweep';
+      }
+      if (label.includes('honor') || label.includes('timeline')) {
+        return 'row-slide';
+      }
+      return 'frame-drag';
+    }
+
+    // Register all content blocks inside #canvas-viewport as buildable by the cursors
+    function registerBuildableElements(onlyNew = false) {
+      const viewport = document.getElementById('canvas-viewport');
+      if (!viewport) return;
+
+      const candidates = Array.from(viewport.querySelectorAll('[data-inspectable]'));
+      // Keep only leaf-ish / primary visual containers (avoid double-hiding nested children inside an already-buildable parent)
+      const filtered = candidates.filter(el => {
+        const parentBuildable = el.parentElement && el.parentElement.closest('#canvas-viewport [data-inspectable]');
+        return !parentBuildable;
+      });
+
+      if (!onlyNew) {
+        buildableNodes = [];
+        activeBuildJobs = [];
+        fadingFrames = [];
+        totalBuiltCount = 0;
+        cursors.forEach(c => { c.assignedJob = null; c.role = null; });
+      }
+
+      filtered.forEach(el => {
+        if (onlyNew && el.dataset.buildRegistered === 'true') return;
+        el.dataset.buildRegistered = 'true';
+        el.dataset.buildState = 'pending';
+        el.style.clipPath = 'inset(0 100% 100% 0)';
+        el.style.opacity = '0';
+
+        buildableNodes.push({
+          el,
+          style: detectBuildStyle(el),
+          label: el.getAttribute('data-inspectable') || 'Layer',
+          state: 'pending' // 'pending' | 'building' | 'built'
+        });
+      });
+
+      updateTelemetryUI();
+    }
+
+    // Instantly finalize an element (used if user scrolled rapidly past it or disabled swarm)
+    function instantRevealNode(node) {
+      if (node.state === 'built') return;
+      node.state = 'built';
+      node.el.dataset.buildState = 'built';
+      node.el.style.clipPath = '';
+      node.el.style.opacity = '';
+      totalBuiltCount++;
+      updateTelemetryUI();
+    }
+
+    // Pick available cursors nearest to a screen coordinate to build an element
+    function acquireFreeCursors(targetX, targetY, count) {
+      const free = cursors.filter(c => !c.assignedJob);
+      if (!free.length) return [];
+      free.sort((a, b) => {
+        const da = (a.x - targetX) ** 2 + (a.y - targetY) ** 2;
+        const db = (b.x - targetX) ** 2 + (b.y - targetY) ** 2;
+        return da - db;
+      });
+      return free.slice(0, count);
+    }
+
+    // Launch a cursor-driven construction job for an element entering the viewport
+    function startBuildJob(node) {
+      const rect = node.el.getBoundingClientRect();
+      if (rect.width < 10 || rect.height < 10) {
+        instantRevealNode(node);
+        return;
+      }
+
+      // Assign 2-3 cursors for large cards/frames, 1-2 for compact text/rows
+      const isLarge = rect.width * rect.height > 48000;
+      const needed = node.style === 'frame-drag' ? (isLarge ? 3 : 2) : 2;
+      let assigned = acquireFreeCursors(rect.left, rect.top, needed);
+
+      // On narrow/fast mobile scrolls, borrow 1 helper from an active job so no block ever stalls
+      if (!assigned.length) {
+        for (let j = 0; j < activeBuildJobs.length; j++) {
+          const donor = activeBuildJobs[j];
+          if (donor.helperCursors.length > 0) {
+            const borrowed = donor.helperCursors.pop();
+            borrowed.assignedJob = null;
+            borrowed.role = null;
+            assigned = [borrowed];
+            break;
+          }
+        }
+      }
+
+      if (!assigned.length) {
+        // Still busy -> will be picked up immediately on the next frame once a cursor frees up
+        return;
+      }
+
+      node.state = 'building';
+      node.el.dataset.buildState = 'building';
+
+      const job = {
+        node,
+        style: node.style,
+        phase: 'approach', // 'approach' -> 'build'
+        approachProgress: 0,
+        buildProgress: 0,
+        // Balanced, smooth build duration so you can clearly watch the cursors construct each block without feeling sluggish
+        durationMs: node.style === 'frame-drag' ? (isLarge ? 1050 : 860) : 740,
+        lastTime: performance.now(),
+        leadCursor: assigned[0],
+        helperCursors: assigned.slice(1),
+        accentColor: assigned[0].color
+      };
+
+      assigned[0].assignedJob = job;
+      assigned[0].role = 'lead';
+      job.helperCursors.forEach((hc, idx) => {
+        hc.assignedJob = job;
+        hc.role = idx === 0 ? 'helper-top' : 'helper-left';
+      });
+
+      activeBuildJobs.push(job);
+      update3DModeUI();
+    }
+
+    // Update bottom dock telemetry pill
+    function updateTelemetryUI() {
+      const agentEl = document.getElementById('agent-count-readout');
+      const layerEl = document.getElementById('layer-telemetry-readout');
+      if (agentEl) agentEl.textContent = `${NUM_CURSORS} agents`;
+      if (layerEl) layerEl.textContent = `${totalBuiltCount} / ${buildableNodes.length} blocks`;
+    }
+
+    // Scan viewport for pending blocks and assign cursors to construct them (Android/iOS/PC unified)
+    function scanViewportForPendingBuilds() {
+      if (!introFinished) return;
+      const vh = getViewportSize().height;
+
+      for (let i = 0; i < buildableNodes.length; i++) {
+        const node = buildableNodes[i];
+        if (node.state !== 'pending') continue;
+
+        const rect = node.el.getBoundingClientRect();
+
+        // If swarm is disabled or user scrolled completely past the element, reveal immediately
+        if (!swarmActive || rect.bottom < 0) {
+          instantRevealNode(node);
+          continue;
+        }
+
+        // Element is entering the viewport -> dispatch agent cursors to construct it
+        if (rect.top < vh * 0.96 && rect.bottom > 8) {
+          startBuildJob(node);
+        }
+      }
+    }
+
+    // Replay the entire agent-build sequence from the top
+    function replayPageBuild() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      buildableNodes.forEach(node => {
+        node.el.dataset.buildRegistered = '';
+      });
+      registerBuildableElements(false);
+      introFinished = true;
+      setTimeout(() => {
+        scanViewportForPendingBuilds();
+      }, 280);
+      showToast('Replaying Agent Content Build...');
+    }
+
+    // Pointer & Touch Tracking for Non-Overlapping Follow Swarm
+    window.addEventListener('mousemove', (e) => {
+      hasPointerMoved = true;
+      const dx = e.clientX - prevMousePos.x;
+      const dy = e.clientY - prevMousePos.y;
+      mouseSpeed = Math.min(35, Math.hypot(dx, dy));
+      prevMousePos.x = e.clientX;
+      prevMousePos.y = e.clientY;
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+    });
+
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        hasPointerMoved = true;
+        const tx = e.touches[0].clientX;
+        const ty = e.touches[0].clientY;
+        prevMousePos.x = tx;
+        prevMousePos.y = ty;
+        mousePos.x = tx;
+        mousePos.y = ty;
+        normMouse.targetX = (tx / Math.max(1, swarmViewW)) * 2 - 1;
+        normMouse.targetY = (ty / Math.max(1, swarmViewH)) * 2 - 1;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        hasPointerMoved = true;
+        const tx = e.touches[0].clientX;
+        const ty = e.touches[0].clientY;
+        const dx = tx - prevMousePos.x;
+        const dy = ty - prevMousePos.y;
+        mouseSpeed = Math.min(35, Math.hypot(dx, dy));
+        prevMousePos.x = tx;
+        prevMousePos.y = ty;
+        mousePos.x = tx;
+        mousePos.y = ty;
+        normMouse.targetX = (tx / Math.max(1, swarmViewW)) * 2 - 1;
+        normMouse.targetY = (ty / Math.max(1, swarmViewH)) * 2 - 1;
+      }
+    }, { passive: true });
+
+    function triggerCursorBurst(e) {
+      const cx = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : window.innerWidth / 2);
+      const cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : window.innerHeight / 2);
+      for (let i = 0; i < cursors.length; i++) {
+        if (cursors[i].assignedJob) continue;
+        const burstAngle = (i / cursors.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+        const speed = 5.5 + Math.random() * 6.5;
+        cursors[i].x = cx + Math.cos(burstAngle) * 18;
+        cursors[i].y = cy + Math.sin(burstAngle) * 18;
+        cursors[i].vx = Math.cos(burstAngle) * speed;
+        cursors[i].vy = Math.sin(burstAngle) * speed;
+      }
+      showToast('Agent Cursor Swarm Unleashed!');
+    }
+
+    function toggleCursorSwarm() {
+      swarmActive = !swarmActive;
+      const btn = document.getElementById('tool-swarm');
+      if (btn) btn.classList.toggle('opacity-40', !swarmActive);
+      if (!swarmActive) {
+        swarmCtx.clearRect(0, 0, swarmViewW, swarmViewH);
+        activeBuildJobs.forEach(job => {
+          instantRevealNode(job.node);
+          releaseJobCursors(job);
+        });
+        activeBuildJobs = [];
+        fadingFrames = [];
+        buildableNodes.forEach(node => {
+          if (node.state !== 'built') instantRevealNode(node);
+        });
+        showToast('Agent Swarm Paused');
+      } else {
+        showToast('Agent Swarm Active');
+      }
+    }
+
+    // Dual-Mode 3D Physics Engine (Desktop Cursor Tilt & Mobile Scroll Tilt)
+    let isMobileScroll3D = false;
+    let manualModeOverride = null;
+    let scrollYPos = window.scrollY || 0;
+    let lastScrollY = scrollYPos;
+    let scrollVelocity = 0;
+    let smoothScrollY = scrollYPos;
+    let scrollPhase = 0;
+    let normMouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    let cachedCardRects = [];
+
+    function detectDevice3DMode() {
+      if (manualModeOverride) {
+        isMobileScroll3D = (manualModeOverride === 'mobile');
+      } else {
+        isMobileScroll3D = window.matchMedia('(max-width: 1023px), (hover: none) and (pointer: coarse)').matches;
+      }
+      update3DModeUI();
+      cacheCardOffsets();
+    }
+
+    function update3DModeUI() {
+      const label = document.getElementById('mode-3d-label');
+      const dot = document.getElementById('mode-3d-dot');
+      document.body.classList.toggle('mobile-3d-active', isMobileScroll3D);
+
+      if (label && dot) {
+        if (activeBuildJobs.length > 0) {
+          label.textContent = 'Agents: Building';
+          dot.className = 'w-2 h-2 rounded-full bg-blueprint animate-ping';
+        } else if (isMobileScroll3D) {
+          label.textContent = '3D: Scroll';
+          dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        } else {
+          label.textContent = 'Swarm: Follow';
+          dot.className = 'w-2 h-2 rounded-full bg-crimson animate-pulse';
+        }
+      }
+    }
+
+    function toggle3DDeviceMode() {
+      if (isMobileScroll3D) {
+        manualModeOverride = 'laptop';
+        showToast('Desktop 3D Mode: Follows cursor');
+      } else {
+        manualModeOverride = 'mobile';
+        showToast('Mobile 3D Mode: Scroll depth active');
+      }
+      document.querySelectorAll('[data-3d-tilt]').forEach(el => { el.style.transform = ''; });
+      detectDevice3DMode();
+    }
+
+    function cacheCardOffsets() {
+      cachedCardRects = [];
+      const cards = document.querySelectorAll('[data-3d-tilt]');
+      cards.forEach((card, idx) => {
+        if (card.id === 'hero-portrait-3d') return;
+        const rect = card.getBoundingClientRect();
+        cachedCardRects.push({
+          el: card,
+          idx: idx,
+          topOffset: rect.top + window.scrollY,
+          height: rect.height,
+          maxTilt: parseFloat(card.dataset.maxTilt) || 7
+        });
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      detectDevice3DMode();
+      cacheCardOffsets();
+    });
+
+    window.addEventListener('scroll', () => {
+      scrollYPos = window.scrollY || window.pageYOffset;
+      const delta = scrollYPos - lastScrollY;
+      scrollVelocity = Math.max(-50, Math.min(50, delta));
+      lastScrollY = scrollYPos;
+
+      isScrollingActive = true;
+      selectionHud.classList.add('hidden');
+      clearTimeout(scrollStopTimeout);
+      scrollStopTimeout = setTimeout(() => {
+        isScrollingActive = false;
+      }, 220);
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      normMouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      normMouse.targetY = (e.clientY / window.innerHeight) * 2 - 1;
+    });
+
+    function ensureGlareOverlays() {
+      document.querySelectorAll('[data-3d-tilt]').forEach(card => {
+        if (!card.querySelector('.glare-overlay')) {
+          const glare = document.createElement('div');
+          glare.className = 'glare-overlay';
+          card.prepend(glare);
+        }
+      });
+    }
+
+    function bind3DTiltListeners() {
+      ensureGlareOverlays();
+      document.querySelectorAll('[data-3d-tilt]').forEach(card => {
+        if (card.dataset.tiltBound === 'true') return;
+        card.dataset.tiltBound = 'true';
+
+        const applyCardTilt = (clientX, clientY) => {
+          const rect = card.getBoundingClientRect();
+          const maxTilt = parseFloat(card.dataset.maxTilt) || 9;
+          const relX = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+          const relY = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+
+          const rotateY = (relX - 0.5) * (maxTilt * 2);
+          const rotateX = (0.5 - relY) * (maxTilt * 2);
+
+          card.style.transform = `perspective(1100px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+          card.style.setProperty('--glare-x', `${(relX * 100).toFixed(1)}%`);
+          card.style.setProperty('--glare-y', `${(relY * 100).toFixed(1)}%`);
+        };
+
+        card.addEventListener('mousemove', (e) => {
+          if (isMobileScroll3D) return;
+          applyCardTilt(e.clientX, e.clientY);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (isMobileScroll3D) return;
+          card.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+
+        // Touch tilt parity on Android / iOS tablets & phones
+        card.addEventListener('touchstart', (e) => {
+          if (!e.touches[0]) return;
+          applyCardTilt(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+          if (!isMobileScroll3D) {
+            card.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          }
+        }, { passive: true });
+      });
+      cacheCardOffsets();
+    }
+
+    // Three.js 3D Wireframe Scene
+    let threeScene, threeCamera, threeRenderer, vfxGroup, wireframeMeshes = [], particleSystem;
+
+    function initThree3DScene() {
+      try {
+        const canvas = document.getElementById('three-canvas');
+        if (!canvas || typeof THREE === 'undefined') return;
+
+        threeScene = new THREE.Scene();
+        threeCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        threeCamera.position.z = 26;
+
+        threeRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        threeRenderer.setSize(window.innerWidth, window.innerHeight);
+        threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+        vfxGroup = new THREE.Group();
+        threeScene.add(vfxGroup);
+
+        const geometries = [
+          new THREE.IcosahedronGeometry(2.4, 1),
+          new THREE.OctahedronGeometry(2.0, 0),
+          new THREE.TorusGeometry(2.0, 0.08, 8, 24),
+          new THREE.BoxGeometry(2.2, 2.2, 2.2)
+        ];
+
+        const matCrimson = new THREE.MeshBasicMaterial({ color: 0xdc2626, wireframe: true, transparent: true, opacity: 0.2 });
+        const matBlueprint = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.15 });
+
+        for (let i = 0; i < 8; i++) {
+          const geom = geometries[i % geometries.length];
+          const mat = i % 2 === 0 ? matCrimson : matBlueprint;
+          const mesh = new THREE.Mesh(geom, mat);
+
+          const spreadX = (i % 2 === 0 ? -1 : 1) * (7 + (i * 2) % 12);
+          const spreadY = 12 - i * 4;
+          const spreadZ = -6 - (i % 4) * 3;
+
+          mesh.position.set(spreadX, spreadY, spreadZ);
+          mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+          mesh.userData = {
+            baseX: spreadX,
+            baseY: spreadY,
+            baseZ: spreadZ,
+            rotSpeedX: (Math.random() - 0.5) * 0.01,
+            rotSpeedY: (Math.random() - 0.5) * 0.012,
+            phaseOffset: i * 0.85
+          };
+
+          vfxGroup.add(mesh);
+          wireframeMeshes.push(mesh);
+        }
+
+        const particleCount = 120;
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 50;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 60;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 28 - 5;
+        }
+        const pGeom = new THREE.BufferGeometry();
+        pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const pMat = new THREE.PointsMaterial({ color: 0xef4444, size: 0.16, transparent: true, opacity: 0.42 });
+        particleSystem = new THREE.Points(pGeom, pMat);
+        threeScene.add(particleSystem);
+
+        window.addEventListener('resize', () => {
+          if (!threeRenderer || !threeCamera) return;
+          threeCamera.aspect = window.innerWidth / window.innerHeight;
+          threeCamera.updateProjectionMatrix();
+          threeRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      } catch (e) {}
+    }
+
+    // Crisp Figma-style Agent Cursor Renderer
+    function drawFigmaCursor(ctx, x, y, angle, size, color, hollow = false, alpha = 1) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(size * 1.3, 0);
+      ctx.lineTo(-size * 0.85, -size * 0.72);
+      ctx.lineTo(-size * 0.35, 0);
+      ctx.lineTo(-size * 0.85, size * 0.72);
+      ctx.closePath();
+
+      if (hollow) {
+        ctx.fillStyle = 'rgba(6, 6, 8, 0.75)';
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(6, 6, 8, 0.85)';
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Live Figma Blueprint Construction Frame + Dimension Pill Renderer
+    function drawConstructionFrame(ctx, x, y, w, h, style, progress, alpha = 1) {
+      if (w < 4 || h < 4 || alpha <= 0.01) return;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.05)';
+      ctx.fillRect(x, y, w, h);
+
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1.25;
+      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+
+      if (style === 'text-sweep' && progress < 0.98) {
+        ctx.fillStyle = '#60a5fa';
+        ctx.fillRect(x + w - 1.5, y + 2, 2.5, Math.max(8, h - 4));
+      }
+
+      // Corner resize anchors
+      const hs = 5;
+      const corners = [
+        [x, y],
+        [x + w, y],
+        [x, y + h],
+        [x + w, y + h]
+      ];
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < corners.length; i++) {
+        const cx = corners[i][0] - hs / 2;
+        const cy = corners[i][1] - hs / 2;
+        ctx.fillRect(cx, cy, hs, hs);
+        ctx.strokeRect(cx, cy, hs, hs);
+      }
+
+      // Live W × H dimension badge
+      const dimText = `${Math.round(w)} × ${Math.round(h)}`;
+      ctx.font = '600 10px "JetBrains Mono", monospace';
+      const textW = ctx.measureText(dimText).width;
+      const pillW = textW + 10;
+      const pillH = 16;
+      const pillX = x + w / 2 - pillW / 2;
+      const pillY = y + h + 5;
+
+      ctx.fillStyle = '#3b82f6';
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(pillX, pillY, pillW, pillH, 3);
+        ctx.fill();
+      } else {
+        ctx.fillRect(pillX, pillY, pillW, pillH);
+      }
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(dimText, pillX + pillW / 2, pillY + pillH / 2 + 0.5);
+
+      ctx.restore();
+    }
+
+    // Advance all active agent construction jobs
+    function updateBuildJobs(now) {
+      for (let i = activeBuildJobs.length - 1; i >= 0; i--) {
+        const job = activeBuildJobs[i];
+        const dt = Math.min(50, Math.max(8, now - job.lastTime));
+        job.lastTime = now;
+
+        const rect = job.node.el.getBoundingClientRect();
+        if (rect.bottom < -40 || rect.width < 2 || rect.height < 2) {
+          instantRevealNode(job.node);
+          releaseJobCursors(job);
+          activeBuildJobs.splice(i, 1);
+          continue;
+        }
+
+        if (job.phase === 'approach') {
+          // Lead cursor glides smoothly to the top-left corner of the pending element
+          const startX = rect.left;
+          const startY = job.style === 'text-sweep' ? rect.top + rect.height * 0.5 : rect.top;
+          const lead = job.leadCursor;
+
+          lead.x += (startX - lead.x) * 0.22;
+          lead.y += (startY - lead.y) * 0.22;
+          lead.angle = Math.atan2(startY - lead.y, startX - lead.x);
+
+          // Helpers glide toward top-right & bottom-left corners
+          job.helperCursors.forEach(hc => {
+            const hx = hc.role === 'helper-top' ? rect.left + Math.min(40, rect.width * 0.25) : rect.left;
+            const hy = hc.role === 'helper-top' ? rect.top : rect.top + Math.min(40, rect.height * 0.25);
+            hc.x += (hx - hc.x) * 0.20;
+            hc.y += (hy - hc.y) * 0.20;
+            hc.angle = Math.atan2(hy - hc.y, hx - hc.x);
+          });
+
+          job.approachProgress += dt / 210;
+          const distToStart = Math.hypot(startX - lead.x, startY - lead.y);
+          if (distToStart < 12 || job.approachProgress >= 1) {
+            job.phase = 'build';
+          }
+        } else if (job.phase === 'build') {
+          job.buildProgress = Math.min(1, job.buildProgress + dt / job.durationMs);
+          // Smooth cubic ease-out for fluid designer-drag motion
+          const p = 1 - Math.pow(1 - job.buildProgress, 3);
+
+          let curW = rect.width;
+          let curH = rect.height;
+          let leadTargetX = rect.left + rect.width;
+          let leadTargetY = rect.top + rect.height;
+
+          if (job.style === 'text-sweep') {
+            curW = Math.max(8, rect.width * p);
+            curH = rect.height;
+            leadTargetX = rect.left + curW;
+            leadTargetY = rect.top + rect.height * 0.55;
+            const rightClip = Math.max(0, (1 - p) * 100);
+            job.node.el.style.clipPath = `inset(0 ${rightClip.toFixed(2)}% 0 0)`;
+            job.node.el.style.opacity = Math.min(1, 0.25 + p * 0.85).toFixed(2);
+          } else if (job.style === 'row-slide') {
+            curW = Math.max(12, rect.width * p);
+            curH = Math.max(12, rect.height * Math.min(1, 0.35 + p * 0.65));
+            leadTargetX = rect.left + curW;
+            leadTargetY = rect.top + curH * 0.5;
+            const rightClip = Math.max(0, (1 - p) * 100);
+            job.node.el.style.clipPath = `inset(0 ${rightClip.toFixed(2)}% 0 0)`;
+            job.node.el.style.opacity = Math.min(1, 0.2 + p * 0.9).toFixed(2);
+          } else {
+            const wp = Math.min(1, p * 1.08);
+            const hp = Math.min(1, p * 1.02);
+            curW = Math.max(14, rect.width * wp);
+            curH = Math.max(14, rect.height * hp);
+            leadTargetX = rect.left + curW;
+            leadTargetY = rect.top + curH;
+            const rightClip = Math.max(0, (1 - wp) * 100);
+            const bottomClip = Math.max(0, (1 - hp) * 100);
+            job.node.el.style.clipPath = `inset(0 ${rightClip.toFixed(2)}% ${bottomClip.toFixed(2)}% 0)`;
+            job.node.el.style.opacity = Math.min(1, 0.25 + p * 0.85).toFixed(2);
+          }
+
+          const lead = job.leadCursor;
+          const ldx = leadTargetX - lead.x;
+          const ldy = leadTargetY - lead.y;
+          lead.x += ldx * 0.34;
+          lead.y += ldy * 0.34;
+          if (Math.hypot(ldx, ldy) > 0.5) {
+            lead.angle = Math.atan2(ldy, ldx);
+          }
+
+          // Helper cursors glide cleanly along the top & left edges assembling internal details
+          job.helperCursors.forEach(hc => {
+            const targetHX = hc.role === 'helper-top'
+              ? rect.left + curW * 0.72
+              : rect.left + curW * 0.22;
+            const targetHY = hc.role === 'helper-top'
+              ? rect.top + Math.min(26, curH * 0.25)
+              : rect.top + curH * 0.72;
+            const dx = targetHX - hc.x;
+            const dy = targetHY - hc.y;
+            hc.x += dx * 0.26;
+            hc.y += dy * 0.26;
+            if (Math.hypot(dx, dy) > 0.5) hc.angle = Math.atan2(dy, dx);
+          });
+
+          // Draw live Figma construction bounding box & updating W × H pill
+          drawConstructionFrame(swarmCtx, rect.left, rect.top, curW, curH, job.style, p, 1);
+
+          if (job.buildProgress >= 1) {
+            job.node.state = 'built';
+            job.node.el.dataset.buildState = 'built';
+            job.node.el.style.clipPath = '';
+            job.node.el.style.opacity = '';
+            totalBuiltCount++;
+            updateTelemetryUI();
+
+            fadingFrames.push({
+              el: job.node.el,
+              style: job.style,
+              alpha: 0.9
+            });
+
+            releaseJobCursors(job);
+            activeBuildJobs.splice(i, 1);
+          }
+        }
+      }
+
+      // Fade out finished blueprint frames smoothly over ~300ms so the UI becomes 100% clean
+      for (let f = fadingFrames.length - 1; f >= 0; f--) {
+        const ff = fadingFrames[f];
+        ff.alpha -= 0.048;
+        if (ff.alpha <= 0.01) {
+          fadingFrames.splice(f, 1);
+          continue;
+        }
+        const rect = ff.el.getBoundingClientRect();
+        drawConstructionFrame(swarmCtx, rect.left, rect.top, rect.width, rect.height, ff.style, 1, ff.alpha);
+      }
+
+      if (activeBuildJobs.length === 0) {
+        update3DModeUI();
+      }
+    }
+
+    function releaseJobCursors(job) {
+      if (job.leadCursor) {
+        job.leadCursor.assignedJob = null;
+        job.leadCursor.role = null;
+        // Give a tiny outward release impulse so cursors glide cleanly back without clumping
+        job.leadCursor.vx = (Math.random() - 0.5) * 3.2;
+        job.leadCursor.vy = (Math.random() - 0.5) * 3.2;
+      }
+      job.helperCursors.forEach(hc => {
+        hc.assignedJob = null;
+        hc.role = null;
+        hc.vx = (Math.random() - 0.5) * 3.2;
+        hc.vy = (Math.random() - 0.5) * 3.2;
+      });
+    }
+
+    // Main Animation & Render Loop
+    function animateSwarm(now = performance.now()) {
+      smoothScrollY += (scrollYPos - smoothScrollY) * 0.12;
+      scrollVelocity *= 0.90;
+      scrollPhase += 0.022 + Math.abs(scrollVelocity) * 0.0018;
+
+      normMouse.x += (normMouse.targetX - normMouse.x) * 0.08;
+      normMouse.y += (normMouse.targetY - normMouse.y) * 0.08;
+
+      // Continuously check for newly visible pending elements (catches momentum scroll on iOS/Android & smooth anchor jumps)
+      scanViewportForPendingBuilds();
+
+      const heroGiantWrapper = document.getElementById('hero-giant-wrapper');
+      const heroPortrait = document.getElementById('hero-portrait-3d');
+
+      if (!isMobileScroll3D) {
+        if (heroGiantWrapper && scrollYPos < window.innerHeight) {
+          const tx = normMouse.x * -18;
+          const ty = normMouse.y * -10;
+          const rx = normMouse.y * -5;
+          const ry = normMouse.x * 6;
+          heroGiantWrapper.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+        }
+
+        if (threeScene && threeCamera && vfxGroup) {
+          vfxGroup.rotation.y = normMouse.x * 0.32;
+          vfxGroup.rotation.x = normMouse.y * 0.22;
+          vfxGroup.position.y = (smoothScrollY * 0.012);
+
+          wireframeMeshes.forEach(m => {
+            m.rotation.x += m.userData.rotSpeedX;
+            m.rotation.y += m.userData.rotSpeedY;
+          });
+          if (particleSystem) {
+            particleSystem.rotation.y = normMouse.x * 0.15 + scrollPhase * 0.08;
+          }
+          threeRenderer.render(threeScene, threeCamera);
+        }
+      } else {
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const scrollProgress = smoothScrollY / maxScroll;
+        const waveX = Math.sin(smoothScrollY * 0.0065);
+
+        if (heroGiantWrapper && scrollYPos < window.innerHeight * 1.2) {
+          const heroRotateX = Math.min(14, smoothScrollY * 0.03);
+          const heroRotateY = waveX * 6;
+          heroGiantWrapper.style.transform = `translate3d(0px, 0px, 0px) rotateX(${heroRotateX.toFixed(1)}deg) rotateY(${heroRotateY.toFixed(1)}deg)`;
+        }
+
+        if (heroPortrait && scrollYPos < window.innerHeight * 1.2) {
+          const pRotY = Math.sin(smoothScrollY * 0.008) * 8;
+          const pRotX = Math.max(-10, Math.min(10, scrollVelocity * 0.22));
+          heroPortrait.style.transform = `perspective(1000px) rotateX(${pRotX.toFixed(2)}deg) rotateY(${pRotY.toFixed(2)}deg) translateZ(14px)`;
+        }
+
+        const vh = window.innerHeight;
+        for (let i = 0; i < cachedCardRects.length; i++) {
+          const c = cachedCardRects[i];
+          const currentTop = c.topOffset - smoothScrollY;
+          if (currentTop + c.height > -30 && currentTop < vh + 30) {
+            const centerOffset = ((currentTop + c.height / 2) - vh / 2) / (vh / 2);
+            const directionSign = c.idx % 2 === 0 ? 1 : -1;
+            const rotateX = (centerOffset * -c.maxTilt) + (scrollVelocity * 0.09);
+            const rotateY = Math.sin((smoothScrollY * 0.007) + c.idx * 1.1) * (c.maxTilt * 0.75) * directionSign;
+            const translateZ = (1 - Math.min(1, Math.abs(centerOffset))) * 10;
+
+            c.el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(${translateZ.toFixed(1)}px)`;
+
+            const glareX = 50 + Math.sin(smoothScrollY * 0.008 + c.idx) * 36;
+            const glareY = 50 + centerOffset * 36;
+            c.el.style.setProperty('--glare-x', `${glareX.toFixed(1)}%`);
+            c.el.style.setProperty('--glare-y', `${glareY.toFixed(1)}%`);
+          }
+        }
+
+        if (threeScene && threeCamera && vfxGroup) {
+          vfxGroup.rotation.y = scrollProgress * Math.PI * 2.5;
+          vfxGroup.rotation.x = Math.sin(scrollProgress * Math.PI * 2) * 0.35 + (scrollVelocity * 0.005);
+          threeCamera.position.z = 26 - Math.sin(scrollProgress * Math.PI) * 6;
+
+          wireframeMeshes.forEach(m => {
+            const spinBoost = 1 + Math.abs(scrollVelocity) * 0.12;
+            m.rotation.x += m.userData.rotSpeedX * spinBoost;
+            m.rotation.y += m.userData.rotSpeedY * spinBoost;
+            m.position.y = m.userData.baseY + Math.sin(scrollProgress * 10 + m.userData.phaseOffset) * 2.8;
+          });
+
+          if (particleSystem) {
+            particleSystem.rotation.y = scrollProgress * Math.PI * 1.8;
+            particleSystem.position.y = (scrollProgress - 0.5) * 15;
+          }
+          threeRenderer.render(threeScene, threeCamera);
+        }
+
+        // Gentle mobile focal point before the user has tapped anywhere
+        if (!hasPointerMoved) {
+          mousePos.x = (window.innerWidth * 0.52) + Math.sin(scrollPhase * 0.35) * (window.innerWidth * 0.16);
+          mousePos.y = (window.innerHeight * 0.44) + Math.cos(scrollPhase * 0.28) * (window.innerHeight * 0.12);
+        }
+      }
+
+      mouseSpeed *= 0.9;
+
+      if (swarmActive) {
+        swarmCtx.clearRect(0, 0, swarmViewW, swarmViewH);
+
+        // 1. Advance all active video-style cursor construction jobs & draw their live Figma frames
+        updateBuildJobs(now);
+
+        // 2. Update all FREE cursors (non-overlapping follow swarm that never mixes back)
+        const minSeparation = swarmViewW < 640 ? 32 : 40;
+        const minSeparationSq = minSeparation * minSeparation;
+
+        for (let i = 0; i < cursors.length; i++) {
+          const c = cursors[i];
+
+          // Assigned cursors are positioned directly by updateBuildJobs()
+          if (c.assignedJob) {
+            drawFigmaCursor(swarmCtx, c.x, c.y, c.angle, c.size * 1.12, c.color, false, 1);
+            continue;
+          }
+
+          c.orbitAngle += c.orbitSpeed;
+          const dynamicRadius = c.orbitRadius + Math.sin(scrollPhase * 1.2 + c.noiseOffset) * 14 + mouseSpeed * 1.2;
+
+          const targetX = mousePos.x + Math.cos(c.orbitAngle) * dynamicRadius;
+          const targetY = mousePos.y + Math.sin(c.orbitAngle) * dynamicRadius;
+
+          c.vx += (targetX - c.x) * 0.022;
+          c.vy += (targetY - c.y) * 0.022;
+
+          // Pairwise repulsion between free cursors so they NEVER mix or stack
+          for (let j = 0; j < cursors.length; j++) {
+            if (i === j || cursors[j].assignedJob) continue;
+            const other = cursors[j];
+            const rx = c.x - other.x;
+            const ry = c.y - other.y;
+            const distSq = rx * rx + ry * ry;
+            if (distSq > 0.001 && distSq < minSeparationSq) {
+              const dist = Math.sqrt(distSq);
+              const push = (minSeparation - dist) / minSeparation;
+              c.vx += (rx / dist) * push * 1.25;
+              c.vy += (ry / dist) * push * 1.25;
+            }
+          }
+
+          // Keep a clean personal space around the user's actual pointer
+          const dxMouse = c.x - mousePos.x;
+          const dyMouse = c.y - mousePos.y;
+          const distMouse = Math.hypot(dxMouse, dyMouse) || 1;
+          const safeCenterRadius = 34;
+          if (distMouse < safeCenterRadius) {
+            const evade = (safeCenterRadius - distMouse) / safeCenterRadius;
+            c.vx += (dxMouse / distMouse) * evade * 1.35;
+            c.vy += (dyMouse / distMouse) * evade * 1.35;
+          }
+
+          // Gentle organic drift
+          c.vx += Math.cos(scrollPhase * 1.7 + c.noiseOffset) * 0.045;
+          c.vy += Math.sin(scrollPhase * 1.7 + c.noiseOffset) * 0.045;
+
+          c.vx *= 0.89;
+          c.vy *= 0.89;
+          const spd = Math.hypot(c.vx, c.vy);
+          if (spd > 9.5) {
+            c.vx = (c.vx / spd) * 9.5;
+            c.vy = (c.vy / spd) * 9.5;
+          }
+
+          c.x += c.vx;
+          c.y += c.vy;
+
+          // Hard Collision Clamp Pass: Guarantees 0% overlap/mixing among free cursors
+          for (let j = 0; j < i; j++) {
+            const other = cursors[j];
+            if (other.assignedJob) continue;
+            const rx = c.x - other.x;
+            const ry = c.y - other.y;
+            const dist = Math.hypot(rx, ry);
+            const hardMin = minSeparation * 0.8;
+            if (dist > 0.001 && dist < hardMin) {
+              const overlap = (hardMin - dist) * 0.5;
+              const nx = rx / dist;
+              const ny = ry / dist;
+              c.x += nx * overlap;
+              c.y += ny * overlap;
+              other.x -= nx * overlap;
+              other.y -= ny * overlap;
+            }
+          }
+
+          if (spd > 0.16) {
+            const targetAngle = Math.atan2(c.vy, c.vx);
+            let diff = targetAngle - c.angle;
+            while (diff < -Math.PI) diff += Math.PI * 2;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+            c.angle += diff * 0.18;
+          }
+
+          // Slightly softer alpha when idle so free cursors feel sleek & never distract from reading
+          drawFigmaCursor(swarmCtx, c.x, c.y, c.angle, c.size, c.color, c.hollow, 0.82);
+        }
+      }
+
+      requestAnimationFrame(animateSwarm);
+    }
+
+    // Converging Intro Splash Animation -> Immediately Hands Off to Agents Building the Hero!
+    function runIntroSplash() {
+      const splash = document.getElementById('intro-splash');
+      const introCursors = document.getElementById('intro-cursors');
+      if (!splash || !introCursors) {
+        introFinished = true;
+        scanViewportForPendingBuilds();
+        return;
+      }
+
+      splash.classList.remove('hidden', 'splash-auto-hide');
+      splash.style.opacity = '1';
+      splash.style.visibility = 'visible';
+      introCursors.innerHTML = '';
+
+      const labels = ['Sohan', 'La Trobe AU', 'SecOps', 'Pentester', 'Bangladesh', 'Builders'];
+      labels.forEach((label, idx) => {
+        const el = document.createElement('div');
+        const angle = (idx / labels.length) * Math.PI * 2;
+        const startX = 50 + Math.cos(angle) * 35;
+        const startY = 50 + Math.sin(angle) * 35;
+        el.className = 'absolute transition-all duration-700 flex items-center gap-1';
+        el.style.left = `${startX}%`;
+        el.style.top = `${startY}%`;
+        el.innerHTML = `
+          <svg class="w-4 h-4 text-crimson -rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+          <span class="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-[9px] font-mono text-zinc-300 font-bold">${label}</span>
+        `;
+        introCursors.appendChild(el);
+
+        setTimeout(() => {
+          el.style.left = `${50 + Math.cos(angle) * 10}%`;
+          el.style.top = `${50 + Math.sin(angle) * 10}%`;
+        }, 80);
+      });
+
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        introFinished = true;
+        scanViewportForPendingBuilds();
+      }, 900);
+
+      setTimeout(() => {
+        splash.classList.add('hidden');
+      }, 1500);
+    }
+
+    // Utilities
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function copyEmail(email) {
+      const temp = document.createElement('textarea');
+      temp.value = email;
+      temp.setAttribute('readonly', '');
+      temp.style.position = 'fixed';
+      temp.style.left = '-9999px';
+      temp.style.top = '0';
+      document.body.appendChild(temp);
+      temp.focus();
+      temp.select();
+      temp.setSelectionRange(0, 99999); // Android / iOS compatibility
+      try {
+        document.execCommand('copy');
+        showToast(`Email ${email} copied!`);
+      } catch (e) {
+        showToast(`Email: ${email}`);
+      }
+      document.body.removeChild(temp);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.style.opacity = '1';
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2400);
+    }
+
+    function openContactModal() {
+      const m = document.getElementById('contact-modal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+    }
+
+    function closeContactModal() {
+      const m = document.getElementById('contact-modal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function submitContactForm(e) {
+      e.preventDefault();
+      closeContactModal();
+      showToast('Message sent! Md Sohan Mahmud will get back to you shortly.');
+    }
+
+    // App Initialization
+    function initPortfolioApp() {
+      safeCreateIcons();
+      renderProjects('All');
+      registerBuildableElements(false);
+      detectDevice3DMode();
+      bind3DTiltListeners();
+      initThree3DScene();
+      animateSwarm();
+      runIntroSplash();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPortfolioApp);
+    } else {
+      initPortfolioApp();
+    }
+  </script>
+</body>
+</html>
